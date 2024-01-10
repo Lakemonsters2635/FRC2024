@@ -101,4 +101,21 @@ public final class Constants {
    public static final int TARGET_TRIGGER_DISTANCE_CUBE = 10;       // cube is not as skinny
    public static final int TARGET_TRIGGER_DISTANCE_ANY = 10;        // cube is not as skinny
    public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;   // april tag approach distance for score.  Can't see tag if closer
+
+   //Arm Constants
+
+
+   //Arm Motor Control ID
+   public static final int Arm_Motor1 = 1;
+   public static final int Arm_Motor2 = 2;
+   public static final int Arm_Motor3 = 3;
+   public static final int Arm_Motor4 = 4;
+   
+   //Arm Motor Speed
+   public static final double Arm_Motor_Start_Speed = 0.7;
+   public static final int Arm_Motor_Stop_Speed = 0;
+
+   //Arm Button
+   public static final int Arm_Start_Button = 3;
+   public static final int Arm_Stop_Button = 4;
 }

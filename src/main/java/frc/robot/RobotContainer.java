@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Commands.ArmCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -21,7 +24,12 @@ public class RobotContainer {
   public static final Joystick rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_CHANNEL);
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
 
+  // Subsystems
+  public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
   public static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+
+  //Command 
+  public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -38,7 +46,13 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+  //creating buttons
+
+    Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.Arm_Start_Button);
+    Trigger ArmStopButton = new JoystickButton(leftJoystick, Constants.Arm_Stop_Button);
+
+    ArmStartButton.whileTrue(m_armCommand);
+    ArmStopButton.whileTrue(m_armCommand);
   }
 
   /**
