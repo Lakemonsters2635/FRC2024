@@ -4,11 +4,7 @@
 
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner14;
-
-import com.kauailabs.navx.frc.AHRS;
-
-// import edu.wpi.first.wpilibj.interfaces.Gyro;
+import com.kauailabs.navx.frc.AHRS; 
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -89,8 +86,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
-    // m_gyro.calibrate();
+    m_gyro.reset();
+    m_gyro.resetDisplacement();
     getPose();
+    zeroOdometry();
+  }
+
+  public void resetAngle(){
+    m_gyro.setAngleAdjustment(0);
   }
 
   private static double xPowerCommanded = 0;
@@ -167,7 +170,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
       
 
 
-      System.out.println(Double.toString(rotCommanded) + "\t" +Double.toString(yPowerCommanded)+ "\t" +Double.toString(xPowerCommanded));
+      
+      System.out.println(m_gyro.getAngle());
 
       
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
@@ -183,7 +187,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
-    // m_gyro.calibrate();
+    m_gyro.reset();
+    m_gyro.resetDisplacement();
     System.out.println(m_gyro.getRotation2d());
   }
 

@@ -7,7 +7,9 @@ package frc.robot;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -38,7 +40,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    Trigger resetButton = new JoystickButton(rightJoystick, 1);
+    resetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
   }
 
   /**
