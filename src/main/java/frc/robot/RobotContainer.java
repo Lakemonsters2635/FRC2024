@@ -50,11 +50,9 @@ public class RobotContainer {
     //creating buttons
 
     Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
-    Trigger ArmStopButton = new JoystickButton(leftJoystick, Constants.ARM_STOP_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, 1);
 
     ArmStartButton.whileTrue(m_armCommand);
-    ArmStopButton.whileTrue(m_armCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
   }
 
