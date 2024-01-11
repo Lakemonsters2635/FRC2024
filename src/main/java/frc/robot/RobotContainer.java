@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.ArmCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -23,7 +25,12 @@ public class RobotContainer {
   public static final Joystick rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_CHANNEL);
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
 
+  // Subsystems
   public static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
+
+  //Command 
+  public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -40,8 +47,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    Trigger resetButton = new JoystickButton(rightJoystick, 1);
-    resetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
+    //creating buttons
+
+    Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
+    Trigger ArmStopButton = new JoystickButton(leftJoystick, Constants.ARM_STOP_BUTTON);
+    Trigger swerveResetButton = new JoystickButton(rightJoystick, 1);
+
+    ArmStartButton.whileTrue(m_armCommand);
+    ArmStopButton.whileTrue(m_armCommand);
+    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
   }
 
   /**

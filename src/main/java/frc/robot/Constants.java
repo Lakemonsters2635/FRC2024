@@ -91,4 +91,28 @@ public final class Constants {
 
    public static final int kDriverControllerPort = 0;
    public static final int kOperatorControllerPort = 1;
+
+   // VISION CONSTANTS
+   public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+
+   // how far away you quit driving w/ vision
+   // TODO: figure out these distances
+   public static final int TARGET_TRIGGER_DISTANCE_CONE = 10;       // cone is skinny
+   public static final int TARGET_TRIGGER_DISTANCE_CUBE = 10;       // cube is not as skinny
+   public static final int TARGET_TRIGGER_DISTANCE_ANY = 10;        // cube is not as skinny
+   public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;   // april tag approach distance for score.  Can't see tag if closer
+
+   //ARM CONSTATNTS
+
+   public static final int ARM_MOTOR1_ID = 1;
+   public static final int ARM_MOTOR2_ID = 2;
+   public static final int ARM_MOTOR3_ID = 3;
+   public static final int ARM_MOTOR4_ID = 4;
+
+   public static final double ARM_MOTOR_START_SPEED = 0.7;
+   public static final int ARM_MOTOR_STOP_SPEED = 0;
+
+   //BUTTON BINDINGS
+   public static final int ARM_START_BUTTON = 3;
+   public static final int ARM_STOP_BUTTON = 4;
 }
