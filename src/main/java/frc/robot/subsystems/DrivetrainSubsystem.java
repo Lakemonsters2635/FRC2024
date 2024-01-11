@@ -4,12 +4,9 @@
 
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner14;
+import com.kauailabs.navx.frc.AHRS; 
 
-import com.kauailabs.navx.frc.AHRS;
-
-// import edu.wpi.first.wpilibj.interfaces.Gyro;
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -31,6 +28,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private Joystick hatJoystickTrimRotationArm;
     public static final double kMaxSpeed = 3.63; // 3.63 meters per second
     public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+
+    private boolean isReseted = false;
+    private Timer timer = new Timer();
+
   
     public final double m_drivetrainWheelbaseWidth = 18.5 / Constants.INCHES_PER_METER;
     public final double m_drivetrainWheelbaseLength = 28.5 / Constants.INCHES_PER_METER;
@@ -89,8 +90,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
-    // m_gyro.calibrate();
     getPose();
+    zeroOdometry();
+    timer.start();
+  }
+
+  public void resetAngle(){
+    m_gyro.reset();
+    m_gyro.setAngleAdjustment(90);
   }
 
   private static double xPowerCommanded = 0;
@@ -112,6 +119,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // When we reset the navX during it calibrates it doesn't reset so we added a timer
+      if (isReseted == false && timer.get()>0.5) {
+        m_gyro.reset();
+        m_gyro.setAngleAdjustment(90);
+        isReseted = true;
+        timer.stop();
+      }
       //Hat Power Overides for Trimming Position and Rotation
       hatJoystickTrimPosition = RobotContainer.rightJoystick;
       hatJoystickTrimRotationArm = RobotContainer.leftJoystick;
@@ -127,10 +141,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       else if(hatJoystickTrimPosition.getPOV()==Constants.HAT_POV_MOVE_LEFT){
         xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
       }
-      // else{
-      //   yPowerCommanded =0;
-      //   xPowerCommanded =0;
-      // }
 
       if(hatJoystickTrimRotationArm.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
         rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
@@ -138,9 +148,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       else if(hatJoystickTrimRotationArm.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
         rotCommanded = Constants.HAT_POWER_ROTATE;
       }
-      // else{
-      //   rotCommanded = 0;
-      // }
 
 
 
@@ -161,13 +168,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         xPowerCommanded = hatJoystickTrimPosition.getX() * Constants.FIX_JOYSTICK_SPEED;
       }
 
-      if (hatJoystickTrimPosition.getTwist()>0.05 || hatJoystickTrimPosition.getTwist()<-0.05) {
+      if (Math.pow(hatJoystickTrimPosition.getTwist(),3)>0.05 || Math.pow(hatJoystickTrimPosition.getTwist(),3)<-0.05) {
         rotCommanded = hatJoystickTrimPosition.getTwist() * Constants.FIX_JOYSTICK_SPEED*-1;
       }
-      
+  
 
-
-      System.out.println(Double.toString(rotCommanded) + "\t" +Double.toString(yPowerCommanded)+ "\t" +Double.toString(xPowerCommanded));
+      // System.out.println(m_gyro.getAngle()+"\t"+hatJoystickTrimPosition.getTwist());
 
       
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
@@ -178,12 +184,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     updateOdometry();
 
     putDTSToSmartDashboard();
-    // tuneAngleOffsetPutToDTS();
+    tuneAngleOffsetPutToDTS();
   }
 
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
-    // m_gyro.calibrate();
+    m_gyro.reset();
+    m_gyro.setAngleAdjustment(90);
     System.out.println(m_gyro.getRotation2d());
   }
 

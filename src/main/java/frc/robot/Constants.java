@@ -32,25 +32,25 @@ public final class Constants {
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 0; 
    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
-   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(6.46); //3.01
+   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(6.46-9); //3.01
 
    // FRONT RIGHT
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 1;
    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 4;
-   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(12.67); // 3.0775
+   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(12.67+12); // 3.0775
 
    // BACK LEFT
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 5; 
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 2;
    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 9; 
-   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(118.06); //2.9835
+   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(118.06-1); //2.9835
 
    // BACK RIGHT
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 7;
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 3;
    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 8; 
-   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-23.57); //3.0346
+   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-23.57+1); //3.0346
 
    // hat constants 
    public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -93,7 +93,7 @@ public final class Constants {
    public static final int kOperatorControllerPort = 1;
 
    // VISION CONSTANTS
-   public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+   public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
 
    // how far away you quit driving w/ vision
    // TODO: figure out these distances
@@ -102,20 +102,17 @@ public final class Constants {
    public static final int TARGET_TRIGGER_DISTANCE_ANY = 10;        // cube is not as skinny
    public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;   // april tag approach distance for score.  Can't see tag if closer
 
-   //Arm Constants
+   //ARM CONSTATNTS
 
+   public static final int ARM_MOTOR1_ID = 1;
+   public static final int ARM_MOTOR2_ID = 2;
+   public static final int ARM_MOTOR3_ID = 3;
+   public static final int ARM_MOTOR4_ID = 4;
 
-   //Arm Motor Control ID
-   public static final int Arm_Motor1 = 1;
-   public static final int Arm_Motor2 = 2;
-   public static final int Arm_Motor3 = 3;
-   public static final int Arm_Motor4 = 4;
-   
-   //Arm Motor Speed
-   public static final double Arm_Motor_Start_Speed = 0.7;
-   public static final int Arm_Motor_Stop_Speed = 0;
+   public static final double ARM_MOTOR_START_SPEED = 0.7;
+   public static final int ARM_MOTOR_STOP_SPEED = 0;
 
-   //Arm Button
-   public static final int Arm_Start_Button = 3;
-   public static final int Arm_Stop_Button = 4;
+   //BUTTON BINDINGS
+   public static final int ARM_START_BUTTON = 3;
+   public static final int ARM_STOP_BUTTON = 4;
 }

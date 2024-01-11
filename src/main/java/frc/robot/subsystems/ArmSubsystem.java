@@ -18,24 +18,24 @@ public class ArmSubsystem extends SubsystemBase {
     public CANSparkMax m_armMotor4;
 
   public ArmSubsystem(){
-    m_armMotor1 = new CANSparkMax(Constants.Arm_Motor1, MotorType.kBrushless);
-    m_armMotor2 = new CANSparkMax(Constants.Arm_Motor2, MotorType.kBrushless);
-    m_armMotor3 = new CANSparkMax(Constants.Arm_Motor3, MotorType.kBrushless);
-    m_armMotor4 = new CANSparkMax(Constants.Arm_Motor4, MotorType.kBrushless);
+    m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
+    m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
+    m_armMotor3 = new CANSparkMax(Constants.ARM_MOTOR3_ID, MotorType.kBrushless);
+    m_armMotor4 = new CANSparkMax(Constants.ARM_MOTOR4_ID, MotorType.kBrushless);
   }
 
   public void ArmStart(){
-    m_armMotor1.set(Constants.Arm_Motor_Start_Speed);
-    m_armMotor2.set(Constants.Arm_Motor_Start_Speed);
-    //m_armMotor3.set(Constants.Arm_Motor_Start_Speed);
-    //m_armMotor4.set(Constants.Arm_Motor_Start_Speed);
+    m_armMotor1.set(Constants.ARM_MOTOR_START_SPEED);
+    m_armMotor2.set(Constants.ARM_MOTOR_START_SPEED);
+    //m_armMotor3.set(Constants.ARM_MOTOR_Start_Speed);
+    //m_armMotor4.set(Constants.ARM_MOTOR_Start_Speed);
   }
 
   public void ArmStop(){
-  m_armMotor1.set(Constants.Arm_Motor_Stop_Speed);
-  m_armMotor2.set(Constants.Arm_Motor_Stop_Speed);
-  //m_armMotor3.set(Constants.Arm_Motor_Stop_Speed);
-  //m_armMotor4.set(Constants.Arm_Motor_Stop_Speed);
+  m_armMotor1.set(Constants.ARM_MOTOR_STOP_SPEED);
+  m_armMotor2.set(Constants.ARM_MOTOR_STOP_SPEED);
+  //m_armMotor3.set(Constants.ARM_MOTOR_Stop_Speed);
+  //m_armMotor4.set(Constants.ARM_MOTOR_Stop_Speed);
   }
 
 
