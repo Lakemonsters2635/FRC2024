@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Commands.ArmCommand;
+import frc.robot.commands.ArmCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
