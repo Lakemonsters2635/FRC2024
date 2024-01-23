@@ -24,17 +24,14 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-  private Joystick hatJoystickTrimPosition;
-  private Joystick hatJoystickTrimRotationArm;
     public static final double kMaxSpeed = 3.63; // 3.63 meters per second
     public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-    private boolean isReseted = false;
-    private Timer timer = new Timer();
+    public static Joystick rightJoystick = RobotContainer.rightJoystick;
+    public static Joystick leftJoystick = RobotContainer.leftJoystick;
 
-  
-    public final double m_drivetrainWheelbaseWidth = 18.5 / Constants.INCHES_PER_METER;
-    public final double m_drivetrainWheelbaseLength = 28.5 / Constants.INCHES_PER_METER;
+    public final double m_drivetrainWheelbaseWidth = 25 / Constants.INCHES_PER_METER;
+    public final double m_drivetrainWheelbaseLength = 25 / Constants.INCHES_PER_METER;
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -92,7 +89,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DrivetrainSubsystem() {
     getPose();
     zeroOdometry();
-    timer.start();
+    resetAngle();
   }
 
   public void resetAngle(){
@@ -119,62 +116,46 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // When we reset the navX during it calibrates it doesn't reset so we added a timer
-      if (isReseted == false && timer.get()>0.5) {
-        m_gyro.reset();
-        m_gyro.setAngleAdjustment(90);
-        isReseted = true;
-        timer.stop();
-      }
       //Hat Power Overides for Trimming Position and Rotation
-      hatJoystickTrimPosition = RobotContainer.rightJoystick;
-      hatJoystickTrimRotationArm = RobotContainer.leftJoystick;
-      if(hatJoystickTrimPosition.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
+      if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
         yPowerCommanded = Constants.HAT_POWER_MOVE;
       }
-      else if(hatJoystickTrimPosition.getPOV()==Constants.HAT_POV_MOVE_BACK){
+      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
         yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
       }
-      else if(hatJoystickTrimPosition.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
+      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
         xPowerCommanded = Constants.HAT_POWER_MOVE;
       }
-      else if(hatJoystickTrimPosition.getPOV()==Constants.HAT_POV_MOVE_LEFT){
+      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
         xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
       }
 
-      if(hatJoystickTrimRotationArm.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
+      if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
         rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
       }
-      else if(hatJoystickTrimRotationArm.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
+      else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
         rotCommanded = Constants.HAT_POWER_ROTATE;
       }
 
-
-
-      if(hatJoystickTrimPosition.getPOV()==-1){
+      if(rightJoystick.getPOV()==-1 || leftJoystick.getPOV()==-1){
         yPowerCommanded= 0;
         xPowerCommanded= 0;
-      }
-
-      if(hatJoystickTrimRotationArm.getPOV()==-1){
         rotCommanded = 0;
       }
 
-      if (hatJoystickTrimPosition.getY()>0.05 || hatJoystickTrimPosition.getY()<-0.05) {
-        yPowerCommanded = hatJoystickTrimPosition.getY() * Constants.FIX_JOYSTICK_SPEED *-1;
+      if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
+        yPowerCommanded = rightJoystick.getY() * -1;
       }
 
-      if (hatJoystickTrimPosition.getX()>0.05 || hatJoystickTrimPosition.getX()<-0.05) {
-        xPowerCommanded = hatJoystickTrimPosition.getX() * Constants.FIX_JOYSTICK_SPEED;
+      if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
+        xPowerCommanded = rightJoystick.getX();
       }
 
-      if (Math.pow(hatJoystickTrimPosition.getTwist(),3)>0.05 || Math.pow(hatJoystickTrimPosition.getTwist(),3)<-0.05) {
-        rotCommanded = hatJoystickTrimPosition.getTwist() * Constants.FIX_JOYSTICK_SPEED*-1;
+      if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
+        rotCommanded = rightJoystick.getTwist() * -1;
       }
-  
 
-      // System.out.println(m_gyro.getAngle()+"\t"+hatJoystickTrimPosition.getTwist());
-
+      System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
       
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,

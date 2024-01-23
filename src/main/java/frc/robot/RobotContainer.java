@@ -26,7 +26,7 @@ public class RobotContainer {
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
 
   // Subsystems
-  public static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
 
   //Command 
