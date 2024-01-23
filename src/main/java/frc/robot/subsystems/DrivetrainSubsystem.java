@@ -102,15 +102,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static double rotCommanded = 0;
 
   // three setters here and then call the setteres from the sd execute
-  public static void setXPowerCommanded(double xPower) {
+  public void setXPowerCommanded(double xPower) {
     xPowerCommanded = xPower;
   }
 
-  public static void setYPowerCommanded(double yPower) {
+  public void setYPowerCommanded(double yPower) {
     yPowerCommanded = yPower;
   }
 
-  public static void setRotCommanded(double rot) {
+  public void setRotCommanded(double rot) {
     rotCommanded = rot;
   }
 
@@ -137,12 +137,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         rotCommanded = Constants.HAT_POWER_ROTATE;
       }
 
-      if(rightJoystick.getPOV()==-1 || leftJoystick.getPOV()==-1){
-        yPowerCommanded= 0;
-        xPowerCommanded= 0;
-        rotCommanded = 0;
-      }
-
       if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
         yPowerCommanded = rightJoystick.getY() * -1;
       }
@@ -160,7 +154,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                 true);
+                 false);
     
     updateOdometry();
 

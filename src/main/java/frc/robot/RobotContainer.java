@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.DriveTrainCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,6 +31,7 @@ public class RobotContainer {
   public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
 
   //Command 
+  public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
   public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
 
   public RobotContainer() {

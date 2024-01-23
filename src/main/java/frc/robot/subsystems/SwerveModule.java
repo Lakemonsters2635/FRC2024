@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -25,7 +27,9 @@ public class SwerveModule {
   private final CANSparkMax m_turningMotor;
 
   public final RelativeEncoder m_driveEncoder;
-  private final AnalogInput m_turningEncoder;
+  private final RelativeEncoder m_turningEncoder;
+
+  private final int kCPR = 8192;
 
   private double turningMotorOffset;
 
@@ -71,7 +75,7 @@ public class SwerveModule {
     }
 
     
-    m_turningEncoder = new AnalogInput(analogEncoderPort);
+    m_turningEncoder = m_turningMotor.getEncoder();
 
     m_driveEncoder = m_driveMotor.getEncoder();
     
@@ -106,7 +110,7 @@ public class SwerveModule {
   }
 
   public double getTurningEncoderRadians(){
-    double angle = (1.0 - m_turningEncoder.getVoltage() / RobotController.getVoltage5V()) * 2.0 * Math.PI + turningMotorOffset;
+    double angle = (1.0 - (m_turningEncoder.getPosition()/kCPR)) * 2.0 * Math.PI + turningMotorOffset;
     angle %= 2.0 * Math.PI;
     if (angle < 0.0) {
         angle += 2.0 * Math.PI;
