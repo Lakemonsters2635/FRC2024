@@ -85,25 +85,30 @@ public final class Constants {
 
    // VISION CONSTANTS
    public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+   
+   // CLIMBER CONSTANTS
+   public static final int CLIMBER_MOTOR_1 = 13;
+   public static final int CLIMBER_MOTOR_2 = 13;
+
+   public static final double CLIMBER_START_SPEED = 0.5;
+   public static final int CLIMBER_STOP_SPEED = 0;
 
    //ARM CONSTATNTS
-
    public static final int ARM_MOTOR1_ID = 12;
    public static final int ARM_MOTOR2_ID = 13;
 
    public static final double ARM_MOTOR_START_SPEED = 0.7;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
-
-   //BUTTON BINDINGS
-   public static final int ARM_START_BUTTON = 3;
-   public static final int INTAKE_BUTTON = 4;
-
+  
    // INTAKE CONSTANTS
-
    public static final int INTAKE_STOP_SPEED = 0;
    public static final double INTAKE_IN_SPEED = 0.3;
    public static final double INTAKE_OUT_SPEED = -0.3;
 
-   // Id's I guess
-   public static final int INTAKE_MOTOR_ID = 0;
+   public static final int INTAKE_MOTOR_ID = 15;
+
+   //BUTTON BINDINGS
+   public static final int ARM_START_BUTTON = 3;
+   public static final int INTAKE_BUTTON = 4;
+   public static final int CLIMBER_BUTTON = 4;
 }
