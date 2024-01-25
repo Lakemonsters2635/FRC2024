@@ -96,5 +96,14 @@ public final class Constants {
 
    //BUTTON BINDINGS
    public static final int ARM_START_BUTTON = 3;
-   
+   public static final int INTAKE_BUTTON = 4;
+
+   // INTAKE CONSTANTS
+
+   public static final int INTAKE_STOP_SPEED = 0;
+   public static final double INTAKE_IN_SPEED = 0.3;
+   public static final double INTAKE_OUT_SPEED = -0.3;
+
+   // Id's I guess
+   public static final int INTAKE_MOTOR_ID = 0;
 }
