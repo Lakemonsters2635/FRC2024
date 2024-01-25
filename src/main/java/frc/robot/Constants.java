@@ -17,16 +17,7 @@ public final class Constants {
    public static final int RIGHT_JOYSTICK_CHANNEL = 1;
    public static final int LEFT_JOYSTICK_CHANNEL = 0;
 
-   // Fix joystick speed
-
-   public static final double FIX_JOYSTICK_SPEED = 1;
-
    public static final double INCHES_PER_METER = 39.37;
-   public static final double LENGTH_OF_BOT = 35 / INCHES_PER_METER;
-   public static final double FIELD_OFFSET_FROM_NODE_TO_APRILTAG = 0.36;
-   public static final double FIELD_OFFSET_FROM_SUBSTATION_TO_APRILTAG = -15 / INCHES_PER_METER;
-   public static final double MID_SCORING_STANDOFF_DISTANCE = (25 - 4) / INCHES_PER_METER;
-   public static final double BUMPER_THICKNESS = 3 / INCHES_PER_METER;
 
    // FRONT LEFT
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 3; 
@@ -95,13 +86,6 @@ public final class Constants {
    // VISION CONSTANTS
    public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
 
-   // how far away you quit driving w/ vision
-   // TODO: figure out these distances
-   public static final int TARGET_TRIGGER_DISTANCE_CONE = 10;       // cone is skinny
-   public static final int TARGET_TRIGGER_DISTANCE_CUBE = 10;       // cube is not as skinny
-   public static final int TARGET_TRIGGER_DISTANCE_ANY = 10;        // cube is not as skinny
-   public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;   // april tag approach distance for score.  Can't see tag if closer
-
    //ARM CONSTATNTS
 
    public static final int ARM_MOTOR1_ID = 12;
@@ -112,5 +96,5 @@ public final class Constants {
 
    //BUTTON BINDINGS
    public static final int ARM_START_BUTTON = 3;
-   public static final int ARM_STOP_BUTTON = 4;
+   
 }
