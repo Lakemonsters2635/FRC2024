@@ -58,6 +58,7 @@ public class RobotContainer {
     Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, 1);
+    Trigger intakeButton = new JoystickButton(leftJoystick, Constants.INTAKE_BUTTON);
 
     ArmStartButton.whileTrue(m_armCommand);
     climberButton.onTrue(m_climberCommand);
