@@ -85,6 +85,13 @@ public final class Constants {
 
    // VISION CONSTANTS
    public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+   
+   // CLIMBER CONSTANTS
+   public static final int CLIMBER_MOTOR_1 = 13;
+   public static final int CLIMBER_MOTOR_2 = 13;
+
+   public static final double CLIMBER_START_SPEED = 0.5;
+   public static final int CLIMBER_STOP_SPEED = 0;
 
    //ARM CONSTATNTS
 
@@ -96,5 +103,6 @@ public final class Constants {
 
    //BUTTON BINDINGS
    public static final int ARM_START_BUTTON = 3;
+   public static final int CLIMBER_BUTTON = 4;
    
 }

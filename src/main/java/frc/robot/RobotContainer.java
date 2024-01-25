@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.commands.ClimberCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.ArmCommand;
@@ -29,10 +31,12 @@ public class RobotContainer {
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
+  public static ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
   //Command 
   public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
   public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  public static ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -52,9 +56,11 @@ public class RobotContainer {
     //creating buttons
 
     Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
+    Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, 1);
 
     ArmStartButton.whileTrue(m_armCommand);
+    climberButton.onTrue(m_climberCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
   }
 
