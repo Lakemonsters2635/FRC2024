@@ -115,7 +115,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
                   var alliance = DriverStation.getAlliance();
                   if (alliance.isPresent()) {
-                      return alliance.get() == DriverStation.Alliance.Red;
+                    return alliance.get() == DriverStation.Alliance.Red;
                   }
                   return false;
               },
@@ -194,7 +194,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         rotCommanded = rightJoystick.getTwist() * -1;
       }
 
-      System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
+      // System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
       
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,

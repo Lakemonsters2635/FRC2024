@@ -103,11 +103,11 @@ public final class Constants {
    public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;   // april tag approach distance for score.  Can't see tag if closer
 
    //ARM CONSTATNTS
-
-   public static final int ARM_MOTOR1_ID = 1;
-   public static final int ARM_MOTOR2_ID = 2;
-   public static final int ARM_MOTOR3_ID = 3;
-   public static final int ARM_MOTOR4_ID = 4;
+    //TODO: Change arm constants
+   public static final int ARM_MOTOR1_ID = 12;
+   public static final int ARM_MOTOR2_ID = 13;
+   public static final int ARM_MOTOR3_ID = 10;
+   public static final int ARM_MOTOR4_ID = 11;
 
    public static final double ARM_MOTOR_START_SPEED = 0.7;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
