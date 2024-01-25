@@ -17,40 +17,31 @@ public final class Constants {
    public static final int RIGHT_JOYSTICK_CHANNEL = 1;
    public static final int LEFT_JOYSTICK_CHANNEL = 0;
 
-   // Fix joystick speed
-
-   public static final double FIX_JOYSTICK_SPEED = 1;
-
    public static final double INCHES_PER_METER = 39.37;
-   public static final double LENGTH_OF_BOT = 35 / INCHES_PER_METER;
-   public static final double FIELD_OFFSET_FROM_NODE_TO_APRILTAG = 0.36;
-   public static final double FIELD_OFFSET_FROM_SUBSTATION_TO_APRILTAG = -15 / INCHES_PER_METER;
-   public static final double MID_SCORING_STANDOFF_DISTANCE = (25 - 4) / INCHES_PER_METER;
-   public static final double BUMPER_THICKNESS = 3 / INCHES_PER_METER;
 
    // FRONT LEFT
-   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
-   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 0; 
-   public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
-   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(6.46); //3.01
+   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 3; 
+   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; 
+   public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 4; 
+   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(6.46-9); //3.01
 
    // FRONT RIGHT
-   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
-   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 1;
-   public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 4;
-   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(12.67); // 3.0775
+   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 5; 
+   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 5;
+   public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 6;
+   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(12.67+12); // 3.0775
 
    // BACK LEFT
-   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 5; 
-   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 2;
-   public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 9; 
-   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(118.06); //2.9835
+   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 1; 
+   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 1;
+   public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 2; 
+   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(118.06-1); //2.9835
 
    // BACK RIGHT
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 7;
-   public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 3;
+   public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 7;
    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 8; 
-   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-23.57); //3.0346
+   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-23.57+1); //3.0346
 
    // hat constants 
    public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -92,6 +83,9 @@ public final class Constants {
    public static final int kDriverControllerPort = 0;
    public static final int kOperatorControllerPort = 1;
 
+   // VISION CONSTANTS
+   public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+   
    // CLIMBER CONSTANTS
    public static final int CLIMBER_MOTOR_1 = 13;
    public static final int CLIMBER_MOTOR_2 = 13;
@@ -99,5 +93,16 @@ public final class Constants {
    public static final double CLIMBER_START_SPEED = 0.5;
    public static final int CLIMBER_STOP_SPEED = 0;
 
+   //ARM CONSTATNTS
+
+   public static final int ARM_MOTOR1_ID = 12;
+   public static final int ARM_MOTOR2_ID = 13;
+
+   public static final double ARM_MOTOR_START_SPEED = 0.7;
+   public static final int ARM_MOTOR_STOP_SPEED = 0;
+
+   //BUTTON BINDINGS
+   public static final int ARM_START_BUTTON = 3;
    public static final int CLIMBER_BUTTON = 4;
+   
 }
