@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.commands.ClimberCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +26,9 @@ public class RobotContainer {
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
 
   public static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+
+  public static ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -41,7 +46,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     Trigger resetButton = new JoystickButton(rightJoystick, 1);
-    resetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
+    Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
+
+    resetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    climberButton.onTrue(m_climberCommand);
   }
 
   /**

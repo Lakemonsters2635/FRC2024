@@ -91,4 +91,13 @@ public final class Constants {
 
    public static final int kDriverControllerPort = 0;
    public static final int kOperatorControllerPort = 1;
+
+   // CLIMBER CONSTANTS
+   public static final int CLIMBER_MOTOR_1 = 13;
+   public static final int CLIMBER_MOTOR_2 = 13;
+
+   public static final double CLIMBER_START_SPEED = 0.5;
+   public static final int CLIMBER_STOP_SPEED = 0;
+
+   public static final int CLIMBER_BUTTON = 4;
 }
