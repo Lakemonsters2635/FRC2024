@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -16,6 +18,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.ArmCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,7 +47,7 @@ public class RobotContainer {
   //Command 
   public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
 
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> m_autoChooser;
 
   public RobotContainer() {
 
@@ -54,7 +57,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser = AutoBuilder.buildAutoChooser();
   }
 
   /**
@@ -83,8 +86,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public SendableChooser<Command> getAutonomousCommand() {
-    
     // An example command will be run in autonomous
-    return autoChooser;
+    return m_autoChooser;
   }
 }

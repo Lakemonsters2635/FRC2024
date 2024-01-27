@@ -4,9 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -26,6 +31,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -74,7 +80,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                               Constants.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, 
                                                               Constants.BACK_RIGHT_ANGLE_OFFSET_COMPETITION,
                                                               1.0);
-  
+                                                            
     public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
   
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
@@ -129,6 +135,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
     getPose();
     zeroOdometry();
     resetAngle();
+  }
+
+  public Command createPathOnFlight(Pose2d targetPose, double endRot){
+    // Create a list of bezier points from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+            getPose(),
+            targetPose
+    );
+
+    // Create the path using the bezier points created above
+    PathPlannerPath path = new PathPlannerPath(
+            bezierPoints,
+            new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
+            new GoalEndState(0.0, Rotation2d.fromDegrees(endRot)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    path.preventFlipping =true;
+    return AutoBuilder.followPath(path);
   }
 
   public void resetAngle(){
