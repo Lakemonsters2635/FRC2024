@@ -101,14 +101,30 @@ public final class Constants {
    public static final int ARM_MOTOR_STOP_SPEED = 0;
   
    // INTAKE CONSTANTS
+   public static final int INTAKE_MOTOR_ID = 15;
+
    public static final int INTAKE_STOP_SPEED = 0;
    public static final double INTAKE_IN_SPEED = 0.3;
    public static final double INTAKE_OUT_SPEED = -0.3;
 
-   public static final int INTAKE_MOTOR_ID = 15;
+   // TELESCOPE CONSTANTS
+   public static final int TELESCOPE_MOTOR_ID = 16;
+
+   public static final double TELESCOPE_EXTEND_SPEED = 0.4;
+   public static final double TELESCOPE_RETRACT_SPEED = -0.4;
+   public static final int TELESCOPE_STOP_SPEED = 0;
 
    //BUTTON BINDINGS
-   public static final int ARM_START_BUTTON = 3;
-   public static final int INTAKE_BUTTON = 4;
-   public static final int CLIMBER_BUTTON = 4;
+
+   // RIGHT BUTTONS
+   public static final int INTAKE_OUT_BUTTON = 3;
+   public static final int INTAKE_IN_BUTTON = 4;
+   public static final int SWERVE_RESET_BUTTON = 7;
+
+   // LEFT BUTTONS
+   public static final int TELESCOPE_EXTEND_BUTTON = 3;
+   public static final int TELESCOPE_RETRACT_BUTTON = 4;
+   public static final int ARM_START_BUTTON = 5;
+   public static final int CLIMBER_BUTTON = 6;
+
 }

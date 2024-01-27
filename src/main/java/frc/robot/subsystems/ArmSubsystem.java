@@ -20,12 +20,12 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
   }
 
-  public void ArmStart(){
+  public void armStart(){
     m_armMotor1.set(Constants.ARM_MOTOR_START_SPEED);
     m_armMotor2.set(Constants.ARM_MOTOR_START_SPEED);
   }
 
-  public void ArmStop(){
+  public void armStop(){
   m_armMotor1.set(Constants.ARM_MOTOR_STOP_SPEED);
   m_armMotor2.set(Constants.ARM_MOTOR_STOP_SPEED);
   }

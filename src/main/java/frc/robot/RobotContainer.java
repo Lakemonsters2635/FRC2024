@@ -8,8 +8,14 @@ import frc.robot.commands.ClimberCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.commands.ArmCommand;
-import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.IntakeOutCommand;
+import frc.robot.commands.TelescopeExtendCommand;
+import frc.robot.commands.TelescopeRetractCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,13 +36,19 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
-  public static ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  public static final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
+  public static final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
 
   //Command 
-  public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
-  public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
-  public static ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
+  public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
+  public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  public static final ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
+  public static final IntakeInCommand m_intakeInCommand = new IntakeInCommand(m_intakeSubsystem);
+  public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
+  public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
+  public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -55,14 +67,25 @@ public class RobotContainer {
   private void configureBindings() {
     //creating buttons
 
-    Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
-    Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
-    Trigger swerveResetButton = new JoystickButton(rightJoystick, 1);
-    Trigger intakeButton = new JoystickButton(leftJoystick, Constants.INTAKE_BUTTON);
+    // right buttons
+    Trigger intakeInButton = new JoystickButton(rightJoystick, Constants.INTAKE_IN_BUTTON);
+    Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
+    Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
 
-    ArmStartButton.whileTrue(m_armCommand);
+    // left buttons
+    Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
+    Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
+    Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
+    Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
+
+    intakeInButton.whileTrue(m_intakeInCommand);
+    intakeOutButton.whileTrue(m_intakeOutCommand);
+    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    
+    telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
+    telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
+    armStartButton.whileTrue(m_armCommand);
     climberButton.onTrue(m_climberCommand);
-    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
   }
 
   /**
