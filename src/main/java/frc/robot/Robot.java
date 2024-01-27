@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.GenericSubscriber;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,12 +27,27 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private DoubleSubscriber xSub;
+  private DoubleSubscriber ySub;
+  private DoubleSubscriber zSub;
+  private GenericSubscriber objectSub;
+
+  public double x;
+  public double y;
+  public double z;
+  public String object;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("Monster Vision");
+    xSub = table.getDoubleTopic("x").subscribe(0);
+    ySub = table.getDoubleTopic("y").subscribe(0);
+    zSub = table.getDoubleTopic("z").subscribe(0);
+    objectSub = table.getDoubleTopic("object").genericSubscribe("");
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -87,7 +106,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    x = xSub.get();
+    y = ySub.get();
+    z = zSub.get();
+    object = objectSub.getString(" ");
+  }
 
   @Override
   public void testInit() {
