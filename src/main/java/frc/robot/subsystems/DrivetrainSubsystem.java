@@ -80,7 +80,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                               Constants.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, 
                                                               Constants.BACK_RIGHT_ANGLE_OFFSET_COMPETITION,
                                                               1.0);
-                                                            
+
     public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
   
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
