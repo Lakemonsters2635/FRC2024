@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -59,6 +60,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
     public final Translation2d m_backRightLocation = 
             new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+    public final Robot m_robot = new Robot();
 
     public final SwerveModule m_frontLeft = new SwerveModule(Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
                                                               Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, 
@@ -155,6 +157,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // Prevent the path from being flipped if the coordinates are already correct
     path.preventFlipping =true;
     return AutoBuilder.followPath(path);
+  }
+
+  public Pose2d getTargetPosition(){
+    return new Pose2d(getPose().getX()+m_robot.x, getPose().getY()+m_robot.z, Rotation2d.fromDegrees(5));
   }
 
   public void resetAngle(){
