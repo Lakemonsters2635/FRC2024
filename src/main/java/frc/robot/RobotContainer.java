@@ -9,6 +9,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.ArmCommand;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,17 +38,13 @@ public class RobotContainer {
   //Command 
   public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
 
-  private final SendableChooser<Command> m_autoChooser;
+  private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
-
-    // Add named command to PathPlanner
-    NamedCommands.registerCommand("example", new InstantCommand(()->SmartDashboard.putBoolean("NamedCommandWorks", true)));
-
     // Configure the trigger bindings
     configureBindings();
 
-    m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser.addOption("Test", new InstantCommand(()->m_drivetrainSubsystem.createPathOnFlight(new Pose2d(5,5,Rotation2d.fromDegrees(5)), 0)));
   }
 
   /**
