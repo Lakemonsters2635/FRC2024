@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -149,7 +148,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         rotCommanded = rightJoystick.getTwist() * -1;
       }
 
-      // System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
+      System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
       
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
@@ -305,10 +304,5 @@ public ChassisSpeeds getChassisSpeeds() {
     SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
-
-    SmartDashboard.putNumber("FL turning enc raw", m_frontLeft.m_turningEncoder.getPosition());
-    SmartDashboard.putNumber("FR turning enc raw", m_frontRight.m_turningEncoder.getPosition());
-    SmartDashboard.putNumber("BL turning enc raw", m_backLeft.m_turningEncoder.getPosition());
-    SmartDashboard.putNumber("BR turning enc raw", m_backRight.m_turningEncoder.getPosition());
   }
 }

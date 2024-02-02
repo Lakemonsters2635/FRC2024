@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -23,7 +24,7 @@ public class SwerveModule {
   public final CANSparkMax m_turningMotor;
 
   public final RelativeEncoder m_driveEncoder;
-  public final RelativeEncoder m_turningEncoder;
+  public final AnalogEncoder m_turningEncoder;
 
   private final int CPR = 4096;
 
@@ -71,7 +72,7 @@ public class SwerveModule {
     }
 
     
-    m_turningEncoder = m_turningMotor.getAlternateEncoder(CPR);
+    m_turningEncoder = new AnalogEncoder(analogEncoderPort);
 
     m_driveEncoder = m_driveMotor.getEncoder();
     
@@ -106,7 +107,7 @@ public class SwerveModule {
   }
 
   public double getTurningEncoderRadians(){
-    double angle = (1.0 - (m_turningEncoder.getPosition()/CPR)) * 2.0 * Math.PI + turningMotorOffset;
+    double angle = (1.0 - (m_turningEncoder.getDistance()/CPR)) * 2.0 * Math.PI + turningMotorOffset;
     angle %= 2.0 * Math.PI;
     if (angle < 0.0) {
         angle += 2.0 * Math.PI;
