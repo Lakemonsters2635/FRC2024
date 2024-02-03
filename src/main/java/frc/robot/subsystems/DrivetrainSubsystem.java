@@ -40,9 +40,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final Translation2d m_frontLeftLocation = 
             new Translation2d(m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
     public final Translation2d m_frontRightLocation = 
-            new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
-    public final Translation2d m_backLeftLocation = 
+            // TODO: Fix this... hack to swap FR BL
+            // possibly we don't understand if z-axis is up or down?
+            // new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
             new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+    public final Translation2d m_backLeftLocation = 
+            // TODO: Fix this... hack to swap FR BL
+            // possibly we don't understand if z-axis is up or down?
+            // new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
     public final Translation2d m_backRightLocation = 
             new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
 
@@ -117,6 +123,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+      
+      // double loggingState[] = {
+      //   swerveModuleStates[0].speedMetersPerSecond,
+      //   swerveModuleStates[0].angle.getDegrees(),
+      //   swerveModuleStates[1].speedMetersPerSecond,
+      //   swerveModuleStates[1].angle.getDegrees(),
+      //   swerveModuleStates[2].speedMetersPerSecond,
+      //   swerveModuleStates[2].angle.getDegrees(),
+      //   swerveModuleStates[3].speedMetersPerSecond,
+      //   swerveModuleStates[3].angle.getDegrees(),
+      // };
+      
+      //SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+
+
+
       //Hat Power Overides for Trimming Position and Rotation
       if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
         yPowerCommanded = Constants.HAT_POWER_MOVE;
@@ -125,10 +147,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
       }
       else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE;
+        xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
       }
       else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+        xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
       }
 
       if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
@@ -153,7 +175,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                 true);
+                 false);
     
     updateOdometry();
 
@@ -302,13 +324,13 @@ public ChassisSpeeds getChassisSpeeds() {
    */
   public void tuneAngleOffsetPutToDTS() {
     // TUNE ANGLE OFFSETS
+    
     SmartDashboard.putNumber("FL encoder pos", Math.toDegrees(m_frontLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
 
     SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
-
     SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
 
 

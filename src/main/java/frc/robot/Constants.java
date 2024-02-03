@@ -29,7 +29,7 @@ public final class Constants {
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 1; 
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 1;
    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 2;
-   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(199.17+2.5); // 3.0775
+   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(199.17+2.5+180); // 3.0775
 
    // BACK LEFT
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 5; 
@@ -46,8 +46,8 @@ public final class Constants {
    // hat constants 
    public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
    public static final int HAT_JOYSTICK_TRIM_ROTATION_ARM = LEFT_JOYSTICK_CHANNEL;
-   public static final double HAT_POWER_MOVE = 0.2;
-   public static final double HAT_POWER_ROTATE = 0.2;
+   public static final double HAT_POWER_MOVE = 0.1;
+   public static final double HAT_POWER_ROTATE = 0.1;
    // Hat trim target speed is 15 degrees per second
    // One time step is 0.02 seconds
    // 0.3 degrees per time step is our target change when the hat is active
