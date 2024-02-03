@@ -78,6 +78,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
+    RobotContainer.m_drivetrainSubsystem.resetAngle();
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

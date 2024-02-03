@@ -38,19 +38,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
     // robot front as currently labled on the motors (requires -x trajectory to go out into the +x field direction)
     public final Translation2d m_frontLeftLocation = 
-            new Translation2d(m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            new Translation2d(m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_frontRightLocation = 
             // TODO: Fix this... hack to swap FR BL
             // possibly we don't understand if z-axis is up or down?
             // new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
-            new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backLeftLocation = 
             // TODO: Fix this... hack to swap FR BL
             // possibly we don't understand if z-axis is up or down?
             // new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
-            new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+            new Translation2d(m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backRightLocation = 
-            new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
 
     public final SwerveModule m_frontLeft = new SwerveModule(Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
                                                               Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, 
@@ -101,7 +101,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void resetAngle(){
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(90);
+    m_gyro.setAngleAdjustment(0);
   }
 
   private static double xPowerCommanded = 0;
@@ -123,22 +123,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-      
-      // double loggingState[] = {
-      //   swerveModuleStates[0].speedMetersPerSecond,
-      //   swerveModuleStates[0].angle.getDegrees(),
-      //   swerveModuleStates[1].speedMetersPerSecond,
-      //   swerveModuleStates[1].angle.getDegrees(),
-      //   swerveModuleStates[2].speedMetersPerSecond,
-      //   swerveModuleStates[2].angle.getDegrees(),
-      //   swerveModuleStates[3].speedMetersPerSecond,
-      //   swerveModuleStates[3].angle.getDegrees(),
-      // };
-      
-      //SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
-
-
-
       //Hat Power Overides for Trimming Position and Rotation
       if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
         yPowerCommanded = Constants.HAT_POWER_MOVE;
@@ -175,7 +159,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                 false);
+                 true);
+
+      double loggingState[] = {
+        swerveModuleStates[0].speedMetersPerSecond,
+        swerveModuleStates[0].angle.getDegrees(),
+        swerveModuleStates[1].speedMetersPerSecond,
+        swerveModuleStates[1].angle.getDegrees(),
+        swerveModuleStates[2].speedMetersPerSecond,
+        swerveModuleStates[2].angle.getDegrees(),
+        swerveModuleStates[3].speedMetersPerSecond,
+        swerveModuleStates[3].angle.getDegrees(),
+      };
+
+      SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+
     
     updateOdometry();
 
@@ -204,7 +202,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d().unaryMinus())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -346,13 +344,6 @@ public ChassisSpeeds getChassisSpeeds() {
     SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
     SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
-
-
-
-
-    SmartDashboard.putNumber("Joysick X", xPowerCommanded);
-    SmartDashboard.putNumber("Joysick Y", yPowerCommanded);
-    SmartDashboard.putNumber("Joysick Rot", rotCommanded);
 
   }
 }
