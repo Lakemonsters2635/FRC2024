@@ -32,10 +32,20 @@ public class Robot extends TimedRobot {
   private DoubleSubscriber zSub;
   private GenericSubscriber objectSub;
 
+  private DoubleSubscriber xSubBack;
+  private DoubleSubscriber ySubBack;
+  private DoubleSubscriber zSubBack;
+  private GenericSubscriber objectSubBack;
+
   public double x;
   public double y;
   public double z;
   public String object;
+
+  public double xBack;
+  public double yBack;
+  public double zBack;
+  public String objectBack;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -43,17 +53,26 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // Front camera network table
     NetworkTable table = NetworkTableInstance.getDefault().getTable("Monster Vision");
     xSub = table.getDoubleTopic("x").subscribe(0);
     ySub = table.getDoubleTopic("y").subscribe(0);
     zSub = table.getDoubleTopic("z").subscribe(0);
-    objectSub = table.getDoubleTopic("object").genericSubscribe("");
+    objectSub = table.getStringTopic("object").genericSubscribe("");
+
+    // Back camera network table
+    NetworkTable tableBack = NetworkTableInstance.getDefault().getTable("");// TODO: Enter back camera key
+    xSubBack = tableBack.getDoubleTopic("x").subscribe(0);
+    ySubBack = tableBack.getDoubleTopic("y").subscribe(0);
+    zSubBack = tableBack.getDoubleTopic("z").subscribe(0);
+    objectSubBack = tableBack.getStringTopic("object").genericSubscribe("");
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
     m_autoChooser = m_robotContainer.getAutonomousCommand();
-      SmartDashboard.putData("AutoChooser",m_autoChooser);
+    SmartDashboard.putData("AutoChooser",m_autoChooser);
 
   }
 
@@ -107,10 +126,17 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    // Front camera values
     x = xSub.get();
     y = ySub.get();
     z = zSub.get();
-    object = objectSub.getString(" ");
+    object = objectSub.getString("");
+
+    // Back camera values
+    xBack = xSubBack.get();
+    yBack = ySubBack.get();
+    zBack = zSubBack.get();
+    objectBack = objectSubBack.getString("");
   }
 
   @Override

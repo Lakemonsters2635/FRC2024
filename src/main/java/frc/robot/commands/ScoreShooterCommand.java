@@ -14,10 +14,11 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ScoreShooterCommand extends SequentialCommandGroup {
   /** Creates a new ScoreShooterCommand. */
-  public ScoreShooterCommand(DrivetrainSubsystem dts, Pose2d targetPos) {
+  public ScoreShooterCommand(DrivetrainSubsystem dts) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(dts.createPathOnFlight(targetPos, 180),
-                new WaitCommand(0.5));
+    addCommands(dts.createPathOnFlight(dts.getTargetPosition(0), 180),
+                new WaitCommand(0.5)
+                );
   }
 }

@@ -49,6 +49,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     private Field2d field = new Field2d();
 
+    public static boolean ignoreNote = true;
+
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
     // robot front as currently labled on the motors (requires -x trajectory to go out into the +x field direction)
@@ -159,8 +161,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return AutoBuilder.followPath(path);
   }
 
-  public Pose2d getTargetPosition(){
-    return new Pose2d(getPose().getX()+m_robot.x, getPose().getY()+m_robot.z, Rotation2d.fromDegrees(5));
+  public Pose2d getTargetPosition(double rot){
+    return new Pose2d(getPose().getX()+m_robot.x, getPose().getY()+m_robot.z, Rotation2d.fromDegrees(rot));
   }
 
   public void resetAngle(){
@@ -188,6 +190,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
+      // System.out.println("getPose(): "+getPose());
       if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
         yPowerCommanded = Constants.HAT_POWER_MOVE;
       }

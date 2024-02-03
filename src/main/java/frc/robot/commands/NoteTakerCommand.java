@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -12,12 +11,12 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoreAmpCommand extends SequentialCommandGroup {
-  /** Creates a new ScoreAmp. */
-  public ScoreAmpCommand(DrivetrainSubsystem dts) {
+public class NoteTakerCommand extends SequentialCommandGroup {
+  /** Creates a new NoteTakerCommand. */
+  public NoteTakerCommand(DrivetrainSubsystem dts) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(dts.createPathOnFlight(dts.getTargetPosition(0), 90),
+    addCommands(dts.createPathOnFlight(dts.getTargetPosition(0), 0),
                 new WaitCommand(0.5));
   }
 }

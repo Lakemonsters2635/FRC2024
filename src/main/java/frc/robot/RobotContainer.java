@@ -6,7 +6,12 @@ package frc.robot;
 
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.AprilTagChooser;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.NoteTakerCommand;
+import frc.robot.commands.ScoreAmpCommand;
+import frc.robot.commands.ScoreShooterCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
@@ -34,6 +39,11 @@ public class RobotContainer {
 
   //Command 
   public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  public final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem);
+  public final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem);
+  public final AprilTagChooser m_aprilTagChooser = new AprilTagChooser(m_scoreAmpCommand, m_scoreShooterCommand);
+  public final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem);
+  public final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_aprilTagChooser, m_noteTakerCommand);
 
   private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
@@ -41,7 +51,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    m_autoChooser.addOption("Test", new InstantCommand(()->m_drivetrainSubsystem.createPathOnFlight(new Pose2d(5,5,Rotation2d.fromDegrees(5)), 0)));
+    m_autoChooser.addOption("Test", new InstantCommand(()->m_drivetrainSubsystem.createPathOnFlight(new Pose2d(3,3,Rotation2d.fromDegrees(5)), 5)));
+    m_autoChooser.addOption("Autonomous", m_autonomousCommand);
   }
 
   /**
