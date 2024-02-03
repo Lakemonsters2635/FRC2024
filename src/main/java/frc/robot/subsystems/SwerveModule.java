@@ -117,6 +117,10 @@ public class SwerveModule {
     return angle;
     }
 
+    public double printVoltage() {
+      return m_turningEncoder.getVoltage();
+    }
+
   /**
    * Returns the current state of the module.
    *

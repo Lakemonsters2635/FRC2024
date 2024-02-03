@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,12 +26,13 @@ import frc.robot.RobotContainer;
 public class DrivetrainSubsystem extends SubsystemBase {
     public static final double kMaxSpeed = 3.63; // 3.63 meters per second
     public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+    private SwerveModuleState[] swerveModuleStates;
 
     public static Joystick rightJoystick = RobotContainer.rightJoystick;
     public static Joystick leftJoystick = RobotContainer.leftJoystick;
 
-    public final double m_drivetrainWheelbaseWidth = 25 / Constants.INCHES_PER_METER;
-    public final double m_drivetrainWheelbaseLength = 25 / Constants.INCHES_PER_METER;
+    public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
+    public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -147,8 +149,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
         rotCommanded = rightJoystick.getTwist() * -1;
       }
-
-      System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
       
       this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
@@ -159,6 +159,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     putDTSToSmartDashboard();
     tuneAngleOffsetPutToDTS();
+    // System.out.println("FL: " + m_frontLeft.printVoltage());
+    // System.out.println("FR: " + m_frontRight.printVoltage());
   }
 
   public void recalibrateGyro() {
@@ -177,7 +179,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    var swerveModuleStates =
+    swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
@@ -304,5 +306,31 @@ public ChassisSpeeds getChassisSpeeds() {
     SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
+
+    SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
+
+    SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
+
+
+    SmartDashboard.putNumber("FR SMS Speed", swerveModuleStates[1].speedMetersPerSecond);
+    SmartDashboard.putNumber("FR SMS Angle", swerveModuleStates[1].angle.getDegrees());
+
+    SmartDashboard.putNumber("BL SMS Speed", swerveModuleStates[2].speedMetersPerSecond);
+    SmartDashboard.putNumber("BL SMS Angle", swerveModuleStates[2].angle.getDegrees());
+
+    SmartDashboard.putNumber("BR SMS Speed", swerveModuleStates[3].speedMetersPerSecond);
+    SmartDashboard.putNumber("BR SMS Angle", swerveModuleStates[3].angle.getDegrees());
+    
+    SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
+    SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+
+
+
+
+    SmartDashboard.putNumber("Joysick X", xPowerCommanded);
+    SmartDashboard.putNumber("Joysick Y", yPowerCommanded);
+    SmartDashboard.putNumber("Joysick Rot", rotCommanded);
+
   }
 }
