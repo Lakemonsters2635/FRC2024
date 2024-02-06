@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -161,18 +160,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
                  true);
 
-      double loggingState[] = {
-        swerveModuleStates[0].speedMetersPerSecond,
+
+      double loggingState[] = {     //Array for predicted values
         swerveModuleStates[0].angle.getDegrees(),
-        swerveModuleStates[1].speedMetersPerSecond,
+        swerveModuleStates[0].speedMetersPerSecond,
         swerveModuleStates[1].angle.getDegrees(),
-        swerveModuleStates[2].speedMetersPerSecond,
+        swerveModuleStates[1].speedMetersPerSecond,
         swerveModuleStates[2].angle.getDegrees(),
-        swerveModuleStates[3].speedMetersPerSecond,
+        swerveModuleStates[2].speedMetersPerSecond,
         swerveModuleStates[3].angle.getDegrees(),
+        swerveModuleStates[3].speedMetersPerSecond,
+      };
+
+      double actualLoggingState[] = {
+        m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI,
+        m_frontLeft.getVelocity(),
+        m_frontRight.getTurningEncoderRadians() * 180 / Math.PI,
+        m_frontRight.getVelocity(),
+        m_backLeft.getTurningEncoderRadians() * 180 / Math.PI,
+        m_backLeft.getVelocity(),
+        m_backRight.getTurningEncoderRadians() * 180 / Math.PI,
+        m_backRight.getVelocity(),
       };
 
       SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+      SmartDashboard.putNumberArray("ActualSwerveModuleState", actualLoggingState);
+
+      
 
     
     updateOdometry();
