@@ -21,15 +21,37 @@ public class AutonomousCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      dts.createPathOnFlight(new Pose2d(2,2, Rotation2d.fromDegrees(180)), 180),
+      new InstantCommand(()->System.out.println("\t\t\t1\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(0,0, Rotation2d.fromDegrees(90)), 90),
       new WaitCommand(3),
-      new ParallelCommandGroup(aprilTagChooser, new InstantCommand(()-> System.out.println("ApriltagChooser: running"))),
+      new InstantCommand(()->System.out.println("\t\t\t2\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(0,0, Rotation2d.fromDegrees(-90)), -90),
       new WaitCommand(3),
-      new InstantCommand(()->System.out.println("Create path on flight running")),
-      // dts.createPathOnFlight(new Pose2d(dts.getPose().getX(), dts.getPose().getY(), Rotation2d.fromDegrees(0)), 0),
-      // new WaitCommand(3),
-      new ParallelCommandGroup(noteTakerCommand, new InstantCommand(()->System.out.println("NoteTakerCommand: running"))),
+      new InstantCommand(()->System.out.println("\t\t\t3\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(1,1,Rotation2d.fromDegrees(-90)), -90),
+      new WaitCommand(3),
+      new InstantCommand(()->System.out.println("\t\t\t4\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(-1,-1,Rotation2d.fromDegrees(-90)), -90),
+      new WaitCommand(3),
+      new InstantCommand(()->System.out.println("\t\t\t5\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(1,-1,Rotation2d.fromDegrees(0)), 0),
+      new WaitCommand(3),
+      new InstantCommand(()->System.out.println("\t\t\t6\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(-1,1,Rotation2d.fromDegrees(180)), 180),
+      new WaitCommand(3),
+      new InstantCommand(()->System.out.println("\t\t\t7\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(1,-1,Rotation2d.fromDegrees(0)), 90),
+      new WaitCommand(3),
+      new InstantCommand(()->System.out.println("\t\t\t8\t\t\t")),
+      dts.createPathOnFlight(new Pose2d(-1,1,Rotation2d.fromDegrees(180)), -90),
       new WaitCommand(3)
+      // new ParallelCommandGroup(aprilTagChooser, new InstantCommand(()-> System.out.println("ApriltagChooser: running"))),
+      // new WaitCommand(3),
+      // new InstantCommand(()->System.out.println("Create path on flight running")),
+      // // dts.createPathOnFlight(new Pose2d(dts.getPose().getX(), dts.getPose().getY(), Rotation2d.fromDegrees(0)), 0),
+      // // new WaitCommand(3),
+      // new ParallelCommandGroup(noteTakerCommand, new InstantCommand(()->System.out.println("NoteTakerCommand: running"))),
+      // new WaitCommand(3)
     );
   }
 }
