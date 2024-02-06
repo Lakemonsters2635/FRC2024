@@ -186,7 +186,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(90);
+    m_gyro.setAngleAdjustment(0);
     System.out.println(m_gyro.getRotation2d());
   }
 
