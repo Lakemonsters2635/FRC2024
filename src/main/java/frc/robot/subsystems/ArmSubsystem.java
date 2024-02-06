@@ -14,28 +14,20 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
     public CANSparkMax m_armMotor1;
     public CANSparkMax m_armMotor2;
-    public CANSparkMax m_armMotor3;
-    public CANSparkMax m_armMotor4;
 
   public ArmSubsystem(){
     m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
     m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
-    m_armMotor3 = new CANSparkMax(Constants.ARM_MOTOR3_ID, MotorType.kBrushless);
-    m_armMotor4 = new CANSparkMax(Constants.ARM_MOTOR4_ID, MotorType.kBrushless);
   }
 
-  public void ArmStart(){
+  public void armStart(){
     m_armMotor1.set(Constants.ARM_MOTOR_START_SPEED);
     m_armMotor2.set(Constants.ARM_MOTOR_START_SPEED);
-    //m_armMotor3.set(Constants.ARM_MOTOR_Start_Speed);
-    //m_armMotor4.set(Constants.ARM_MOTOR_Start_Speed);
   }
 
-  public void ArmStop(){
+  public void armStop(){
   m_armMotor1.set(Constants.ARM_MOTOR_STOP_SPEED);
   m_armMotor2.set(Constants.ARM_MOTOR_STOP_SPEED);
-  //m_armMotor3.set(Constants.ARM_MOTOR_Stop_Speed);
-  //m_armMotor4.set(Constants.ARM_MOTOR_Stop_Speed);
   }
 
 

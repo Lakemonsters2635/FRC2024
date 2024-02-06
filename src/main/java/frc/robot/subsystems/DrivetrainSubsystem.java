@@ -38,18 +38,19 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    public static final double kMaxSpeed = 3.63; // 3.63 meters per second
-    public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  public static final double kMaxSpeed = 3.63; // 3.63 meters per second
+  public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  private SwerveModuleState[] swerveModuleStates;
 
-    public static Joystick rightJoystick = RobotContainer.rightJoystick;
-    public static Joystick leftJoystick = RobotContainer.leftJoystick;
+  public static Joystick rightJoystick = RobotContainer.rightJoystick;
+  public static Joystick leftJoystick = RobotContainer.leftJoystick;
 
-    public final double m_drivetrainWheelbaseWidth = 25 / Constants.INCHES_PER_METER;
-    public final double m_drivetrainWheelbaseLength = 25 / Constants.INCHES_PER_METER;
+  public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
+  public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
 
     private Field2d field = new Field2d();
 
-    public static boolean ignoreNote = true;
+    // public static boolean ignoreNote = true;
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -57,9 +58,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final Translation2d m_frontLeftLocation = 
             new Translation2d(m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
     public final Translation2d m_frontRightLocation = 
-            new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+            new Translation2d(m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
     public final Translation2d m_backLeftLocation = 
-            new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
     public final Translation2d m_backRightLocation = 
             new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
     public final Robot m_robot = new Robot();
@@ -167,7 +168,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void resetAngle(){
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(90);
+    m_gyro.setAngleAdjustment(0);
   }
 
   private static double xPowerCommanded = 0;
@@ -198,7 +199,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
       }
       else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE;
+        xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
       }
       else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
         xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
@@ -209,12 +210,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       }
       else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
         rotCommanded = Constants.HAT_POWER_ROTATE;
-      }
-
-      if(rightJoystick.getPOV()==-1 || leftJoystick.getPOV()==-1){
-        yPowerCommanded= 0;
-        xPowerCommanded= 0;
-        rotCommanded = 0;
       }
 
       if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
@@ -228,26 +223,40 @@ public class DrivetrainSubsystem extends SubsystemBase {
       if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
         rotCommanded = rightJoystick.getTwist() * -1;
       }
-
-      // System.out.println("DTS: XPow: " + xPowerCommanded + "   Ypow: " + yPowerCommanded + "   rotPow" + rotCommanded);
       
-      this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+      this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
                  true);
 
       field.setRobotPose(getPose());
     
+    double loggingState[] = {
+        swerveModuleStates[0].speedMetersPerSecond,
+        swerveModuleStates[0].angle.getDegrees(),
+        swerveModuleStates[1].speedMetersPerSecond,
+        swerveModuleStates[1].angle.getDegrees(),
+        swerveModuleStates[2].speedMetersPerSecond,
+        swerveModuleStates[2].angle.getDegrees(),
+        swerveModuleStates[3].speedMetersPerSecond,
+        swerveModuleStates[3].angle.getDegrees(),
+      };
+
+      SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+
+    
     updateOdometry();
 
     putDTSToSmartDashboard();
     tuneAngleOffsetPutToDTS();
+    // System.out.println("FL: " + m_frontLeft.printVoltage());
+    // System.out.println("FR: " + m_frontRight.printVoltage());
   }
 
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(90);
+    m_gyro.setAngleAdjustment(0);
     System.out.println(m_gyro.getRotation2d());
   }
 
@@ -260,10 +269,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    var swerveModuleStates =
+    swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d().unaryMinus())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -383,9 +392,28 @@ public ChassisSpeeds getChassisSpeeds() {
    */
   public void tuneAngleOffsetPutToDTS() {
     // TUNE ANGLE OFFSETS
+    
     SmartDashboard.putNumber("FL encoder pos", Math.toDegrees(m_frontLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
+
+    SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
+    SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
+
+
+    SmartDashboard.putNumber("FR SMS Speed", swerveModuleStates[1].speedMetersPerSecond);
+    SmartDashboard.putNumber("FR SMS Angle", swerveModuleStates[1].angle.getDegrees());
+
+    SmartDashboard.putNumber("BL SMS Speed", swerveModuleStates[2].speedMetersPerSecond);
+    SmartDashboard.putNumber("BL SMS Angle", swerveModuleStates[2].angle.getDegrees());
+
+    SmartDashboard.putNumber("BR SMS Speed", swerveModuleStates[3].speedMetersPerSecond);
+    SmartDashboard.putNumber("BR SMS Angle", swerveModuleStates[3].angle.getDegrees());
+    
+    SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
+    SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+
   }
 }
