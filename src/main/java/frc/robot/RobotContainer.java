@@ -51,7 +51,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    m_autoChooser.addOption("Test", new InstantCommand(()->m_drivetrainSubsystem.createPathOnFlight(new Pose2d(3,3,Rotation2d.fromDegrees(5)), 5)));
+    // m_autoChooser.addOption("Test", new InstantCommand(()->m_drivetrainSubsystem.createPathOnFlight(new Pose2d(3,3,Rotation2d.fromDegrees(5)), 5)));
     m_autoChooser.addOption("Autonomous", m_autonomousCommand);
   }
 
@@ -80,8 +80,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public SendableChooser<Command> getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_autoChooser;
+    // return m_autoChooser;
+    return m_autonomousCommand;
   }
 }

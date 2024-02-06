@@ -153,7 +153,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // Create the path using the bezier points created above
     PathPlannerPath path = new PathPlannerPath(
             bezierPoints,
-            new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
+            new PathConstraints(0.01, 0.01, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
             new GoalEndState(0.0, Rotation2d.fromDegrees(endRot)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
     );
 
@@ -243,6 +243,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       };
 
       SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+
 
     
     updateOdometry();
@@ -393,27 +394,30 @@ public ChassisSpeeds getChassisSpeeds() {
   public void tuneAngleOffsetPutToDTS() {
     // TUNE ANGLE OFFSETS
     
-    SmartDashboard.putNumber("FL encoder pos", Math.toDegrees(m_frontLeft.getTurningEncoderRadians()));
-    SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
-    SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
-    SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
+    // SmartDashboard.putNumber("FL encoder pos", Math.toDegrees(m_frontLeft.getTurningEncoderRadians()));
+    // SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
+    // SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
+    // SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
 
-    SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
-    SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
+    // SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
 
 
-    SmartDashboard.putNumber("FR SMS Speed", swerveModuleStates[1].speedMetersPerSecond);
-    SmartDashboard.putNumber("FR SMS Angle", swerveModuleStates[1].angle.getDegrees());
+    // SmartDashboard.putNumber("FR SMS Speed", swerveModuleStates[1].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FR SMS Angle", swerveModuleStates[1].angle.getDegrees());
 
-    SmartDashboard.putNumber("BL SMS Speed", swerveModuleStates[2].speedMetersPerSecond);
-    SmartDashboard.putNumber("BL SMS Angle", swerveModuleStates[2].angle.getDegrees());
+    // SmartDashboard.putNumber("BL SMS Speed", swerveModuleStates[2].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BL SMS Angle", swerveModuleStates[2].angle.getDegrees());
 
-    SmartDashboard.putNumber("BR SMS Speed", swerveModuleStates[3].speedMetersPerSecond);
-    SmartDashboard.putNumber("BR SMS Angle", swerveModuleStates[3].angle.getDegrees());
+    // SmartDashboard.putNumber("BR SMS Speed", swerveModuleStates[3].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BR SMS Angle", swerveModuleStates[3].angle.getDegrees());
     
-    SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
-    SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
-    SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+    // SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
+    // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
+    // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+
+    SmartDashboard.putString("GetPose:", "("+Double.toString(getPose().getX())+" , "+Double.toString(getPose().getY())+" , "+Double.toString(getPose().getRotation().getDegrees())+")");
+
 
   }
 }
