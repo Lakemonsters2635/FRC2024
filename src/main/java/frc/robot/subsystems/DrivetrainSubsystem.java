@@ -56,13 +56,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
     // robot front as currently labled on the motors (requires -x trajectory to go out into the +x field direction)
     public final Translation2d m_frontLeftLocation = 
-            new Translation2d(m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            new Translation2d(m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_frontRightLocation = 
-            new Translation2d(m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            // TODO: Fix this... hack to swap FR BL
+            // possibly we don't understand if z-axis is up or down?
+            // new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backLeftLocation = 
-            new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+            // TODO: Fix this... hack to swap FR BL
+            // possibly we don't understand if z-axis is up or down?
+            // new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
+            new Translation2d(m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backRightLocation = 
-            new Translation2d(-m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
     public final Robot m_robot = new Robot();
 
     public final SwerveModule m_frontLeft = new SwerveModule(Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
