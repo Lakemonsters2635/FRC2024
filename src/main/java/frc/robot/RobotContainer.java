@@ -17,6 +17,7 @@ import frc.robot.commands.TelescopeExtendCommand;
 import frc.robot.commands.TelescopeRetractCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -49,14 +50,12 @@ public class RobotContainer {
   private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
   private final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_aprilTagChooser, m_noteTakerCommand);
 
-  private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> m_autoChooser;
 
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
-    // m_autoChooser.addOption("Test", new InstantCommand(()->m_drivetrainSubsystem.createPathOnFlight(new Pose2d(3,3,Rotation2d.fromDegrees(5)), 5)));
-    m_autoChooser.addOption("Autonomous", m_autonomousCommand);
   }
 
   /**
@@ -90,6 +89,11 @@ public class RobotContainer {
    */
   public SendableChooser<Command> getAutonomousCommand() {
     // An example command will be run in autonomous
+    m_autoChooser = new SendableChooser<>();
+    m_autoChooser.addOption("Autonomous", m_autonomousCommand);
+
+    SmartDashboard.putData("AutoChooser", m_autoChooser);
+
     return m_autoChooser;
   }
 }
