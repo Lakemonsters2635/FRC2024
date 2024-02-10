@@ -6,14 +6,15 @@ package frc.robot;
 
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.commands.AprilTagChooser;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.NoteTakerCommand;
 import frc.robot.commands.ScoreAmpCommand;
 import frc.robot.commands.ScoreShooterCommand;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.commands.TelescopeExtendCommand;
+import frc.robot.commands.TelescopeRetractCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,14 +37,17 @@ public class RobotContainer {
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
+  public final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
 
   //Command 
-  public final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
-  public final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem);
-  public final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem);
-  public final AprilTagChooser m_aprilTagChooser = new AprilTagChooser(m_scoreAmpCommand, m_scoreShooterCommand);
-  public final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem);
-  public final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_aprilTagChooser, m_noteTakerCommand);
+  private final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  private final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
+  private final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
+  private final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final AprilTagChooser m_aprilTagChooser = new AprilTagChooser();
+  private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_aprilTagChooser, m_noteTakerCommand);
 
   private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
@@ -67,11 +71,15 @@ public class RobotContainer {
   private void configureBindings() {
     //creating buttons
 
-    Trigger ArmStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
-    Trigger swerveResetButton = new JoystickButton(rightJoystick, 1);
+    Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
+    Trigger noteTakerButton = new JoystickButton(leftJoystick, Constants.NOTE_TAKER_BUTTON);
+    Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
+    Trigger aprilTagButton = new JoystickButton(rightJoystick, Constants.APRIL_TAG_BUTTON);
 
-    ArmStartButton.whileTrue(m_armCommand);
-    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()) );
+    armStartButton.whileTrue(m_armCommand);
+    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    aprilTagButton.onTrue(m_aprilTagChooser.choose());
+    noteTakerButton.onTrue(m_noteTakerCommand);
 
   }
 
@@ -80,9 +88,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public SendableChooser<Command> getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return m_autoChooser;
-    return m_autonomousCommand;
+    return m_autoChooser;
   }
 }

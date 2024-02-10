@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -45,13 +44,6 @@ public class AutonomousCommand extends SequentialCommandGroup {
       new InstantCommand(()->System.out.println("\t\t\t8\t\t\t")),
       dts.createPathOnFlight(new Pose2d(-0.5,0.5,Rotation2d.fromDegrees(180)), -90),
       new WaitCommand(3)
-      // new ParallelCommandGroup(aprilTagChooser, new InstantCommand(()-> System.out.println("ApriltagChooser: running"))),
-      // new WaitCommand(3),
-      // new InstantCommand(()->System.out.println("Create path on flight running")),
-      // // dts.createPathOnFlight(new Pose2d(dts.getPose().getX(), dts.getPose().getY(), Rotation2d.fromDegrees(0)), 0),
-      // // new WaitCommand(3),
-      // new ParallelCommandGroup(noteTakerCommand, new InstantCommand(()->System.out.println("NoteTakerCommand: running"))),
-      // new WaitCommand(3)
     );
   }
 }

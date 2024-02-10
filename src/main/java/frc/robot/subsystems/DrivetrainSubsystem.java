@@ -48,7 +48,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
   public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
 
-    private Field2d field = new Field2d();
+  private Field2d field = new Field2d();
+
+  // public final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(null);
+
+  // public final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(this, null, null);
+  // public final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(this);
+  // public final AprilTagChooser m_aprilTagChooser = new AprilTagChooser(m_scoreAmpCommand, m_scoreShooterCommand);
+  // public final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(this);
+  // public final AutonomousCommand m_autonomousCommand = new AutonomousCommand(this, m_aprilTagChooser, m_noteTakerCommand);
+
 
     // public static boolean ignoreNote = true;
 
@@ -172,6 +181,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return new Pose2d(getPose().getX()+m_robot.x, getPose().getY()+m_robot.z, Rotation2d.fromDegrees(rot));
   }
 
+  public double getTargetHeight(){
+    //TODO: Figure out this method
+    return m_robot.y-Constants.CAMERA_HEIGHT_FROM_GROUND;
+  }
+
   public void resetAngle(){
     m_gyro.reset();
     m_gyro.setAngleAdjustment(0);
@@ -253,6 +267,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     
     updateOdometry();
+
+    System.out.println("GetPose: " + getPose());
 
     putDTSToSmartDashboard();
     tuneAngleOffsetPutToDTS();

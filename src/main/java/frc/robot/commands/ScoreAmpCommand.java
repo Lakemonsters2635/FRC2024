@@ -13,10 +13,12 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ScoreAmpCommand extends SequentialCommandGroup {
   /** Creates a new ScoreAmp. */
-  public ScoreAmpCommand(DrivetrainSubsystem dts) {
+  public ScoreAmpCommand(DrivetrainSubsystem dts, TelescopeExtendCommand telescopeExtendCommand, TelescopeRetractCommand telescopeRetractCommand) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(dts.createPathOnFlight(dts.getTargetPosition(0), 90),
-                new WaitCommand(0.5));
+                new WaitCommand(0.5),
+                telescopeExtendCommand,
+                telescopeRetractCommand);
   }
 }

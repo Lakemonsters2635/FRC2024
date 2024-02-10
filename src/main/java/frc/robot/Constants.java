@@ -120,11 +120,14 @@ public final class Constants {
    public static final int INTAKE_OUT_BUTTON = 3;
    public static final int INTAKE_IN_BUTTON = 4;
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int APRIL_TAG_BUTTON = 1;
 
    // LEFT BUTTONS
    public static final int TELESCOPE_EXTEND_BUTTON = 3;
    public static final int TELESCOPE_RETRACT_BUTTON = 4;
    public static final int ARM_START_BUTTON = 5;
    public static final int CLIMBER_BUTTON = 6;
+   public static final int NOTE_TAKER_BUTTON = 1;
 
+   public static final double CAMERA_HEIGHT_FROM_GROUND = 0.887857;// In meters
 }
