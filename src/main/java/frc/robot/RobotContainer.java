@@ -4,24 +4,25 @@
 
 package frc.robot;
 
-import frc.robot.commands.ClimberCommand;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.TelescopeSubsystem;
-import frc.robot.commands.ArmCommand;
-import frc.robot.commands.DrivetrainCommand;
-import frc.robot.commands.IntakeInCommand;
-import frc.robot.commands.IntakeOutCommand;
-import frc.robot.commands.TelescopeExtendCommand;
-import frc.robot.commands.TelescopeRetractCommand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmCommand;
+import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OutakeCommand;
+import frc.robot.commands.TelescopeExtendCommand;
+import frc.robot.commands.TelescopeRetractCommand;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.OutakeSubsystem;
+import frc.robot.subsystems.TelescopeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,14 +40,15 @@ public class RobotContainer {
   public static final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
   public static final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
   public static final ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
-  public static final IntakeInCommand m_intakeInCommand = new IntakeInCommand(m_intakeSubsystem);
-  public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
+  public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
+  public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
 
@@ -68,8 +70,8 @@ public class RobotContainer {
     //creating buttons
 
     // right buttons
-    Trigger intakeInButton = new JoystickButton(rightJoystick, Constants.INTAKE_IN_BUTTON);
-    Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
+    Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
+    Trigger outakeButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
 
     // left buttons
@@ -78,14 +80,14 @@ public class RobotContainer {
     Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
 
-    intakeInButton.whileTrue(m_intakeInCommand);
-    intakeOutButton.whileTrue(m_intakeOutCommand);
+    intakeButton.whileTrue(m_intakeCommand);
+    outakeButton.whileTrue(m_outakeCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
     armStartButton.whileTrue(m_armCommand);
-    climberButton.onTrue(m_climberCommand);
+    climberButton.whileTrue(m_climberCommand);
   }
 
   /**
