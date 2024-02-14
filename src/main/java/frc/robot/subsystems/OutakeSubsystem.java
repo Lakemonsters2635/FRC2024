@@ -4,7 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 
 public class OutakeSubsystem extends SubsystemBase {
   /** Creates a new OutakeSubsystem. */
@@ -16,11 +21,11 @@ public class OutakeSubsystem extends SubsystemBase {
 
   
   public void setOutakePower(){
-    m_outakeMotor.set(Constants.OUTAKE_SPEED);
+    m_outakeMotor.set(Constants.OUTTAKE_SPEED);
   }
 
   public void zeroOutakePower(){
-    m_outakeMotor.set(Constants.OUTAKE_STOP_SPEED);
+    m_outakeMotor.set(Constants.OUTTAKE_STOP_SPEED);
   }
 
   @Override

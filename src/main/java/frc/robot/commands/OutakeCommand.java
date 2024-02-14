@@ -6,21 +6,22 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.OutakeSubsystem;
 
 public class OutakeCommand extends Command {
   /** Creates a new IntakeOutCommand. */
   private OutakeSubsystem m_outakeSubsystem;
-  public OutakeCommand(IntakeSubsystem intakeSubsystem) {
+  public OutakeCommand(OutakeSubsystem outakeSubsystem) {
 
-    m_intakeSubsystem = intakeSubsystem;
-    addRequirements(m_intakeSubsystem);
+    m_outakeSubsystem = outakeSubsystem;
+    addRequirements(m_outakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intakeSubsystem.setOutakePower();
+    m_outakeSubsystem.setOutakePower();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,7 +31,7 @@ public class OutakeCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intakeSubsystem.zeroOutakePower();
+    m_outakeSubsystem.zeroOutakePower();
   }
 
   // Returns true when the command should end.

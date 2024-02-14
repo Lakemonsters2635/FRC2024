@@ -20,27 +20,27 @@ public final class Constants {
    public static final double INCHES_PER_METER = 39.37;
 
    // FRONT LEFT
-   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; 
-   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 0; 
-   public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 7; 
+   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
+   public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; 
+   public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(89.46-3.7); //3.01
 
    // FRONT RIGHT
-   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 1; 
-   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 1;
-   public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 2;
+   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
+   public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 2;
+   public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 4;
    public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(199.17+2.5+180); // 3.0775
 
    // BACK LEFT
-   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 5; 
-   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 3;
-   public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 6; 
+   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 9; 
+   public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0;
+   public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 10; 
    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-117.06-128); //2.9835
  
    // BACK RIGHT
-   public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 3;
-   public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 2;
-   public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 4; 
+   public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 8;
+   public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 1;
+   public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 7; 
    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(52.93-0.6); //3.0346
 
    // hat constants 
@@ -87,28 +87,35 @@ public final class Constants {
    public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
    
    // CLIMBER CONSTANTS
-   public static final int CLIMBER_MOTOR_1 = 13;
-   public static final int CLIMBER_MOTOR_2 = 14;
+   public static final int CLIMBER_MOTOR_1 = 11;
+   public static final int CLIMBER_MOTOR_2 = 5;
 
-   public static final double CLIMBER_START_SPEED = 0.5;
+   public static final double CLIMBER_1_START_SPEED = 0.24;
+   public static final double CLIMBER_2_START_SPEED = 0.20;
+
    public static final int CLIMBER_STOP_SPEED = 0;
 
    //ARM CONSTATNT
-   public static final int ARM_MOTOR1_ID = 15;
-   public static final int ARM_MOTOR2_ID = 16;
+   public static final int ARM_MOTOR1_ID = 6;
+   public static final int ARM_MOTOR2_ID = 12;
 
-   public static final double ARM_MOTOR_START_SPEED = 0.7;
+   public static final double ARM_MOTOR_START_SPEED = 0.5;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
   
    // INTAKE CONSTANTS
-   public static final int INTAKE_MOTOR_ID = 17;
+   public static final int INTAKE_MOTOR_ID = 14;
 
    public static final int INTAKE_STOP_SPEED = 0;
-   public static final double INTAKE_IN_SPEED = 0.3;
-   public static final double INTAKE_OUT_SPEED = -0.3;
+   public static final double INTAKE_IN_SPEED = -0.8;
+
+   // OUTTAKE CONSTANTS
+   public static final int OUTAKE_MOTOR_ID = 15;
+
+   public static final double OUTTAKE_STOP_SPEED =0;
+   public static final double OUTTAKE_SPEED = -0.8;
 
    // TELESCOPE CONSTANTS
-   public static final int TELESCOPE_MOTOR_ID = 18;
+   public static final int TELESCOPE_MOTOR_ID = 13;
 
    public static final double TELESCOPE_EXTEND_SPEED = 0.4;
    public static final double TELESCOPE_RETRACT_SPEED = -0.4;
@@ -117,8 +124,8 @@ public final class Constants {
    //BUTTON BINDINGS
 
    // RIGHT BUTTONS
-   public static final int INTAKE_OUT_BUTTON = 3;
-   public static final int INTAKE_IN_BUTTON = 4;
+   public static final int OUTTAKE_BUTTON = 3;
+   public static final int INTAKE_BUTTON = 4;
    public static final int SWERVE_RESET_BUTTON = 7;
 
    // LEFT BUTTONS

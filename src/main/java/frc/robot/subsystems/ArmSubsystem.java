@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
@@ -18,11 +19,14 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem(){
     m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
     m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
+
+    // m_armMotor2.setInverted(true);
+    // m_armMotor1.setInverted(true);
   }
 
   public void armStart(){
-    m_armMotor1.set(Constants.ARM_MOTOR_START_SPEED);
-    m_armMotor2.set(Constants.ARM_MOTOR_START_SPEED);
+    m_armMotor1.set(RobotContainer.rightJoystick.getThrottle() * Constants.ARM_MOTOR_START_SPEED);
+    m_armMotor2.set(RobotContainer.rightJoystick.getThrottle() * Constants.ARM_MOTOR_START_SPEED);
   }
 
   public void armStop(){
