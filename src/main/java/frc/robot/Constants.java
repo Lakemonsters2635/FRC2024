@@ -95,6 +95,13 @@ public final class Constants {
 
    public static final int CLIMBER_STOP_SPEED = 0;
 
+   // CLIMBER RELEASE/SERVO CONSTANTS
+   public static final int SERVO_MOTOR_1 = 0;//TODO Figure out these
+   public static final int SERVO_MOTOR_2 = 1;//TODO Figure out these
+
+    public static final double FULL_EXTENDED_SERVO = 1.0;
+    public static final double FULL_RETRACTED_SERVO = 0.0;
+
    //ARM CONSTATNT
    public static final int ARM_MOTOR1_ID = 6;
    public static final int ARM_MOTOR2_ID = 12;
@@ -127,6 +134,8 @@ public final class Constants {
    public static final int OUTTAKE_BUTTON = 3;
    public static final int INTAKE_BUTTON = 4;
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int START_RELEASING_SERVO_BUTTON = 5;
+   public static final int STOP_RELEASING_SERVO_BUTTON = 6;
 
    // LEFT BUTTONS
    public static final int TELESCOPE_EXTEND_BUTTON = 3;

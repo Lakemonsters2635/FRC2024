@@ -15,6 +15,8 @@ import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OutakeCommand;
+import frc.robot.commands.StartReleasingServoCommand;
+import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
 import frc.robot.commands.TelescopeRetractCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -22,6 +24,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
+import frc.robot.subsystems.ReleaseClimber;
 import frc.robot.subsystems.TelescopeSubsystem;
 
 /**
@@ -42,6 +45,7 @@ public class RobotContainer {
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
+  public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
@@ -51,6 +55,8 @@ public class RobotContainer {
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
+  public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
+  public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -73,6 +79,8 @@ public class RobotContainer {
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
     Trigger outakeButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
+    Trigger startReleasingServoButton = new JoystickButton(rightJoystick, Constants.START_RELEASING_SERVO_BUTTON);
+    Trigger stopReleasingServoButton = new JoystickButton(rightJoystick, Constants.STOP_RELEASING_SERVO_BUTTON);
 
     // left buttons
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
@@ -83,6 +91,8 @@ public class RobotContainer {
     intakeButton.whileTrue(m_intakeCommand);
     outakeButton.whileTrue(m_outakeCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    startReleasingServoButton.onTrue(m_startReleasingServoCommand);
+    stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
     
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
