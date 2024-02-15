@@ -39,14 +39,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final Translation2d m_frontLeftLocation = 
             new Translation2d(m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_frontRightLocation = 
-            // TODO: Fix this... hack to swap FR BL
-            // possibly we don't understand if z-axis is up or down?
-            // new Translation2d(m_drivetrainWheelbaseLength/2, -m_drivetrainWheelbaseWidth/2);
             new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backLeftLocation = 
-            // TODO: Fix this... hack to swap FR BL
-            // possibly we don't understand if z-axis is up or down?
-            // new Translation2d(-m_drivetrainWheelbaseLength/2, m_drivetrainWheelbaseWidth/2);
             new Translation2d(m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backRightLocation = 
             new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
@@ -273,7 +267,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Sets the swerve ModuleStates.
    * @param cs The desired SwerveModule states as a ChassisSpeeds object
    */
-  private void setDesiredStates(ChassisSpeeds cs) {
+  public void setDesiredStates(ChassisSpeeds cs) {
     SwerveModuleState[] desiredStates = m_kinematics.toSwerveModuleStates(cs);
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
@@ -290,7 +284,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param cs The desired SwerveModule states as a ChassisSpeeds object
    * @param centerOfRotation Center of rotation. Ex. location of camera
    */
-  private void setDesiredStates(ChassisSpeeds cs, Translation2d centerOfRotation) {
+  public void setDesiredStates(ChassisSpeeds cs, Translation2d centerOfRotation) {
     // System.out.println("vX: " + Math.round(cs.vxMetersPerSecond*100.0)/100.0 + "  vY: " + Math.round(cs.vyMetersPerSecond));
     SwerveModuleState[] desiredStates = m_kinematics.toSwerveModuleStates(cs, centerOfRotation);
 

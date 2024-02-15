@@ -98,10 +98,19 @@ public final class Constants {
    //ARM CONSTATNT
    public static final int ARM_MOTOR1_ID = 6;
    public static final int ARM_MOTOR2_ID = 12;
+   public static final int ARM_ENCODER_ID = 4;
 
    public static final double ARM_MOTOR_START_SPEED = 0.5;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
+
+   public static final double ARM_LOWER_LIMIT = 0;
+   public static final double ARM_UPPER_LIMIT = 0;
+
+   public static final double ARM_MOTOR_FF_GAIN = 0; //TODO: change this
   
+   public static final int ARM_ENCODER_OFFSET = 2370; //TODO: Do this
+
+
    // INTAKE CONSTANTS
    public static final int INTAKE_MOTOR_ID = 14;
 
@@ -123,15 +132,16 @@ public final class Constants {
 
    //BUTTON BINDINGS
 
-   // RIGHT BUTTONS
+   // right buttons
    public static final int OUTTAKE_BUTTON = 3;
    public static final int INTAKE_BUTTON = 4;
    public static final int SWERVE_RESET_BUTTON = 7;
 
-   // LEFT BUTTONS
+   // left buttons
    public static final int TELESCOPE_EXTEND_BUTTON = 3;
    public static final int TELESCOPE_RETRACT_BUTTON = 4;
    public static final int ARM_START_BUTTON = 5;
    public static final int CLIMBER_BUTTON = 6;
+
 
 }

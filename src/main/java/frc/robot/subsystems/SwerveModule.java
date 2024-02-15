@@ -27,8 +27,6 @@ public class SwerveModule {
   public final RelativeEncoder m_driveEncoder;
   public final AnalogInput m_turningEncoder;
 
-  private final int CPR = 4096;
-
   private double turningMotorOffset;
 
   private final PIDController m_drivePIDController = new PIDController(0.0, 0, 0.00);
