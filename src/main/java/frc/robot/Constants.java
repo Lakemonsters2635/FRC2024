@@ -90,8 +90,8 @@ public final class Constants {
    public static final int CLIMBER_MOTOR_1 = 11;
    public static final int CLIMBER_MOTOR_2 = 5;
 
-   public static final double CLIMBER_1_START_SPEED = 0.24;
-   public static final double CLIMBER_2_START_SPEED = 0.20;
+   public static final double CLIMBER_1_START_SPEED = -0.24;
+   public static final double CLIMBER_2_START_SPEED = -0.20;
 
    public static final int CLIMBER_STOP_SPEED = 0;
 
@@ -99,7 +99,7 @@ public final class Constants {
    public static final int ARM_MOTOR1_ID = 6;
    public static final int ARM_MOTOR2_ID = 12;
 
-   public static final double ARM_MOTOR_START_SPEED = 0.5;
+   public static final double ARM_MOTOR_START_SPEED = 0.3;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
   
    // INTAKE CONSTANTS

@@ -20,7 +20,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
     m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
 
-    // m_armMotor2.setInverted(true);
+    m_armMotor2.setInverted(true);
     // m_armMotor1.setInverted(true);
   }
 
