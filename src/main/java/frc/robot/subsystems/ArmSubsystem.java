@@ -30,13 +30,13 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
     m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
 
-    // m_armMotor2.setInverted(true);
-    m_armMotor1.setInverted(true);
+    //m_armMotor2.setInverted(true);
+    //m_armMotor1.setInverted(true);
   }
 
   public void armStart(){
-    m_armMotor1.set(RobotContainer.rightJoystick.getThrottle() * Constants.ARM_MOTOR_START_SPEED);
-   m_armMotor2.set(RobotContainer.rightJoystick.getThrottle() * Constants.ARM_MOTOR_START_SPEED);
+    m_armMotor1.set(MathUtil.clamp(RobotContainer.rightJoystick.getThrottle(),-1, 0));
+    m_armMotor2.set(MathUtil.clamp(RobotContainer.rightJoystick.getThrottle(), -1, 0)*-1);
 
   }
 
@@ -62,6 +62,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pose Target", m_poseTarget);
     SmartDashboard.putNumber("FB Power", fbMotorPower);
     SmartDashboard.putNumber("FF Power", ffMotorPower);
+    SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
   }
 
   @Override
