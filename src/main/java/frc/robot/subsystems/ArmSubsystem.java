@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ControlModeValue;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
@@ -17,8 +19,8 @@ import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
-    public CANSparkMax m_armMotor1;
-    public CANSparkMax m_armMotor2;
+    public TalonFX m_armMotor1;
+    public TalonFX m_armMotor2;
     public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
     private PIDController pid = new PIDController(0.012, 0.0, 0.001); 
     private double theta;
@@ -28,8 +30,8 @@ public class ArmSubsystem extends SubsystemBase {
     private double motorPower;
 
   public ArmSubsystem(){
-    m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
-    m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
+    m_armMotor1 = new TalonFX(Constants.ARM_MOTOR1_ID);
+    m_armMotor2 = new TalonFX(Constants.ARM_MOTOR2_ID);
   }
 
   public void controlArm(){
@@ -108,6 +110,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     motorPower = ffMotorPower + fbMotorPower;
 
-    setArmPower(motorPower);
+    setArmPower(ffMotorPower);
   }    
 }

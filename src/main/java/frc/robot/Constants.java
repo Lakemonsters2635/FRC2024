@@ -96,8 +96,8 @@ public final class Constants {
    public static final int CLIMBER_STOP_SPEED = 0;
 
    //ARM CONSTATNT
-   public static final int ARM_MOTOR1_ID = 6;
-   public static final int ARM_MOTOR2_ID = 12;
+   public static final int ARM_MOTOR1_ID = 15;
+   public static final int ARM_MOTOR2_ID = 21;
    public static final int ARM_ENCODER_ID = 4;
 
    public static final double ARM_MOTOR_START_SPEED = 0.5;
@@ -106,7 +106,7 @@ public final class Constants {
    public static final double ARM_LOWER_LIMIT = -17; //TODO: figure out these
    public static final double ARM_UPPER_LIMIT = 97;
 
-   public static final double ARM_MOTOR_FF_GAIN = -0.18; //TODO: change this
+   public static final double ARM_MOTOR_FF_GAIN = -0.09; //TODO: change this
   
    public static final int ARM_ENCODER_OFFSET = 2749;
 
@@ -118,7 +118,7 @@ public final class Constants {
    public static final double INTAKE_IN_SPEED = -0.8;
 
    // OUTTAKE CONSTANTS
-   public static final int OUTAKE_MOTOR_ID = 15;
+   public static final int OUTAKE_MOTOR_ID = 16;
 
    public static final double OUTTAKE_STOP_SPEED =0;
    public static final double OUTTAKE_SPEED = -0.8;
