@@ -103,12 +103,12 @@ public final class Constants {
    public static final double ARM_MOTOR_START_SPEED = 0.5;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
 
-   public static final double ARM_LOWER_LIMIT = 0;
-   public static final double ARM_UPPER_LIMIT = 0;
+   public static final double ARM_LOWER_LIMIT = -17; //TODO: figure out these
+   public static final double ARM_UPPER_LIMIT = 97;
 
-   public static final double ARM_MOTOR_FF_GAIN = 0; //TODO: change this
+   public static final double ARM_MOTOR_FF_GAIN = -0.18; //TODO: change this
   
-   public static final int ARM_ENCODER_OFFSET = 2370; //TODO: Do this
+   public static final int ARM_ENCODER_OFFSET = 2749;
 
 
    // INTAKE CONSTANTS

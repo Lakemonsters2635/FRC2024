@@ -34,10 +34,8 @@ public class ArmSubsystem extends SubsystemBase {
     //m_armMotor1.setInverted(true);
   }
 
-  public void armStart(){
-    m_armMotor1.set(MathUtil.clamp(RobotContainer.rightJoystick.getThrottle(),-1, 0));
-    m_armMotor2.set(MathUtil.clamp(RobotContainer.rightJoystick.getThrottle(), -1, 0)*-1);
-
+  public void controlArm(){
+    m_poseTarget = MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT);
   }
 
   public void armStop(){
@@ -46,8 +44,12 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setArmPower(double motorPower){
-    m_armMotor1.set(motorPower);
+    m_armMotor1.set(motorPower * -1);
     m_armMotor2.set(-1*motorPower);
+  }
+
+  public void setArmPose(double poseTarget) {
+    m_poseTarget = poseTarget;
   }
 
   public double getArmDegrees(){
@@ -86,7 +88,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // manual control of the upper arm with z axis slider
     // double val = -RobotContainer.rightJoystick.getRawAxis(3);
-    // double angle = (val+1.0)*180.0;
+    // double angle = (val + 1.0) * 180.0;
     // m_poseTarget = MathUtil.clamp(angle, lowerLimit, upperLimit);
 
 
@@ -95,15 +97,19 @@ public class ArmSubsystem extends SubsystemBase {
     if (theta < 0){
       theta += 360.0;
     }
+    if (theta > 180){
+      theta -= 360;
+    }
 
     final double gain = Constants.ARM_MOTOR_FF_GAIN;
     ffMotorPower = gain * Math.sin(Math.toRadians(theta));
 
-    double lowerLimitFB = -1; // TODO: fix these
-    double upperLimitFB = 1;
+    double lowerLimitFB = -0.4; // TODO: fix these
+    double upperLimitFB = 0.4;
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB);
 
     double motorPower = fbMotorPower - ffMotorPower;
-    // m_armMotor1.set(motorPower);
+
+    setArmPower(ffMotorPower);
   }    
 }
