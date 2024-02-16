@@ -336,22 +336,22 @@ public ChassisSpeeds getChassisSpeeds() {
     SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
 
-    SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
-    SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
+    // SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
 
 
-    SmartDashboard.putNumber("FR SMS Speed", swerveModuleStates[1].speedMetersPerSecond);
-    SmartDashboard.putNumber("FR SMS Angle", swerveModuleStates[1].angle.getDegrees());
+    // SmartDashboard.putNumber("FR SMS Speed", swerveModuleStates[1].speedMetersPerSecond);
+    // SmartDashboard.putNumber("FR SMS Angle", swerveModuleStates[1].angle.getDegrees());
 
-    SmartDashboard.putNumber("BL SMS Speed", swerveModuleStates[2].speedMetersPerSecond);
-    SmartDashboard.putNumber("BL SMS Angle", swerveModuleStates[2].angle.getDegrees());
+    // SmartDashboard.putNumber("BL SMS Speed", swerveModuleStates[2].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BL SMS Angle", swerveModuleStates[2].angle.getDegrees());
 
-    SmartDashboard.putNumber("BR SMS Speed", swerveModuleStates[3].speedMetersPerSecond);
-    SmartDashboard.putNumber("BR SMS Angle", swerveModuleStates[3].angle.getDegrees());
+    // SmartDashboard.putNumber("BR SMS Speed", swerveModuleStates[3].speedMetersPerSecond);
+    // SmartDashboard.putNumber("BR SMS Angle", swerveModuleStates[3].angle.getDegrees());
     
-    SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
-    SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
-    SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+    // SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
+    // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
+    // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
 
   }
 }

@@ -20,18 +20,16 @@ public class ArmSubsystem extends SubsystemBase {
     public CANSparkMax m_armMotor1;
     public CANSparkMax m_armMotor2;
     public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
-    private PIDController pid = new PIDController(0.0, 0.0, 0.0); 
+    private PIDController pid = new PIDController(0.012, 0.0, 0.001); 
     private double theta;
     private double m_poseTarget;
     private double fbMotorPower;
     private double ffMotorPower;
+    private double motorPower;
 
   public ArmSubsystem(){
     m_armMotor1 = new CANSparkMax(Constants.ARM_MOTOR1_ID, MotorType.kBrushless);
     m_armMotor2 = new CANSparkMax(Constants.ARM_MOTOR2_ID, MotorType.kBrushless);
-
-    //m_armMotor2.setInverted(true);
-    //m_armMotor1.setInverted(true);
   }
 
   public void controlArm(){
@@ -39,13 +37,13 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void armStop(){
-  m_armMotor1.set(Constants.ARM_MOTOR_STOP_SPEED);
-  m_armMotor2.set(Constants.ARM_MOTOR_STOP_SPEED);
+    m_armMotor1.set(Constants.ARM_MOTOR_STOP_SPEED);
+    m_armMotor2.set(Constants.ARM_MOTOR_STOP_SPEED);
   }
 
   public void setArmPower(double motorPower){
-    m_armMotor1.set(motorPower * -1);
-    m_armMotor2.set(-1*motorPower);
+    m_armMotor1.set(motorPower*-1);
+    m_armMotor2.set(1*motorPower);
   }
 
   public void setArmPose(double poseTarget) {
@@ -53,8 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getArmDegrees(){
-    return ((m_encoder.getValue()/4096.0))*(360);  //if get position gives encoder counts
-    //((m_encoder.getPosition()%1)*1024)*(360) encoder counts if by rotations;
+    return ((m_encoder.getValue()/4096.0))*(360);
   }
 
   public void putToBoard(){
@@ -64,6 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pose Target", m_poseTarget);
     SmartDashboard.putNumber("FB Power", fbMotorPower);
     SmartDashboard.putNumber("FF Power", ffMotorPower);
+    SmartDashboard.putNumber("Motor Power", motorPower);
     SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
   }
 
@@ -108,8 +106,8 @@ public class ArmSubsystem extends SubsystemBase {
     double upperLimitFB = 0.4;
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB);
 
-    double motorPower = fbMotorPower - ffMotorPower;
+    motorPower = ffMotorPower + fbMotorPower;
 
-    setArmPower(ffMotorPower);
+    setArmPower(motorPower);
   }    
 }
