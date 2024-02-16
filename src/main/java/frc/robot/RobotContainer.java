@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -70,24 +71,33 @@ public class RobotContainer {
     //creating buttons
 
     // right buttons
+    Trigger telescopeExtendButton = new JoystickButton(rightJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
+    Trigger telescopeRetractButton = new JoystickButton(rightJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
-    Trigger outakeButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
+    Trigger modifierButton = new JoystickButton(rightJoystick, Constants.MODIFIER_BUTTON);
 
     // left buttons
-    Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
-    Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
-    Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
+    Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
+    Trigger armPositionerButton = new JoystickButton(leftJoystick, Constants.ARM_POSITIONER_BUTTON);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
+    Trigger trapOuttakeButton = new JoystickButton(leftJoystick, Constants.TRAP_OUTTAKE_BUTTON);
+    Trigger armTrapPositionerButton = new JoystickButton(leftJoystick, Constants.ARM_TRAP_POSITIONER_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
-    outakeButton.whileTrue(m_outakeCommand);
-    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
-    
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
-    armStartButton.whileTrue(m_armCommand);
+    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    modifierButton.onTrue(new InstantCommand(()->m_outakeCommand.speed=Constants.OUTTAKE_SHOOTER_SPEED));
+    modifierButton.onFalse(new InstantCommand(()->m_outakeCommand.speed=Constants.OUTTAKE_AMP_SPEED));
+
+    outakeButton.whileTrue(m_outakeCommand);
     climberButton.whileTrue(m_climberCommand);
+    trapOuttakeButton.onTrue(new SequentialCommandGroup(
+      new InstantCommand(()->m_outakeCommand.speed=Constants.OUTTAKE_TRAP_SPEED),
+      m_outakeCommand
+    ));
+
   }
 
   /**

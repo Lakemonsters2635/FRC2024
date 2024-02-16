@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
 
 public class OutakeCommand extends Command {
   /** Creates a new IntakeOutCommand. */
   private OutakeSubsystem m_outakeSubsystem;
+  public double speed;
   public OutakeCommand(OutakeSubsystem outakeSubsystem) {
 
     m_outakeSubsystem = outakeSubsystem;
@@ -21,7 +21,7 @@ public class OutakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_outakeSubsystem.setOutakePower();
+    m_outakeSubsystem.setOutakePower(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

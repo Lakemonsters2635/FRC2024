@@ -112,7 +112,10 @@ public final class Constants {
    public static final int OUTAKE_MOTOR_ID = 15;
 
    public static final double OUTTAKE_STOP_SPEED =0;
-   public static final double OUTTAKE_SPEED = -0.8;
+   // TODO: Figure out these numbers
+   public static final double OUTTAKE_AMP_SPEED = -0.8;
+   public static final double OUTTAKE_SHOOTER_SPEED = -0.4;
+   public static final double OUTTAKE_TRAP_SPEED = -0.2;
 
    // TELESCOPE CONSTANTS
    public static final int TELESCOPE_MOTOR_ID = 13;
@@ -124,14 +127,17 @@ public final class Constants {
    //BUTTON BINDINGS
 
    // RIGHT BUTTONS
-   public static final int OUTTAKE_BUTTON = 3;
-   public static final int INTAKE_BUTTON = 4;
+   public static final int TELESCOPE_EXTEND_BUTTON = 6;
+   public static final int TELESCOPE_RETRACT_BUTTON = 4;
+   public static final int INTAKE_BUTTON = 1;
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int MODIFIER_BUTTON = 2;
 
    // LEFT BUTTONS
-   public static final int TELESCOPE_EXTEND_BUTTON = 3;
-   public static final int TELESCOPE_RETRACT_BUTTON = 4;
-   public static final int ARM_START_BUTTON = 5;
-   public static final int CLIMBER_BUTTON = 6;
+    public static final int OUTTAKE_BUTTON = 1;
+    public static final int ARM_POSITIONER_BUTTON = 5;
+    public static final int CLIMBER_BUTTON = 6;
+    public static final int ARM_TRAP_POSITIONER_BUTTON =12;
+    public static final int TRAP_OUTTAKE_BUTTON =11;
 
 }

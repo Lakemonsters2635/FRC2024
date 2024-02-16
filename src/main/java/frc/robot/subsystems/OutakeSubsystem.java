@@ -20,8 +20,8 @@ public class OutakeSubsystem extends SubsystemBase {
   }
 
   
-  public void setOutakePower(){
-    m_outakeMotor.set(Constants.OUTTAKE_SPEED);
+  public void setOutakePower(double speed){
+    m_outakeMotor.set(speed);
   }
 
   public void zeroOutakePower(){
