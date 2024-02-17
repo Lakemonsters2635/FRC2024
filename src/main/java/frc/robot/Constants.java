@@ -123,8 +123,8 @@ public final class Constants {
    public static final int TELESCOPE_ENCODER_SOURCE_A = 0;
    public static final int TELESCOPE_ENCODER_SOURCE_B = 1;
 
-   public static final double TELESCOPE_EXTEND_SPEED = 0.4;
-   public static final double TELESCOPE_RETRACT_SPEED = -0.4;
+   public static final double TELESCOPE_EXTEND_SPEED = 0.3;
+   public static final double TELESCOPE_RETRACT_SPEED = -0.3;
    public static final int TELESCOPE_STOP_SPEED = 0;
 
    //BUTTON BINDINGS

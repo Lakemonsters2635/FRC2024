@@ -85,8 +85,8 @@ public class RobotContainer {
     Trigger armTrapPositionerButton = new JoystickButton(leftJoystick, Constants.ARM_TRAP_POSITIONER_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
-    telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
-    telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
+    telescopeExtendButton.onTrue(m_telescopeExtendCommand);
+    telescopeRetractButton.onTrue(m_telescopeRetractCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     modifierButton.onTrue(new InstantCommand(()->m_outakeCommand.speed=Constants.OUTTAKE_SHOOTER_SPEED));
     modifierButton.onFalse(new InstantCommand(()->m_outakeCommand.speed=Constants.OUTTAKE_AMP_SPEED));

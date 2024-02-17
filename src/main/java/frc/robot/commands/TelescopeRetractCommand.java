@@ -19,12 +19,13 @@ public class TelescopeRetractCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_telescopeSubsystem.retractTelescope();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_telescopeSubsystem.retractTelescope();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -35,6 +36,9 @@ public class TelescopeRetractCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (m_telescopeSubsystem.telescopeEncoder.get()<100) {
+      return true;
+    }
     return false;
   }
 }

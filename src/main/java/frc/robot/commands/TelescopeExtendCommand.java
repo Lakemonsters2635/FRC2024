@@ -8,8 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.TelescopeSubsystem;
 
 public class TelescopeExtendCommand extends Command {
-  private TelescopeSubsystem m_telescopeSubsystem;
+  public TelescopeSubsystem m_telescopeSubsystem;
   /** Creates a new TelescopeExtendComman. */
+
   public TelescopeExtendCommand(TelescopeSubsystem telescopeSubsystem) {
     m_telescopeSubsystem = telescopeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -19,12 +20,13 @@ public class TelescopeExtendCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_telescopeSubsystem.extendTelescope();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_telescopeSubsystem.extendTelescope();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -35,6 +37,9 @@ public class TelescopeExtendCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (m_telescopeSubsystem.telescopeEncoder.get()>500) {
+      return true;
+    }
     return false;
   }
 }

@@ -18,7 +18,6 @@ public class TelescopeSubsystem extends SubsystemBase {
   public TelescopeSubsystem() {
     telescopeMotor = new CANSparkMax(Constants.TELESCOPE_MOTOR_ID, MotorType.kBrushless);
     telescopeEncoder = new Encoder(Constants.TELESCOPE_ENCODER_SOURCE_A, Constants.TELESCOPE_ENCODER_SOURCE_B);
-    telescopeEncoder.reset();
   }
 
   public void extendTelescope() {
