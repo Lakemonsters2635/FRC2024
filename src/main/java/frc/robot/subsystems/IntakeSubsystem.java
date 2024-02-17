@@ -23,6 +23,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(Constants.INTAKE_IN_SPEED);
   }
 
+  public void outIntake() {
+    intakeMotor.set(Constants.INTAKE_IN_SPEED * -1);
+  }
+
   public void stopIntake() {
     intakeMotor.set(Constants.INTAKE_STOP_SPEED);
   }

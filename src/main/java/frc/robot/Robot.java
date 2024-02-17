@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    // RobotContainer.m_armSubsystem.setArmPose(RobotContainer.m_armSubsystem.getTheta());
     
 
   }
@@ -73,8 +74,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // RobotContainer.m_armSubsystem.setPosTarget(RobotContainer.m_armSubsystem.getTheta());
+    // System.out.println("Theta value: "+RobotContainer.m_armSubsystem.getTheta());
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
     RobotContainer.m_drivetrainSubsystem.resetAngle();
+    // RobotContainer.m_armSubsystem.m_poseTarget2=80;
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

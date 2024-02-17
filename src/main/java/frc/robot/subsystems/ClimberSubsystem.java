@@ -21,13 +21,13 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void runClimber(){
-  m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED);
-  m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED);
+  m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED * -1);
+  m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED * -1);
   }
 
   public void stopClimber(){
   m_climberMotor1.set(Constants.CLIMBER_STOP_SPEED);
-  m_climberMotor1.set(Constants.CLIMBER_STOP_SPEED);  
+  m_climberMotor2.set(Constants.CLIMBER_STOP_SPEED);  
   }
 
 

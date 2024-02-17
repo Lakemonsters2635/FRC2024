@@ -103,22 +103,22 @@ public final class Constants {
    public static final double ARM_MOTOR_START_SPEED = 0.5;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
 
-   public static final double ARM_LOWER_LIMIT = -17; //TODO: figure out these
-   public static final double ARM_UPPER_LIMIT = 97;
+   public static final double ARM_LOWER_LIMIT = -25; //TODO: figure out these
+   public static final double ARM_UPPER_LIMIT = 107;
 
-   public static final double ARM_MOTOR_FF_GAIN = -0.09; //TODO: change this
+   public static final double ARM_MOTOR_FF_GAIN = -0.17; //TODO: change this
   
    public static final int ARM_ENCODER_OFFSET = 2749;
 
 
    // INTAKE CONSTANTS
-   public static final int INTAKE_MOTOR_ID = 14;
+   public static final int INTAKE_MOTOR_ID = 16;
 
    public static final int INTAKE_STOP_SPEED = 0;
    public static final double INTAKE_IN_SPEED = -0.8;
 
    // OUTTAKE CONSTANTS
-   public static final int OUTAKE_MOTOR_ID = 16;
+   public static final int OUTAKE_MOTOR_ID = 14;
 
    public static final double OUTTAKE_STOP_SPEED =0;
    public static final double OUTTAKE_SPEED = -0.8;
@@ -135,7 +135,9 @@ public final class Constants {
    // right buttons
    public static final int OUTTAKE_BUTTON = 3;
    public static final int INTAKE_BUTTON = 4;
+   public static final int INTAKE_OUT_BUTTON = 5;
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int MOVE_ARM_TO_AMP_BUTTON = 1;
 
    // left buttons
    public static final int TELESCOPE_EXTEND_BUTTON = 3;

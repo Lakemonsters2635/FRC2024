@@ -14,6 +14,8 @@ import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeOutCommand;
+import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.TelescopeExtendCommand;
 import frc.robot.commands.TelescopeRetractCommand;
@@ -48,10 +50,11 @@ public class RobotContainer {
   public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
   public static final ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
   public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
+  public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
-
+  public static final MoveArmToPoseCommand m_moveArmToPoseCommand = new MoveArmToPoseCommand(m_armSubsystem);
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
@@ -70,7 +73,9 @@ public class RobotContainer {
     //creating buttons
 
     // right buttons
+    Trigger ampButton = new JoystickButton(rightJoystick, Constants.MOVE_ARM_TO_AMP_BUTTON);
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
+    Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger outakeButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
 
@@ -81,13 +86,16 @@ public class RobotContainer {
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
+    intakeOutButton.whileTrue(m_intakeOutCommand);
     outakeButton.whileTrue(m_outakeCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    ampButton.onTrue(m_moveArmToPoseCommand);
     
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
     armStartButton.whileTrue(m_armCommand);
     climberButton.whileTrue(m_climberCommand);
+
   }
 
   /**

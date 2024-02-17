@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,20 +23,26 @@ public class ArmSubsystem extends SubsystemBase {
     public TalonFX m_armMotor1;
     public TalonFX m_armMotor2;
     public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
-    private PIDController pid = new PIDController(0.012, 0.0, 0.001); 
+    private PIDController pid = new PIDController(0.009, 0.0, 0.002); 
     private double theta;
-    private double m_poseTarget;
+    public double m_poseTarget = 80;
     private double fbMotorPower;
     private double ffMotorPower;
     private double motorPower;
+    //public double m_poseTarget2=80;
+    Joystick rightJoystick = new Joystick(0);
+    double gain;
 
   public ArmSubsystem(){
     m_armMotor1 = new TalonFX(Constants.ARM_MOTOR1_ID);
+    //m_armMotor1.setVoltage();
     m_armMotor2 = new TalonFX(Constants.ARM_MOTOR2_ID);
   }
 
   public void controlArm(){
+    
     m_poseTarget = MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT);
+    
   }
 
   public void armStop(){
@@ -48,12 +55,20 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor2.set(1*motorPower);
   }
 
-  public void setArmPose(double poseTarget) {
-    m_poseTarget = poseTarget;
-  }
-
   public double getArmDegrees(){
     return ((m_encoder.getValue()/4096.0))*(360);
+  }
+
+  public double getTheta(){
+    theta = 360.0 * (m_encoder.getValue() - Constants.ARM_ENCODER_OFFSET) / 4096.0;
+    theta %= 360.0;
+    if (theta < 0){
+      theta += 360.0;
+    }
+    if (theta > 180){
+      theta -= 360;
+    }
+    return theta;
   }
 
   public void putToBoard(){
@@ -65,12 +80,21 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FF Power", ffMotorPower);
     SmartDashboard.putNumber("Motor Power", motorPower);
     SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
+    SmartDashboard.putNumber("Gain", gain);
+    SmartDashboard.putNumber("Slider Angle", MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT));
+
+  }
+
+  public void setPosTarget(double poseTarget){
+    SmartDashboard.putNumber("poseTarget parameter", poseTarget);
+    m_poseTarget = poseTarget;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     double upperLimit, lowerLimit;
+    //m_poseTarget = m_poseTarget2;
     
       lowerLimit = Constants.ARM_LOWER_LIMIT;
       upperLimit = Constants.ARM_UPPER_LIMIT;
@@ -91,17 +115,12 @@ public class ArmSubsystem extends SubsystemBase {
     // double angle = (val + 1.0) * 180.0;
     // m_poseTarget = MathUtil.clamp(angle, lowerLimit, upperLimit);
 
+    
+    getTheta();
+    controlArm();
 
-    theta = 360.0 * (m_encoder.getValue() - Constants.ARM_ENCODER_OFFSET) / 4096.0;
-    theta %= 360.0;
-    if (theta < 0){
-      theta += 360.0;
-    }
-    if (theta > 180){
-      theta -= 360;
-    }
-
-    final double gain = Constants.ARM_MOTOR_FF_GAIN;
+    gain = Constants.ARM_MOTOR_FF_GAIN;
+    //gain =rightJoystick.getThrottle()*0.3;
     ffMotorPower = gain * Math.sin(Math.toRadians(theta));
 
     double lowerLimitFB = -0.4; // TODO: fix these
@@ -109,7 +128,11 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB);
 
     motorPower = ffMotorPower + fbMotorPower;
+    if(m_poseTarget>102 && theta > 101){
+    //  motorPower = 0;
+    }
+    setArmPower(motorPower);
 
-    setArmPower(ffMotorPower);
+    
   }    
 }
