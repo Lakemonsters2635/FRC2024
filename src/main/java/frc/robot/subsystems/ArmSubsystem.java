@@ -23,7 +23,7 @@ public class ArmSubsystem extends SubsystemBase {
     public TalonFX m_armMotor1;
     public TalonFX m_armMotor2;
     public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
-    private PIDController pid = new PIDController(0.009, 0.0, 0.002); 
+    private PIDController pid = new PIDController(0.108, 0.0, 0.024); 
     private double theta;
     public double m_poseTarget = 80;
     private double fbMotorPower;
@@ -39,10 +39,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor2 = new TalonFX(Constants.ARM_MOTOR2_ID);
   }
 
-  public void controlArm(){
-    
+  public void controlArmThrottle(){
     m_poseTarget = MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT);
-    
   }
 
   public void armStop(){
@@ -51,8 +49,8 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setArmPower(double motorPower){
-    m_armMotor1.set(motorPower*-1);
-    m_armMotor2.set(1*motorPower);
+    m_armMotor1.setVoltage(motorPower*-1);
+    m_armMotor2.setVoltage(1*motorPower);
   }
 
   public double getArmDegrees(){
@@ -117,7 +115,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     
     getTheta();
-    controlArm();
+    //controlArmThrottle();
 
     gain = Constants.ARM_MOTOR_FF_GAIN;
     //gain =rightJoystick.getThrottle()*0.3;
@@ -128,11 +126,9 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB);
 
     motorPower = ffMotorPower + fbMotorPower;
-    if(m_poseTarget>102 && theta > 101){
-    //  motorPower = 0;
+    if(m_poseTarget>102 && theta > 100){
+      motorPower = 0;
     }
     setArmPower(motorPower);
-
-    
   }    
 }

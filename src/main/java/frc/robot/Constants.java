@@ -23,7 +23,7 @@ public final class Constants {
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; 
    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
-   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(89.46-3.7); //3.01
+   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(89.46 - 3.7 + 180); //3.01
 
    // FRONT RIGHT
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
@@ -90,8 +90,8 @@ public final class Constants {
    public static final int CLIMBER_MOTOR_1 = 11;
    public static final int CLIMBER_MOTOR_2 = 5;
 
-   public static final double CLIMBER_1_START_SPEED = 0.24;
-   public static final double CLIMBER_2_START_SPEED = 0.20;
+   public static final double CLIMBER_1_START_SPEED = 0.34;
+   public static final double CLIMBER_2_START_SPEED = 0.30;
 
    public static final int CLIMBER_STOP_SPEED = 0;
 
@@ -103,12 +103,12 @@ public final class Constants {
    public static final double ARM_MOTOR_START_SPEED = 0.5;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
 
-   public static final double ARM_LOWER_LIMIT = -25; //TODO: figure out these
+   public static final double ARM_LOWER_LIMIT = -44; //TODO: figure out these
    public static final double ARM_UPPER_LIMIT = 107;
 
-   public static final double ARM_MOTOR_FF_GAIN = -0.17; //TODO: change this
+   public static final double ARM_MOTOR_FF_GAIN = -1.4; //TODO: change this
   
-   public static final int ARM_ENCODER_OFFSET = 2749;
+   public static final int ARM_ENCODER_OFFSET = 2699;
 
 
    // INTAKE CONSTANTS
