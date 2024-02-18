@@ -110,6 +110,10 @@ public final class Constants {
   
    public static final int ARM_ENCODER_OFFSET = 2699;
 
+   public static final int ARM_PICKUP_ANGLE = 98;
+   public static final int ARM_AMP_ANGLE = 70;
+   public static final int ARM_OUTTAKE_ANGLE = -20;
+
 
    // INTAKE CONSTANTS
    public static final int INTAKE_MOTOR_ID = 16;
@@ -137,7 +141,10 @@ public final class Constants {
    public static final int INTAKE_BUTTON = 4;
    public static final int INTAKE_OUT_BUTTON = 5;
    public static final int SWERVE_RESET_BUTTON = 7;
-   public static final int MOVE_ARM_TO_AMP_BUTTON = 1;
+   public static final int MOVE_ARM_TO_AMP_BUTTON = 8;
+   public static final int GROUND_PICKUP_BUTTON = 10;
+   public static final int OUTTAKE_POSE_BUTTON = 12;
+
 
    // left buttons
    public static final int TELESCOPE_EXTEND_BUTTON = 3;
