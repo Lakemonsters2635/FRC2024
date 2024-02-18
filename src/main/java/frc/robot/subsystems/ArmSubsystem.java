@@ -24,9 +24,10 @@ public class ArmSubsystem extends SubsystemBase {
     public TalonFX m_armMotor1;
     public TalonFX m_armMotor2;
     public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
-    private PIDController pid = new PIDController(0.108, 0.0, 0.024); 
+    // private PIDController pid = new PIDController(0.108, 0.0, 0.024); 
+    private PIDController pid = new PIDController(0.009, 0.0, 0.002); 
     private double theta;
-    public double m_poseTarget = 80;
+    public double m_poseTarget;
     private double fbMotorPower;
     private double ffMotorPower;
     private double motorPower;
@@ -40,6 +41,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     m_armMotor1.setNeutralMode(NeutralModeValue.Brake);
     m_armMotor2.setNeutralMode(NeutralModeValue.Brake);
+
+    m_poseTarget = Constants.ARM_AMP_ANGLE;
   }
 
   public void controlArmThrottle(){
@@ -83,12 +86,12 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
     SmartDashboard.putNumber("Gain", gain);
     SmartDashboard.putNumber("Slider Angle", MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT));
-
   }
 
   public void setPosTarget(double poseTarget){
     SmartDashboard.putNumber("poseTarget parameter", poseTarget);
     m_poseTarget = poseTarget;
+    System.out.println("MOVE ARM POS SEt");
   }
 
   @Override
@@ -118,6 +121,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     
     getTheta();
+    putToBoard();
     // controlArmThrottle();
 
     gain = Constants.ARM_MOTOR_FF_GAIN;
@@ -126,12 +130,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     double lowerLimitFB = -0.4; // TODO: fix these
     double upperLimitFB = 0.4;
-    fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB);
+
+    // TODO: ensure both PID and FF are in voltage mode.
+    fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 12;
 
     motorPower = ffMotorPower + fbMotorPower;
     if(m_poseTarget>102 && theta > 100){
       motorPower = 0;
     }
     setArmPower(motorPower);
+
   }    
 }

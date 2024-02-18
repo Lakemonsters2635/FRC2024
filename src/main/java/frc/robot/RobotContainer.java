@@ -54,10 +54,9 @@ public class RobotContainer {
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
-  public static final MoveArmToPoseCommand m_moveArmToPoseCommand = new MoveArmToPoseCommand(m_armSubsystem);
-  public static final MoveArmToPoseCommand m_ArmPickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
-  public static final MoveArmToPoseCommand m_ArmAmpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
-  public static final MoveArmToPoseCommand m_OuttakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_OUTTAKE_ANGLE);
+  public static final MoveArmToPoseCommand m_armPickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
+  public static final MoveArmToPoseCommand m_armAmpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
+  public static final MoveArmToPoseCommand m_outtakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_OUTTAKE_ANGLE);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -95,9 +94,9 @@ public class RobotContainer {
     intakeOutButton.whileTrue(m_intakeOutCommand);
     outakeButton.whileTrue(m_outakeCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
-    armAmpPoseButton.onTrue(m_ArmAmpPoseCommand);
-    armPickupPoseButton.onTrue(m_ArmPickUpPoseCommand);
-    armOuttakePoseButton.onTrue(m_OuttakePoseCommand);
+    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
+    armPickupPoseButton.onTrue(m_armPickUpPoseCommand);
+    armOuttakePoseButton.onTrue(m_outtakePoseCommand);
     
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
