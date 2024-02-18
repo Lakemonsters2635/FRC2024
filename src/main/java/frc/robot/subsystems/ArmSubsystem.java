@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
@@ -35,8 +36,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public ArmSubsystem(){
     m_armMotor1 = new TalonFX(Constants.ARM_MOTOR1_ID);
-    //m_armMotor1.setVoltage();
     m_armMotor2 = new TalonFX(Constants.ARM_MOTOR2_ID);
+
+    m_armMotor1.setNeutralMode(NeutralModeValue.Brake);
+    m_armMotor2.setNeutralMode(NeutralModeValue.Brake);
   }
 
   public void controlArmThrottle(){
@@ -115,7 +118,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     
     getTheta();
-    //controlArmThrottle();
+    // controlArmThrottle();
 
     gain = Constants.ARM_MOTOR_FF_GAIN;
     //gain =rightJoystick.getThrottle()*0.3;
