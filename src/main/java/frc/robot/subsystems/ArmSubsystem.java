@@ -128,11 +128,11 @@ public class ArmSubsystem extends SubsystemBase {
     //gain =rightJoystick.getThrottle()*0.3;
     ffMotorPower = gain * Math.sin(Math.toRadians(theta));
 
-    double lowerLimitFB = -0.4; // TODO: fix these
-    double upperLimitFB = 0.4;
+    double lowerLimitFB = -0.3; // TODO: fix these
+    double upperLimitFB = 0.3;
 
     // TODO: ensure both PID and FF are in voltage mode.
-    fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 12;
+    fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 10;
 
     motorPower = ffMotorPower + fbMotorPower;
     if(m_poseTarget>102 && theta > 100){
