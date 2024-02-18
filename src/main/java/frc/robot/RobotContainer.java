@@ -39,7 +39,7 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  public static final ArmSubsystem m_armSubsystem = new ArmSubsystem(); 
+  public static final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   public static final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
@@ -55,6 +55,10 @@ public class RobotContainer {
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
   public static final MoveArmToPoseCommand m_moveArmToPoseCommand = new MoveArmToPoseCommand(m_armSubsystem);
+  public static final MoveArmToPoseCommand m_ArmPickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
+  public static final MoveArmToPoseCommand m_ArmAmpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
+  public static final MoveArmToPoseCommand m_OuttakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_OUTTAKE_ANGLE);
+
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
@@ -73,11 +77,13 @@ public class RobotContainer {
     //creating buttons
 
     // right buttons
-    Trigger ampButton = new JoystickButton(rightJoystick, Constants.MOVE_ARM_TO_AMP_BUTTON);
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger outakeButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
+    Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.MOVE_ARM_TO_AMP_BUTTON);
+    Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
+    Trigger armOuttakePoseButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_POSE_BUTTON);
 
     // left buttons
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
@@ -89,7 +95,9 @@ public class RobotContainer {
     intakeOutButton.whileTrue(m_intakeOutCommand);
     outakeButton.whileTrue(m_outakeCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
-    ampButton.onTrue(m_moveArmToPoseCommand);
+    armAmpPoseButton.onTrue(m_ArmAmpPoseCommand);
+    armPickupPoseButton.onTrue(m_ArmPickUpPoseCommand);
+    armOuttakePoseButton.onTrue(m_OuttakePoseCommand);
     
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
