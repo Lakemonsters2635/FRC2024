@@ -90,17 +90,24 @@ public final class Constants {
    public static final int CLIMBER_MOTOR_1 = 11;
    public static final int CLIMBER_MOTOR_2 = 5;
 
-   public static final double CLIMBER_1_START_SPEED = 0.34;
-   public static final double CLIMBER_2_START_SPEED = 0.30;
+   public static final double CLIMBER_1_START_SPEED = -0.24;
+   public static final double CLIMBER_2_START_SPEED = -0.20;
 
    public static final int CLIMBER_STOP_SPEED = 0;
+
+   // CLIMBER RELEASE/SERVO CONSTANTS
+   public static final int SERVO_MOTOR_1 = 0;//TODO Figure out these
+   public static final int SERVO_MOTOR_2 = 1;//TODO Figure out these
+
+    public static final double FULL_EXTENDED_SERVO = 1.0;
+    public static final double FULL_RETRACTED_SERVO = 0.0;
 
    //ARM CONSTATNT
    public static final int ARM_MOTOR1_ID = 15;
    public static final int ARM_MOTOR2_ID = 21;
    public static final int ARM_ENCODER_ID = 4;
 
-   public static final double ARM_MOTOR_START_SPEED = 0.5;
+   public static final double ARM_MOTOR_START_SPEED = 0.3;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
 
    public static final double ARM_LOWER_LIMIT = -44; //TODO: figure out these
@@ -144,6 +151,8 @@ public final class Constants {
    public static final int OUTTAKE_POSE_BUTTON = 8;
    public static final int MOVE_ARM_TO_AMP_BUTTON = 10;
    public static final int GROUND_PICKUP_BUTTON = 12;
+   public static final int START_RELEASING_SERVO_BUTTON = 5;
+   public static final int STOP_RELEASING_SERVO_BUTTON = 6;
 
    // left buttons
    public static final int TELESCOPE_EXTEND_BUTTON = 3;

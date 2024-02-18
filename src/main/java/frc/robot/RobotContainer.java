@@ -17,6 +17,8 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
+import frc.robot.commands.StartReleasingServoCommand;
+import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
 import frc.robot.commands.TelescopeRetractCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
+import frc.robot.subsystems.ReleaseClimber;
 import frc.robot.subsystems.TelescopeSubsystem;
 
 /**
@@ -44,6 +47,7 @@ public class RobotContainer {
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
+  public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
@@ -57,6 +61,8 @@ public class RobotContainer {
   public static final MoveArmToPoseCommand m_armPickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
   public static final MoveArmToPoseCommand m_armAmpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
   public static final MoveArmToPoseCommand m_outtakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_OUTTAKE_ANGLE);
+  public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
+  public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -83,6 +89,8 @@ public class RobotContainer {
     Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.MOVE_ARM_TO_AMP_BUTTON);
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
     Trigger armOuttakePoseButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_POSE_BUTTON);
+    Trigger startReleasingServoButton = new JoystickButton(rightJoystick, Constants.START_RELEASING_SERVO_BUTTON);
+    Trigger stopReleasingServoButton = new JoystickButton(rightJoystick, Constants.STOP_RELEASING_SERVO_BUTTON);
 
     // left buttons
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
@@ -97,6 +105,8 @@ public class RobotContainer {
     armAmpPoseButton.onTrue(m_armAmpPoseCommand);
     armPickupPoseButton.onTrue(m_armPickUpPoseCommand);
     armOuttakePoseButton.onTrue(m_outtakePoseCommand);
+    startReleasingServoButton.onTrue(m_startReleasingServoCommand);
+    stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
     
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
