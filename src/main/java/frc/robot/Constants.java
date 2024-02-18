@@ -119,8 +119,8 @@ public final class Constants {
    public static final int ARM_ENCODER_OFFSET = 1250;
 
    public static final int ARM_PICKUP_ANGLE = 103;
-   public static final int ARM_AMP_ANGLE = 70;
-   public static final int ARM_OUTTAKE_ANGLE = -20;
+   public static final int ARM_AMP_ANGLE = -14;
+   public static final int ARM_OUTTAKE_ANGLE = 70;
 
 
    // INTAKE CONSTANTS
