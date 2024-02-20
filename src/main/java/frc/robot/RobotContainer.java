@@ -5,18 +5,25 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AprilTagChooser;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.MoveArmToPoseCommand;
+import frc.robot.commands.NoteTakerCommand;
 import frc.robot.commands.OutakeCommand;
+import frc.robot.commands.ScoreAmpCommand;
+import frc.robot.commands.ScoreShooterCommand;
 import frc.robot.commands.StartReleasingServoCommand;
 import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
@@ -63,6 +70,13 @@ public class RobotContainer {
   public static final MoveArmToPoseCommand m_outtakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_OUTTAKE_ANGLE);
   public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
   public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
+  private final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final AprilTagChooser m_aprilTagChooser = new AprilTagChooser();
+  private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_aprilTagChooser, m_noteTakerCommand);
+  private SendableChooser<Command> m_autoChooser;
+
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -120,8 +134,14 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public SendableChooser<Command> getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+
+    m_autoChooser = new SendableChooser<>();
+    m_autoChooser.addOption("Autonomous", m_autonomousCommand);
+
+    SmartDashboard.putData("AutoChooser", m_autoChooser);
+
+    return m_autoChooser;
   }
 }

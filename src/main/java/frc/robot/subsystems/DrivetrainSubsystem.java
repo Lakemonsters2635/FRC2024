@@ -4,7 +4,18 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.kauailabs.navx.frc.AHRS;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,11 +26,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -32,6 +47,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
     public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
+
+    private Field2d field = new Field2d();
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -87,9 +104,63 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
+    AutoBuilder.configureHolonomic(
+              this::getPose, // Robot pose supplier
+              this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+              this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+              this::setDesiredStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+              new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                      new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                      4.5, // Max module speed, in m/s
+                      0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                      new ReplanningConfig() // Default path replanning config. See the API for the options here
+              ),
+              () -> {
+                  // Boolean supplier that controls when the path will be mirrored for the red alliance
+                  // This will flip the path being followed to the red side of the field.
+                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                  var alliance = DriverStation.getAlliance();
+                  if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                  }
+                  return false;
+              },
+              this // Reference to this subsystem to set requirements
+    );
+
+    PathPlannerLogging.setLogCurrentPoseCallback((poses) -> field.getObject("path").getPose());
+
+    SmartDashboard.putData("field" ,field);
+
     getPose();
     zeroOdometry();
     resetAngle();
+  }
+
+  public Command createPathOnFlight(Pose2d targetPose, double endRot){
+    // Create a list of bezier points from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+            getPose(),
+            targetPose
+    );
+
+    // Create the path using the bezier points created above
+    PathPlannerPath path = new PathPlannerPath(
+            bezierPoints,
+            new PathConstraints(0.01, 0.01, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
+            new GoalEndState(0.0, Rotation2d.fromDegrees(endRot)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    path.preventFlipping =true;
+    return AutoBuilder.followPath(path);
+  }
+
+  public Pose2d getTargetPosition(double rot){
+    return new Pose2d(getPose().getX()+Robot.x, getPose().getY()+Robot.z, Rotation2d.fromDegrees(rot));
   }
 
   public void resetAngle(){
@@ -352,6 +423,8 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+
+    SmartDashboard.putString("GetPose:", "("+Double.toString(getPose().getX())+" , "+Double.toString(getPose().getY())+" , "+Double.toString(getPose().getRotation().getDegrees())+")");
 
   }
 }

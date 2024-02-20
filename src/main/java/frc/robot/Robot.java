@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.GenericSubscriber;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -17,7 +22,29 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;  
 
+  private SendableChooser<Command> m_autoChooser;
+
   private RobotContainer m_robotContainer;
+
+  private DoubleSubscriber xSub;
+  private DoubleSubscriber ySub;
+  private DoubleSubscriber zSub;
+  private GenericSubscriber objectSub;
+
+  private DoubleSubscriber xSubBack;
+  private DoubleSubscriber ySubBack;
+  private DoubleSubscriber zSubBack;
+  private GenericSubscriber objectSubBack;
+
+  public static double x;
+  public double y;
+  public static double z;
+  public String object;
+
+  public double xBack;
+  public double yBack;
+  public double zBack;
+  public String objectBack;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -25,11 +52,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // Front camera network table
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("Monster Vision");
+    xSub = table.getDoubleTopic("x").subscribe(0);
+    ySub = table.getDoubleTopic("y").subscribe(0);
+    zSub = table.getDoubleTopic("z").subscribe(0);
+    objectSub = table.getStringTopic("object").genericSubscribe("");
+
+    // Back camera network table
+    NetworkTable tableBack = NetworkTableInstance.getDefault().getTable("");// TODO: Enter back camera key
+    xSubBack = tableBack.getDoubleTopic("x").subscribe(0);
+    ySubBack = tableBack.getDoubleTopic("y").subscribe(0);
+    zSubBack = tableBack.getDoubleTopic("z").subscribe(0);
+    objectSubBack = tableBack.getStringTopic("object").genericSubscribe("");
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // RobotContainer.m_armSubsystem.setArmPose(RobotContainer.m_armSubsystem.getTheta());
-    
+
+    m_autoChooser = m_robotContainer.getAutonomousCommand();
 
   }
 
@@ -60,7 +101,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_autoChooser.getSelected();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -89,6 +130,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     RobotContainer.m_driveTrainCommand.execute();
+    x = xSub.get();
+    y = ySub.get();
+    z = zSub.get();
+    object = objectSub.getString("");
+
+    // Back camera values
+    xBack = xSubBack.get();
+    yBack = ySubBack.get();
+    zBack = zSubBack.get();
+    objectBack = objectSubBack.getString("");
   }
 
   @Override
