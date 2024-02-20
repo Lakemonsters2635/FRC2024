@@ -20,8 +20,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      // new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))),
       new InstantCommand(()->System.out.println("\t\t\t1\t\t\t")),
-      dts.createPathOnFlight(new Pose2d(0,0, Rotation2d.fromDegrees(90)), 90),
+      dts.createPathOnFlight(new Pose2d(0,0, Rotation2d.fromDegrees(30)), 60),
       new WaitCommand(3)
       // new InstantCommand(()->System.out.println("\t\t\t2\t\t\t")),
       // dts.createPathOnFlight(new Pose2d(0,0, Rotation2d.fromDegrees(-90)), -90),

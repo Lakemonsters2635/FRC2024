@@ -143,7 +143,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // Create a list of bezier points from poses. Each pose represents one waypoint.
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-            getPose(),
+            // getPose(),
+            new Pose2d(),
             targetPose
     );
 

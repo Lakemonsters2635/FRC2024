@@ -15,35 +15,35 @@ import frc.robot.subsystems.TelescopeSubsystem;
 public class AprilTagChooser{
   /** Creates a new AprilTagChooser. */
 
-  private final static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final static TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
+  // private final static DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  // private final static TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
 
-  public final static TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
-  public final static TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
+  // public final static TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
+  // public final static TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
 
-  public final static ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
-  public final static ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
-  public final static NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  // public final static ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  // public final static ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  // public final static NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
 
-  public Command choose(){
-    var alliance = DriverStation.getAlliance();
-    int id = 8;
-    if (alliance.get()== DriverStation.Alliance.Red) {
-      if (id==5) {
-        return m_scoreAmpCommand;
-      }
-      if (id==4) {
-        return m_scoreShooterCommand;
-      }
-    }
-    else if (alliance.get()== DriverStation.Alliance.Blue) {
-      if (id==6) {
-        return m_scoreAmpCommand;
-      }
-      if (id==8) {
-        return m_scoreShooterCommand;
-      }
-    }
-    return new Command() {};
-  }
+  // public Command choose(){
+  //   var alliance = DriverStation.getAlliance();
+  //   int id = 8;
+  //   if (alliance.get()== DriverStation.Alliance.Red) {
+  //     if (id==5) {
+  //       return m_scoreAmpCommand;
+  //     }
+  //     if (id==4) {
+  //       return m_scoreShooterCommand;
+  //     }
+  //   }
+  //   else if (alliance.get()== DriverStation.Alliance.Blue) {
+  //     if (id==6) {
+  //       return m_scoreAmpCommand;
+  //     }
+  //     if (id==8) {
+  //       return m_scoreShooterCommand;
+  //     }
+  //   }
+  //   return new Command() {};
+  // }
 }
