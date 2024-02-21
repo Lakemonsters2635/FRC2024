@@ -6,6 +6,11 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -87,6 +93,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
+    AutoBuilder.configureHolonomic(
+            this::getPose, // Robot pose supplier
+            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            this::setDesiredStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                    4.5, // Max module speed, in m/s
+                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new ReplanningConfig() // Default path replanning config. See the API for the options here
+            ),
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
     getPose();
     zeroOdometry();
     resetAngle();
@@ -156,25 +187,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
       double loggingState[] = {     //Array for predicted values
-        swerveModuleStates[0].angle.getDegrees(),
-        swerveModuleStates[0].speedMetersPerSecond,
+        swerveModuleStates[3].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
+        swerveModuleStates[3].speedMetersPerSecond,
         swerveModuleStates[1].angle.getDegrees(),
         swerveModuleStates[1].speedMetersPerSecond,
         swerveModuleStates[2].angle.getDegrees(),
         swerveModuleStates[2].speedMetersPerSecond,
-        swerveModuleStates[3].angle.getDegrees(),
-        swerveModuleStates[3].speedMetersPerSecond,
+        swerveModuleStates[0].angle.getDegrees(),
+        swerveModuleStates[0].speedMetersPerSecond,
       };
 
       double actualLoggingState[] = {
-        m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI,
-        m_frontLeft.getVelocity(),
+        m_backRight.getTurningEncoderRadians() * 180 / Math.PI, // same order problem as predicted values
+        m_backRight.getVelocity(),
         m_frontRight.getTurningEncoderRadians() * 180 / Math.PI,
         m_frontRight.getVelocity(),
         m_backLeft.getTurningEncoderRadians() * 180 / Math.PI,
         m_backLeft.getVelocity(),
-        m_backRight.getTurningEncoderRadians() * 180 / Math.PI,
-        m_backRight.getVelocity(),
+        m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI,
+        m_frontLeft.getVelocity(),
       };
 
       SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);

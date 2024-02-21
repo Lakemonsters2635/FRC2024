@@ -20,11 +20,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void inIntake() {
-    intakeMotor.set(Constants.INTAKE_IN_SPEED);
+    intakeMotor.setVoltage(Constants.INTAKE_IN_SPEED * 10);
   }
 
   public void outIntake() {
-    intakeMotor.set(Constants.INTAKE_IN_SPEED * -1);
+    intakeMotor.setVoltage(Constants.INTAKE_OUT_SPEED * 10);
   }
 
   public void stopIntake() {

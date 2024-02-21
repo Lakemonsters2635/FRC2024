@@ -4,9 +4,16 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -60,9 +67,12 @@ public class RobotContainer {
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
   public static final MoveArmToPoseCommand m_armPickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
   public static final MoveArmToPoseCommand m_armAmpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
-  public static final MoveArmToPoseCommand m_outtakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_OUTTAKE_ANGLE);
+  public static final MoveArmToPoseCommand m_outtakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE);
   public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
   public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
+
+  public SendableChooser<Command> m_autoChooser;
+
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -83,36 +93,35 @@ public class RobotContainer {
 
     // right buttons
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
-    Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
-    Trigger outakeButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_BUTTON);
-    Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
-    Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.MOVE_ARM_TO_AMP_BUTTON);
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
-    Trigger armOuttakePoseButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_POSE_BUTTON);
-    Trigger startReleasingServoButton = new JoystickButton(rightJoystick, Constants.START_RELEASING_SERVO_BUTTON);
-    Trigger stopReleasingServoButton = new JoystickButton(rightJoystick, Constants.STOP_RELEASING_SERVO_BUTTON);
+    Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
+    Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
+    Trigger speakerPoseButton = new JoystickButton(rightJoystick, Constants.SPEAKER_POSE_BUTTON);
+    Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
+    // Trigger startReleasingServoButton = new JoystickButton(rightJoystick, Constants.START_RELEASING_SERVO_BUTTON);
+    // Trigger stopReleasingServoButton = new JoystickButton(rightJoystick, Constants.STOP_RELEASING_SERVO_BUTTON);
 
     // left buttons
+    Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
     Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
-    Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
+    // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
-    intakeOutButton.whileTrue(m_intakeOutCommand);
-    outakeButton.whileTrue(m_outakeCommand);
-    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
-    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
     armPickupPoseButton.onTrue(m_armPickUpPoseCommand);
-    armOuttakePoseButton.onTrue(m_outtakePoseCommand);
-    startReleasingServoButton.onTrue(m_startReleasingServoCommand);
-    stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
-    
+    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
+    intakeOutButton.whileTrue(m_intakeOutCommand);
+    speakerPoseButton.onTrue(m_outtakePoseCommand);
+    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    // startReleasingServoButton.onTrue(m_startReleasingServoCommand);
+    // stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
+
+    outakeButton.whileTrue(m_outakeCommand);
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
-    armStartButton.whileTrue(m_armCommand);
     climberButton.whileTrue(m_climberCommand);
-
+    // armStartButton.whileTrue(m_armCommand);
   }
 
   /**
@@ -120,8 +129,17 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public SendableChooser<Command> getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("Drive Out");
+    m_autoChooser = new SendableChooser<>();
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("AutoChooser", m_autoChooser);
+
+
+    // return DrivetrainSubsystem.AutoBuilder;
+    //return AutoBuilder.followPath(path);
+    return null; //autoChooser; //new PathPlannerAuto("Drive Out");
   }
 }
