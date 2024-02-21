@@ -75,6 +75,15 @@ public class ArmSubsystem extends SubsystemBase {
     return theta;
   }
 
+  public boolean areWeThere(){
+    double currentTheta = getTheta();
+    if (currentTheta > (m_poseTarget - 5) || currentTheta > (m_poseTarget + 5)){
+      return true;
+    } else{
+      return false;
+    }
+  }
+
   public void putToBoard(){
     SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
     SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());

@@ -24,6 +24,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
+import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.StartReleasingServoCommand;
 import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
@@ -65,11 +66,13 @@ public class RobotContainer {
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
-  public static final MoveArmToPoseCommand m_armPickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
-  public static final MoveArmToPoseCommand m_armAmpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
-  public static final MoveArmToPoseCommand m_outtakePoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE);
+  public static final MoveArmToPoseCommand m_pickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
+  public static final MoveArmToPoseCommand m_ampPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
+  public static final MoveArmToPoseCommand m_speakerPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE);
   public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
   public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
+  public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+
 
   public SendableChooser<Command> m_autoChooser;
 
@@ -98,6 +101,7 @@ public class RobotContainer {
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger speakerPoseButton = new JoystickButton(rightJoystick, Constants.SPEAKER_POSE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
+    Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
     // Trigger startReleasingServoButton = new JoystickButton(rightJoystick, Constants.START_RELEASING_SERVO_BUTTON);
     // Trigger stopReleasingServoButton = new JoystickButton(rightJoystick, Constants.STOP_RELEASING_SERVO_BUTTON);
 
@@ -109,11 +113,12 @@ public class RobotContainer {
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
-    armPickupPoseButton.onTrue(m_armPickUpPoseCommand);
-    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
-    intakeOutButton.whileTrue(m_intakeOutCommand);
-    speakerPoseButton.onTrue(m_outtakePoseCommand);
+    armPickupPoseButton.onTrue(m_pickUpPoseCommand);
+    armAmpPoseButton.onTrue(m_ampPoseCommand);
+    intakeOutButton.onTrue(m_intakeOutCommand);
+    speakerPoseButton.onTrue(m_speakerPoseCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    speakerButton.onTrue(m_speakerCommand);
     // startReleasingServoButton.onTrue(m_startReleasingServoCommand);
     // stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
 
