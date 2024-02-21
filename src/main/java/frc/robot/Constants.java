@@ -14,8 +14,8 @@ package frc.robot;
  */
 public final class Constants {
    // joystick channels
-   public static final int RIGHT_JOYSTICK_CHANNEL = 0;
-   public static final int LEFT_JOYSTICK_CHANNEL = 1;
+   public static final int RIGHT_JOYSTICK_CHANNEL = 1;
+   public static final int LEFT_JOYSTICK_CHANNEL = 0;
 
    public static final double INCHES_PER_METER = 39.37;
 
@@ -116,12 +116,12 @@ public final class Constants {
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
   
-   public static final int ARM_ENCODER_OFFSET = 1665;
+   public static final int ARM_ENCODER_OFFSET = 1816;
 
 
    public static final int ARM_PICKUP_ANGLE = 103;
    public static final int ARM_AMP_ANGLE = -14;
-   public static final int ARM_SHOOTER_ANGLE = 60;
+   public static final int ARM_SHOOTER_ANGLE = 65;
 
 
    // INTAKE CONSTANTS
@@ -153,6 +153,7 @@ public final class Constants {
    public static final int INTAKE_OUT_BUTTON = 5;
    public static final int SPEAKER_POSE_BUTTON = 6;
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int SPEAKER_BUTTON = 10;
 //    public static final int START_RELEASING_SERVO_BUTTON = 5;
 //    public static final int STOP_RELEASING_SERVO_BUTTON = 6;
 

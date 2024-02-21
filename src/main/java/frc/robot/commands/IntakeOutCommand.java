@@ -11,8 +11,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeOutCommand extends Command {
   /** Creates a new IntakeOutCommand. */
   private IntakeSubsystem m_intakeSubsystem;
+  private Timer m_timer;
   public IntakeOutCommand(IntakeSubsystem intakeSubsystem) {
     m_intakeSubsystem = intakeSubsystem;
+    m_timer = new Timer();
     addRequirements(m_intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -20,6 +22,8 @@ public class IntakeOutCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_timer.reset();
+    m_timer.start();
     m_intakeSubsystem.outIntake();
   }
 
@@ -32,11 +36,15 @@ public class IntakeOutCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_intakeSubsystem.stopIntake();
+    m_timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_timer.get()>0.4){
+      return true;
+    }
     return false;
   }
 }
