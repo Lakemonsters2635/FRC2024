@@ -116,12 +116,12 @@ public final class Constants {
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
   
-   public static final int ARM_ENCODER_OFFSET = 1816;
+   public static final int ARM_ENCODER_OFFSET = 1876;
 
 
    public static final int ARM_PICKUP_ANGLE = 103;
    public static final int ARM_AMP_ANGLE = -14;
-   public static final int ARM_SHOOTER_ANGLE = 65;
+   public static final int ARM_SHOOTER_ANGLE = 55;
 
 
    // INTAKE CONSTANTS
