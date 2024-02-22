@@ -109,6 +109,7 @@ public class RobotContainer {
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
     Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
+    Trigger telescopeStopButton = new JoystickButton(leftJoystick, 10);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -125,6 +126,7 @@ public class RobotContainer {
     outakeButton.whileTrue(m_outakeCommand);
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
+    telescopeStopButton.onTrue(new InstantCommand(()->m_telescopeSubsystem.stopTelescope()));
     climberButton.whileTrue(m_climberCommand);
     // armStartButton.whileTrue(m_armCommand);
   }

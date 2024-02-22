@@ -7,14 +7,18 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TelescopeSubsystem extends SubsystemBase {
   public CANSparkMax telescopeMotor;
+  public Encoder telescopeEncoder;
   /** Creates a new TelescopeSubsystem. */
   public TelescopeSubsystem() {
     telescopeMotor = new CANSparkMax(Constants.TELESCOPE_MOTOR_ID, MotorType.kBrushless);
+    telescopeEncoder = new Encoder(Constants.TELESCOPE_ENCODER_SOURCE_A, Constants.TELESCOPE_ENCODER_SOURCE_B);
   }
 
   public void extendTelescope() {
@@ -31,6 +35,7 @@ public class TelescopeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Telescope Encoder Counts", telescopeEncoder.get());
     // This method will be called once per scheduler run
   }
 }

@@ -139,6 +139,8 @@ public final class Constants {
 
    // TELESCOPE CONSTANTS
    public static final int TELESCOPE_MOTOR_ID = 13;
+   public static final int TELESCOPE_ENCODER_SOURCE_A = 0;
+   public static final int TELESCOPE_ENCODER_SOURCE_B = 1;
 
    public static final double TELESCOPE_EXTEND_SPEED = 0.4;
    public static final double TELESCOPE_RETRACT_SPEED = -0.4;
