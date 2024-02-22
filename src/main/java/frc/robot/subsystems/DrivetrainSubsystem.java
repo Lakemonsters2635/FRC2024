@@ -4,14 +4,11 @@
 
 package frc.robot.subsystems;
 
-import java.util.List;
-
 import com.kauailabs.navx.frc.AHRS;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.commands.PathfindHolonomic;
 import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -26,6 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -104,6 +102,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
+    // TODO: Delete this if don't needed
     AutoBuilder.configureHolonomic(
               this::getPose, // Robot pose supplier
               this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -139,25 +138,49 @@ public class DrivetrainSubsystem extends SubsystemBase {
     resetAngle();
   }
 
-  public Command createPathOnFlight(Pose2d targetPose, double endRot){
+  public Command goToTargetPos(Pose2d targetPose){
+    System.out.println("$$$$$$Target pos: "+"x:"+targetPose.getX()+" y:"+targetPose.getY()+" degrees:"+targetPose.getRotation().getDegrees()+"$$$$$$");
+
+    // Since we are using a holonomic drivetrain, the rotation component of this pose
+    // represents the goal holonomic rotation
+
+    // Create the constraints to use while pathfinding
+    PathConstraints constraints = new PathConstraints(
+            3.0, 4.0,
+            Units.degreesToRadians(540), Units.degreesToRadians(720));
+
+    // See the "Follow a single path" example for more info on what gets passed here
+    Command pathfindingCommand = new PathfindHolonomic(
+            targetPose,
+            constraints,
+            0.0, // Goal end velocity in m/s. Optional
+            this::getPose,
+            this::getChassisSpeeds,
+            this::setDesiredStates,
+            new HolonomicPathFollowerConfig(4.5,0.4,new ReplanningConfig()), // TODO: Figure out these numbers
+            0.0, // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate. Optional
+            this // Reference to drive subsystem to set requirements
+    );
+
+    return pathfindingCommand;
+    
     // Create a list of bezier points from poses. Each pose represents one waypoint.
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
-    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-            // getPose(),
-            new Pose2d(),
-            targetPose
-    );
+    // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+    //         getPose(),
+    //         targetPose
+    // );
 
-    // Create the path using the bezier points created above
-    PathPlannerPath path = new PathPlannerPath(
-            bezierPoints,
-            new PathConstraints(0.01, 0.01, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
-            new GoalEndState(0.0, Rotation2d.fromDegrees(endRot)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
-    );
+    // // Create the path using the bezier points created above
+    // PathPlannerPath path = new PathPlannerPath(
+    //         bezierPoints,
+    //         new PathConstraints(1, 1, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
+    //         new GoalEndState(0.0, Rotation2d.fromDegrees(endRot)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+    // );
 
-    // Prevent the path from being flipped if the coordinates are already correct
-    path.preventFlipping =true;
-    return AutoBuilder.followPath(path);
+    // // Prevent the path from being flipped if the coordinates are already correct
+    // path.preventFlipping =true;
+    // return AutoBuilder.followPath(path);
   }
 
   public Pose2d getTargetPosition(double rot){
@@ -189,6 +212,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
+      System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
       if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
         yPowerCommanded = Constants.HAT_POWER_MOVE;
       }

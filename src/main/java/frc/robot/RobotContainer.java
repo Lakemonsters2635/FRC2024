@@ -134,14 +134,14 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public SendableChooser<Command> getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An example command will be run in autonomous
 
-    m_autoChooser = new SendableChooser<>();
-    m_autoChooser.addOption("Autonomous", m_autonomousCommand);
+    // m_autoChooser = new SendableChooser<>();
+    // m_autoChooser.addOption("Autonomous", m_autonomousCommand);
 
-    SmartDashboard.putData("AutoChooser", m_autoChooser);
+    // SmartDashboard.putData("AutoChooser", m_autoChooser);
 
-    return m_autoChooser;
+    return m_autonomousCommand;
   }
 }

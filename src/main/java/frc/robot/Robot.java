@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.GenericSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,11 +55,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Front camera network table
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("Monster Vision");
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("MonsterVision");
     xSub = table.getDoubleTopic("x").subscribe(0);
     ySub = table.getDoubleTopic("y").subscribe(0);
     zSub = table.getDoubleTopic("z").subscribe(0);
-    objectSub = table.getStringTopic("object").genericSubscribe("");
+    objectSub = table.getStringTopic("objectLabel").genericSubscribe("");
 
     // Back camera network table
     NetworkTable tableBack = NetworkTableInstance.getDefault().getTable("");// TODO: Enter back camera key
@@ -71,7 +72,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    m_autoChooser = m_robotContainer.getAutonomousCommand();
+    // m_autoChooser = m_robotContainer.getAutonomousCommand();
 
   }
 
@@ -90,6 +91,21 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    x = xSub.get();
+    y = ySub.get();
+    z = zSub.get();
+    object = objectSub.getString("");
+
+    SmartDashboard.putNumber("x", x);
+    SmartDashboard.putNumber("y", y);
+    SmartDashboard.putNumber("z", z);
+    SmartDashboard.putString("object", object);
+
+    // Back camera values
+    xBack = xSubBack.get();
+    yBack = ySubBack.get();
+    zBack = zSubBack.get();
+    objectBack = objectSubBack.getString("");
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -102,7 +118,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_autoChooser.getSelected();
+    // m_autonomousCommand = m_autoChooser.getSelected();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    System.out.println("AutonomousCommand: "+m_autonomousCommand);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -131,16 +149,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     RobotContainer.m_driveTrainCommand.execute();
-    x = xSub.get();
-    y = ySub.get();
-    z = zSub.get();
-    object = objectSub.getString("");
-
-    // Back camera values
-    xBack = xSubBack.get();
-    yBack = ySubBack.get();
-    zBack = zSubBack.get();
-    objectBack = objectSubBack.getString("");
+    
   }
 
   @Override

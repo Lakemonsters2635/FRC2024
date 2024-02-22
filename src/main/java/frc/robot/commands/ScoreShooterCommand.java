@@ -16,7 +16,7 @@ public class ScoreShooterCommand extends SequentialCommandGroup {
   public ScoreShooterCommand(DrivetrainSubsystem dts, TelescopeExtendCommand telescopeExtendCommand, TelescopeRetractCommand telescopeRetractCommand) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    // addCommands(dts.createPathOnFlight(dts.getTargetPosition(0), 180),
+    // addCommands(dts.goToTargetPos(dts.getTargetPosition(0), 180),
     //             new WaitCommand(0.5),
     //             telescopeExtendCommand,
     //             telescopeRetractCommand
