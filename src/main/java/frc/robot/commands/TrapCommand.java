@@ -28,12 +28,13 @@ public class TrapCommand extends SequentialCommandGroup {
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ParallelCommandGroup(
-      new MoveArmToPoseCommand(armSubsystem, 0), 
-      new InstantCommand(() -> m_telescopeSubsystem.extendTelescope()).withTimeout(0.1), 
-      new WaitCommand(1), 
+    addCommands(
+      new MoveArmToPoseCommand(armSubsystem, 0),
+      new WaitCommand(0.5), 
+      new TelescopeExtendCommand(telescopeSubsystem), 
+      new WaitCommand(3), 
       new InstantCommand(() -> m_outakeSubsystem.setOutakePower()).withTimeout(.1), 
       new WaitCommand(0.5), 
-      new InstantCommand(() -> m_outakeSubsystem.zeroOutakePower()).withTimeout(0.1)));
+      new InstantCommand(() -> m_outakeSubsystem.zeroOutakePower()).withTimeout(0.1));
   }
 }

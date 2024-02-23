@@ -29,6 +29,7 @@ import frc.robot.commands.StartReleasingServoCommand;
 import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
 import frc.robot.commands.TelescopeRetractCommand;
+import frc.robot.commands.TrapCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -72,7 +73,7 @@ public class RobotContainer {
   public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
   public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
-
+  public static final TrapCommand m_trapCommand = new TrapCommand(m_armSubsystem, m_telescopeSubsystem, m_outakeSubsystem);
 
   public SendableChooser<Command> m_autoChooser;
 
@@ -111,6 +112,7 @@ public class RobotContainer {
     Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
     Trigger telescopeStopButton = new JoystickButton(leftJoystick, 10);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
+    Trigger trapButton = new JoystickButton(leftJoystick, 11);
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
@@ -124,10 +126,11 @@ public class RobotContainer {
     // stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
 
     outakeButton.whileTrue(m_outakeCommand);
-    telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
-    telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
+    telescopeExtendButton.onTrue(m_telescopeExtendCommand);
+    telescopeRetractButton.onTrue(m_telescopeRetractCommand);
     telescopeStopButton.onTrue(new InstantCommand(()->m_telescopeSubsystem.stopTelescope()));
     climberButton.whileTrue(m_climberCommand);
+    trapButton.onTrue(m_trapCommand);
     // armStartButton.whileTrue(m_armCommand);
   }
 

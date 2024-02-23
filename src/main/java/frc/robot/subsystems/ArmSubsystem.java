@@ -145,7 +145,7 @@ public class ArmSubsystem extends SubsystemBase {
     if(m_poseTarget>102 && theta > 100){
       motorPower = 0;
     }
-    setArmPower(motorPower);
+    setArmPower(ffMotorPower);
 
   }    
 }

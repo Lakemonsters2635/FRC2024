@@ -14,8 +14,8 @@ package frc.robot;
  */
 public final class Constants {
    // joystick channels
-   public static final int RIGHT_JOYSTICK_CHANNEL = 1;
-   public static final int LEFT_JOYSTICK_CHANNEL = 0;
+   public static final int RIGHT_JOYSTICK_CHANNEL = 0;
+   public static final int LEFT_JOYSTICK_CHANNEL = 1;
 
    public static final double INCHES_PER_METER = 39.37;
 
@@ -105,6 +105,7 @@ public final class Constants {
    //ARM CONSTATNT
    public static final int ARM_MOTOR1_ID = 15;
    public static final int ARM_MOTOR2_ID = 21;
+
    public static final int ARM_ENCODER_ID = 4;
 
    public static final double ARM_MOTOR_START_SPEED = 0.3;
@@ -114,9 +115,11 @@ public final class Constants {
    public static final double ARM_UPPER_LIMIT = 107;
 
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
-   public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
+   //public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
+   public static final double ARM_MOTOR_FF_GAIN = -1; // 11V
+
   
-   public static final int ARM_ENCODER_OFFSET = 1816;
+   public static final int ARM_ENCODER_OFFSET = 1867;
 
 
    public static final int ARM_PICKUP_ANGLE = 103;
@@ -142,8 +145,8 @@ public final class Constants {
    public static final int TELESCOPE_ENCODER_SOURCE_A = 0;
    public static final int TELESCOPE_ENCODER_SOURCE_B = 1;
 
-   public static final double TELESCOPE_EXTEND_SPEED = 0.4;
-   public static final double TELESCOPE_RETRACT_SPEED = -0.4;
+   public static final double TELESCOPE_EXTEND_SPEED = -0.4;
+   public static final double TELESCOPE_RETRACT_SPEED = 0.4;
    public static final int TELESCOPE_STOP_SPEED = 0;
 
    //BUTTON BINDINGS
@@ -160,6 +163,7 @@ public final class Constants {
 //    public static final int STOP_RELEASING_SERVO_BUTTON = 6;
 
    // left buttons
+   
    public static final int OUTTAKE_BUTTON = 1;
    public static final int TELESCOPE_EXTEND_BUTTON = 3;
    public static final int TELESCOPE_RETRACT_BUTTON = 5;

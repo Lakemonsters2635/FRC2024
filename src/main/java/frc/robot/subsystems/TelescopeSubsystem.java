@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,6 +17,8 @@ import frc.robot.Constants;
 public class TelescopeSubsystem extends SubsystemBase {
   public CANSparkMax telescopeMotor;
   public Encoder telescopeEncoder;
+  private double currentEncoderCounts;
+  private Joystick lefJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
   /** Creates a new TelescopeSubsystem. */
   public TelescopeSubsystem() {
     telescopeMotor = new CANSparkMax(Constants.TELESCOPE_MOTOR_ID, MotorType.kBrushless);
@@ -22,7 +26,7 @@ public class TelescopeSubsystem extends SubsystemBase {
   }
 
   public void extendTelescope() {
-    telescopeMotor.set(Constants.TELESCOPE_EXTEND_SPEED);
+    telescopeMotor.setVoltage(MathUtil.clamp(lefJoystick.getThrottle()*10, -1, 0));
   }
 
   public void retractTelescope() {
@@ -30,11 +34,22 @@ public class TelescopeSubsystem extends SubsystemBase {
   }
 
   public void stopTelescope() {
+
     telescopeMotor.set(Constants.TELESCOPE_STOP_SPEED);
   }
 
+  public double getEncoderCounts(){
+    return telescopeEncoder.get();
+  }
+
+  public void zeroEncoder (){
+    telescopeEncoder.reset();
+  }
   @Override
   public void periodic() {
+    extendTelescope();
+
+    SmartDashboard.putNumber("Telescope Slider", lefJoystick.getThrottle());
     SmartDashboard.putNumber("Telescope Encoder Counts", telescopeEncoder.get());
     // This method will be called once per scheduler run
   }
