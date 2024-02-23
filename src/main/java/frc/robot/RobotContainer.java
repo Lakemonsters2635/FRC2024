@@ -32,6 +32,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
 import frc.robot.subsystems.ReleaseClimber;
 import frc.robot.subsystems.TelescopeSubsystem;
@@ -55,6 +56,8 @@ public class RobotContainer {
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
   public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
+  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemGripper = new ObjectTrackerSubsystem("Gripper","MonsterVision");
+  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemChassis = new ObjectTrackerSubsystem("Chassis","MonsterVision");
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
@@ -74,7 +77,7 @@ public class RobotContainer {
   private final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
   private final AprilTagChooser m_aprilTagChooser = new AprilTagChooser();
   private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
-  private final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_aprilTagChooser, m_noteTakerCommand);
+  private final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem);
   private SendableChooser<Command> m_autoChooser;
 
 

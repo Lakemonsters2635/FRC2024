@@ -84,7 +84,7 @@ public final class Constants {
    public static final int kOperatorControllerPort = 1;
 
    // VISION CONSTANTS
-   public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+   public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
    
    // CLIMBER CONSTANTS
    public static final int CLIMBER_MOTOR_1 = 11;

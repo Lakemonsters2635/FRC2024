@@ -16,9 +16,10 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonomousCommand extends SequentialCommandGroup {
   /** Creates a new AutonomousCommand. */
-  public AutonomousCommand(DrivetrainSubsystem dts, AprilTagChooser aprilTagChooser, NoteTakerCommand noteTakerCommand) {
+  public AutonomousCommand(DrivetrainSubsystem dts) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    System.out.println("##########Autonomous Command###########");
     addCommands(
       // new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))),
       new InstantCommand(()->System.out.println("*******Change in rotation********")),
@@ -29,7 +30,6 @@ public class AutonomousCommand extends SequentialCommandGroup {
       // new WaitCommand(3),
       // new InstantCommand(()->System.out.println("*******Change in y********")),
       // dts.goToTargetPos(new Pose2d(dts.getPose().getX(),dts.getPose().getY()-1, Rotation2d.fromDegrees(dts.getPose().getRotation().getDegrees()))),
-      // new WaitCommand(3)
       // new WaitCommand(3),
       // new InstantCommand(()->System.out.println("\t\t\t2\t\t\t")),
       // dts.goToTargetPos(new Pose2d(0,0, Rotation2d.fromDegrees(-90))),

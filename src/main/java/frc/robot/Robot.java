@@ -48,12 +48,22 @@ public class Robot extends TimedRobot {
   public double zBack;
   public String objectBack;
 
+  // for motion compensate (vision)
+  public static int circularBufferSize = 50;
+  public static int bufferSlotNumber = 0;
+  public static double[] time;
+  public static double[] angle;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    // motion compensate (vision)
+    time = new double[circularBufferSize]; 
+    angle =  new double[circularBufferSize];
+
     // Front camera network table
     NetworkTable table = NetworkTableInstance.getDefault().getTable("MonsterVision");
     xSub = table.getDoubleTopic("x").subscribe(0);
@@ -120,8 +130,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    System.out.println("AutonomousCommand: "+m_autonomousCommand);
-
+    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
