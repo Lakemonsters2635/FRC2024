@@ -76,16 +76,16 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void putToBoard(){
-    SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
-    SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
-    SmartDashboard.putNumber("Theta",theta);
-    SmartDashboard.putNumber("Pose Target", m_poseTarget);
-    SmartDashboard.putNumber("FB Power", fbMotorPower);
-    SmartDashboard.putNumber("FF Power", ffMotorPower);
-    SmartDashboard.putNumber("Motor Power", motorPower);
-    SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
-    SmartDashboard.putNumber("Gain", gain);
-    SmartDashboard.putNumber("Slider Angle", MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT));
+    // SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
+    // SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
+    // SmartDashboard.putNumber("Theta",theta);
+    // SmartDashboard.putNumber("Pose Target", m_poseTarget);
+    // SmartDashboard.putNumber("FB Power", fbMotorPower);
+    // SmartDashboard.putNumber("FF Power", ffMotorPower);
+    // SmartDashboard.putNumber("Motor Power", motorPower);
+    // SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
+    // SmartDashboard.putNumber("Gain", gain);
+    // SmartDashboard.putNumber("Slider Angle", MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT));
   }
 
   public void setPosTarget(double poseTarget){

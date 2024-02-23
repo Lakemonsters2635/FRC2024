@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -22,8 +23,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
     System.out.println("##########Autonomous Command###########");
     addCommands(
       // new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))),
-      new InstantCommand(()->System.out.println("*******Change in rotation********")),
-      dts.goToTargetPos(new Pose2d(dts.getPose().getX(),dts.getPose().getY(), Rotation2d.fromDegrees(dts.getPose().getRotation().getDegrees()-90))),
+      new InstantCommand(()->SmartDashboard.putString("addCommands", "running")).withTimeout(0.1),
+      dts.goToTargetPos(new Pose2d(1,1, new Rotation2d(0))),
+      new InstantCommand(()->SmartDashboard.putString("addCommands", "running2")).withTimeout(0.1),
       new WaitCommand(3)
       // new InstantCommand(()->System.out.println("*******Change in x********")),
       // dts.goToTargetPos(new Pose2d(dts.getPose().getX()-1,dts.getPose().getY(), Rotation2d.fromDegrees(dts.getPose().getRotation().getDegrees()))),

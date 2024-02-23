@@ -77,11 +77,13 @@ public class RobotContainer {
   private final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
   private final AprilTagChooser m_aprilTagChooser = new AprilTagChooser();
   private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
-  private final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem);
-  private SendableChooser<Command> m_autoChooser;
+  public final AutonomousCommand m_autonomousCommand; //= new AutonomousCommand(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
+    m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem);
+    SmartDashboard.putString("addCommands", "empty");
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -145,6 +147,7 @@ public class RobotContainer {
 
     // SmartDashboard.putData("AutoChooser", m_autoChooser);
 
+    System.out.println("getAutonomousCommand is runned");
     return m_autonomousCommand;
   }
 }

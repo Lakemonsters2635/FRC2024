@@ -24,8 +24,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;  
 
-  private SendableChooser<Command> m_autoChooser;
-
   private RobotContainer m_robotContainer;
 
   private DoubleSubscriber xSub;
@@ -130,10 +128,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
+    }
+    else{
+      System.out.println("Autonomous Command: null");
     }
   }
 
