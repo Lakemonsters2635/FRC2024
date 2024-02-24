@@ -4,14 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.networktables.GenericSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -26,25 +19,25 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private DoubleSubscriber xSub;
-  private DoubleSubscriber ySub;
-  private DoubleSubscriber zSub;
-  private GenericSubscriber objectSub;
+  // private DoubleSubscriber xSub;
+  // private DoubleSubscriber ySub;
+  // private DoubleSubscriber zSub;
+  // private GenericSubscriber objectSub;
 
-  private DoubleSubscriber xSubBack;
-  private DoubleSubscriber ySubBack;
-  private DoubleSubscriber zSubBack;
-  private GenericSubscriber objectSubBack;
+  // private DoubleSubscriber xSubBack;
+  // private DoubleSubscriber ySubBack;
+  // private DoubleSubscriber zSubBack;
+  // private GenericSubscriber objectSubBack;
 
-  public static double x;
-  public double y;
-  public static double z;
-  public String object;
+  // public static double x;
+  // public double y;
+  // public static double z;
+  // public String object;
 
-  public double xBack;
-  public double yBack;
-  public double zBack;
-  public String objectBack;
+  // public double xBack;
+  // public double yBack;
+  // public double zBack;
+  // public String objectBack;
 
   // for motion compensate (vision)
   public static int circularBufferSize = 50;
@@ -63,18 +56,18 @@ public class Robot extends TimedRobot {
     angle =  new double[circularBufferSize];
 
     // Front camera network table
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("MonsterVision");
-    xSub = table.getDoubleTopic("x").subscribe(0);
-    ySub = table.getDoubleTopic("y").subscribe(0);
-    zSub = table.getDoubleTopic("z").subscribe(0);
-    objectSub = table.getStringTopic("objectLabel").genericSubscribe("");
+    // NetworkTable table = NetworkTableInstance.getDefault().getTable("MonsterVision");
+    // xSub = table.getDoubleTopic("x").subscribe(0);
+    // ySub = table.getDoubleTopic("y").subscribe(0);
+    // zSub = table.getDoubleTopic("z").subscribe(0);
+    // objectSub = table.getStringTopic("objectLabel").genericSubscribe("");
 
-    // Back camera network table
-    NetworkTable tableBack = NetworkTableInstance.getDefault().getTable("");// TODO: Enter back camera key
-    xSubBack = tableBack.getDoubleTopic("x").subscribe(0);
-    ySubBack = tableBack.getDoubleTopic("y").subscribe(0);
-    zSubBack = tableBack.getDoubleTopic("z").subscribe(0);
-    objectSubBack = tableBack.getStringTopic("object").genericSubscribe("");
+    // // Back camera network table
+    // NetworkTable tableBack = NetworkTableInstance.getDefault().getTable("");// TODO: Enter back camera key
+    // xSubBack = tableBack.getDoubleTopic("x").subscribe(0);
+    // ySubBack = tableBack.getDoubleTopic("y").subscribe(0);
+    // zSubBack = tableBack.getDoubleTopic("z").subscribe(0);
+    // objectSubBack = tableBack.getStringTopic("object").genericSubscribe("");
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -99,21 +92,10 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    x = xSub.get();
-    y = ySub.get();
-    z = zSub.get();
-    object = objectSub.getString("");
-
-    SmartDashboard.putNumber("x", x);
-    SmartDashboard.putNumber("y", y);
-    SmartDashboard.putNumber("z", z);
-    SmartDashboard.putString("object", object);
-
-    // Back camera values
-    xBack = xSubBack.get();
-    yBack = ySubBack.get();
-    zBack = zSubBack.get();
-    objectBack = objectSubBack.getString("");
+    // m_robotContainer.m_objectTrackerSubsystemAprilTagPro.data();
+    // m_robotContainer.m_objectTrackerSubsystemNoteCam.data();
+    // SmartDashboard.putString("NetworkTables Note Cam", m_robotContainer.m_objectTrackerSubsystemNoteCam.getObjectsJson());
+    // SmartDashboard.putString("NetworkTables April Tag Pro", m_robotContainer.m_objectTrackerSubsystemAprilTagPro.getObjectsJson());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -132,9 +114,6 @@ public class Robot extends TimedRobot {
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-    }
-    else{
-      System.out.println("Autonomous Command: null");
     }
   }
 

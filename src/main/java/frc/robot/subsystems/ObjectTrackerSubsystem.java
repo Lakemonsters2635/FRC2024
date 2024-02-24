@@ -21,7 +21,7 @@ import frc.robot.models.VisionObject;
 
 
 public class ObjectTrackerSubsystem extends SubsystemBase {
-	  NetworkTable networkTable; 
+	  NetworkTable monsterVision; 
     public VisionObject[] foundObjects; 
     private String jsonString;
     private String source;
@@ -37,7 +37,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 
     // rotation matrix
     private double cameraTilt; //= 0.0 * Math.PI / 180.0;
-    private double[] cameraOffset = {-2.0, 0.0, 0.0}; // goes {x, y, z} // TODO: figure this offset
+    private double[] cameraOffset = {-14.0, 0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
 
     private double sinTheta; //= Math.sin(cameraTilt);
     private double cosTheta; //= Math.cos(cameraTilt);
@@ -47,7 +47,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 	public ObjectTrackerSubsystem(String source){
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         this.source = source; 
-        networkTable = inst.getTable("MonsterVision");
+        monsterVision = inst.getTable("MonsterVision");
         jsonString = "";
 
         if (source == "NoteCam") {
@@ -60,9 +60,9 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         sinTheta = Math.sin(cameraTilt);
         cosTheta = Math.cos(cameraTilt);
 
-        // networkTable.addEntryListener(
+        // monsterVision.addEntryListener(
         //     "ObjectTracker",
-        //     (networkTable, key, entry, value, flags) -> {
+        //     (monsterVision, key, entry, value, flags) -> {
         //    System.out.println("ObjectTracker changed value: " + value.getValue());
         // }, 
         // EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);          
@@ -70,7 +70,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     
     
     public void data() {
-        NetworkTableEntry entry = networkTable.getEntry("ObjectTracker-" + source);
+        NetworkTableEntry entry = monsterVision.getEntry("ObjectTracker-" + source);
         if(entry==null) {
             return;
         }
@@ -133,7 +133,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     
     // private NetworkTableEntry getEntry(Integer index, String subkey) {
     //     try {
-    //         NetworkTable table = networkTable.getSubTable(index.toString());
+    //         NetworkTable table = monsterVision.getSubTable(index.toString());
     //         NetworkTableEntry entry = table.getEntry(subkey);
     //         return entry;
     //     }

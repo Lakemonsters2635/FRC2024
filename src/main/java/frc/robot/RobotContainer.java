@@ -32,7 +32,6 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
 import frc.robot.subsystems.ReleaseClimber;
 import frc.robot.subsystems.TelescopeSubsystem;
@@ -56,8 +55,8 @@ public class RobotContainer {
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
   public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
-  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemNoteCam = new ObjectTrackerSubsystem("NoteCam");
-  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemAprilTagPro = new ObjectTrackerSubsystem("AprilTagPro");
+  // public final ObjectTrackerSubsystem m_objectTrackerSubsystemNoteCam = new ObjectTrackerSubsystem("NoteCam");
+  // public final ObjectTrackerSubsystem m_objectTrackerSubsystemAprilTagPro = new ObjectTrackerSubsystem("AprilTagPro");
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
@@ -142,12 +141,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
 
-    // m_autoChooser = new SendableChooser<>();
-    // m_autoChooser.addOption("Autonomous", m_autonomousCommand);
+    SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+    m_autoChooser.addOption("Test Auto", m_autonomousCommand);
 
-    // SmartDashboard.putData("AutoChooser", m_autoChooser);
+    SmartDashboard.putData("AutoChooser", m_autoChooser);
 
     System.out.println("getAutonomousCommand is runned");
     return m_autonomousCommand;
+    // return m_autoChooser.getSelected();
   }
 }
