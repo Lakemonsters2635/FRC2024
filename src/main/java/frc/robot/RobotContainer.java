@@ -56,8 +56,8 @@ public class RobotContainer {
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
   public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
-  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemGripper = new ObjectTrackerSubsystem("Gripper","MonsterVision");
-  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemChassis = new ObjectTrackerSubsystem("Chassis","MonsterVision");
+  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemNoteCam = new ObjectTrackerSubsystem("NoteCam");
+  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemAprilTagPro = new ObjectTrackerSubsystem("AprilTagPro");
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
@@ -82,7 +82,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem);
-    SmartDashboard.putString("addCommands", "empty");
+    SmartDashboard.putString("AutonomousCommand", "empty");
 
     // Configure the trigger bindings
     configureBindings();

@@ -139,7 +139,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command goToTargetPos(Pose2d targetPose){
-    System.out.println("$$$$$$Target pos: "+"x:"+targetPose.getX()+" y:"+targetPose.getY()+" degrees:"+targetPose.getRotation().getDegrees()+"$$$$$$");
+    System.out.println("Target pos: "+"x:"+targetPose.getX()+" y:"+targetPose.getY()+" degrees:"+targetPose.getRotation().getDegrees());
 
     // Since we are using a holonomic drivetrain, the rotation component of this pose
     // represents the goal holonomic rotation
@@ -212,7 +212,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
-      System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
+      // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
       if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
         yPowerCommanded = Constants.HAT_POWER_MOVE;
       }
@@ -449,7 +449,9 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
 
-    SmartDashboard.putString("GetPose:", "("+Double.toString(getPose().getX())+" , "+Double.toString(getPose().getY())+" , "+Double.toString(getPose().getRotation().getDegrees())+")");
+    SmartDashboard.putNumber("Robot X", getPose().getX());
+    SmartDashboard.putNumber("Robot Y", getPose().getY());
+    SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
 
   }
 }

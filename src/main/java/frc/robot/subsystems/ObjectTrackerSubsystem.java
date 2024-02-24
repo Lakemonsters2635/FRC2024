@@ -16,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.models.VisionObject;
 
 
@@ -35,19 +36,30 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     */
 
     // rotation matrix
-    private double cameraTilt = 0.0 * Math.PI / 180.0; //Update this      TODO: update
+    private double cameraTilt; //= 0.0 * Math.PI / 180.0;
     private double[] cameraOffset = {-2.0, 0.0, 0.0}; // goes {x, y, z} // TODO: figure this offset
 
-    private double sinTheta = Math.sin(cameraTilt);
-    private double cosTheta = Math.cos(cameraTilt);
+    private double sinTheta; //= Math.sin(cameraTilt);
+    private double cosTheta; //= Math.cos(cameraTilt);
 
 	// Put methods for controlling this subsystem
-  // here. Call these from Commands.
-	public ObjectTrackerSubsystem(String source, String networkTableKey){
+    // here. Call these from Commands.
+	public ObjectTrackerSubsystem(String source){
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         this.source = source; 
-        networkTable = inst.getTable(networkTableKey);
+        networkTable = inst.getTable("MonsterVision");
         jsonString = "";
+
+        if (source == "NoteCam") {
+            cameraTilt= Constants.VISION_NOTE_CAM_TILT;
+        }
+        else if(source == "AprilTagPro"){
+            cameraTilt=Constants.VISION_APRIL_TAG_PRO_TILT;
+        }
+
+        sinTheta = Math.sin(cameraTilt);
+        cosTheta = Math.cos(cameraTilt);
+
         // networkTable.addEntryListener(
         //     "ObjectTracker",
         //     (networkTable, key, entry, value, flags) -> {
@@ -93,9 +105,10 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         if (foundObjects != null && source.contains("Chassis")) {
             applyRotationTranslationMatrix();
         }
-        // for (VisionObject object : foundObjects){
-        //     System.out.format("%s %.1f %.1f %.1f %.1f\n",object.objectLabel, object.x, object.y, object.z, object.confidence);
-        // }       
+        // TODO: Comment this part
+        for (VisionObject object : foundObjects){
+            System.out.format("%s %.1f %.1f %.1f %.1f\n",object.objectLabel, object.x, object.y, object.z, object.confidence);
+        }       
     }
 
     private void applyRotationTranslationMatrix() {

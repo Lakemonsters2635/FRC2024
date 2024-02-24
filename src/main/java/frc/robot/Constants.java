@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -141,6 +143,10 @@ public final class Constants {
    public static final double TELESCOPE_EXTEND_SPEED = 0.4;
    public static final double TELESCOPE_RETRACT_SPEED = -0.4;
    public static final int TELESCOPE_STOP_SPEED = 0;
+
+   // VISION CONSTANTS
+   public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(54);
+   public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
 
    //BUTTON BINDINGS
 

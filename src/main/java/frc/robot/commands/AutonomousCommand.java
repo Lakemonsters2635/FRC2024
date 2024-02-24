@@ -20,12 +20,15 @@ public class AutonomousCommand extends SequentialCommandGroup {
   public AutonomousCommand(DrivetrainSubsystem dts) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    System.out.println("##########Autonomous Command###########");
     addCommands(
       // new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))),
-      new InstantCommand(()->SmartDashboard.putString("addCommands", "running")).withTimeout(0.1),
+      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose")).withTimeout(0.1),
+      dts.goToTargetPos(new Pose2d(0,0, new Rotation2d(0))),
+      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "nextPose")).withTimeout(0.1),
       dts.goToTargetPos(new Pose2d(1,1, new Rotation2d(0))),
-      new InstantCommand(()->SmartDashboard.putString("addCommands", "running2")).withTimeout(0.1),
+      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose")).withTimeout(0.1),
+      dts.goToTargetPos(new Pose2d(0,0, new Rotation2d(0))),
+      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "End")).withTimeout(0.1),
       new WaitCommand(3)
       // new InstantCommand(()->System.out.println("*******Change in x********")),
       // dts.goToTargetPos(new Pose2d(dts.getPose().getX()-1,dts.getPose().getY(), Rotation2d.fromDegrees(dts.getPose().getRotation().getDegrees()))),
