@@ -23,11 +23,11 @@ public class AutonomousCommand extends SequentialCommandGroup {
     addCommands(
       // new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))),
       new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose")).withTimeout(0.1),
-      dts.goToTargetPos(new Pose2d(0,0, new Rotation2d(0))),
+      dts.goToTargetPos(new Pose2d(1,0, new Rotation2d())),
       new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "nextPose")).withTimeout(0.1),
-      dts.goToTargetPos(new Pose2d(1,1, new Rotation2d(0))),
-      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose")).withTimeout(0.1),
-      dts.goToTargetPos(new Pose2d(0,0, new Rotation2d(0))),
+      dts.goToTargetPos(new Pose2d(1,1, new Rotation2d())),
+      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose2")).withTimeout(0.1),
+      dts.goToTargetPos(new Pose2d(0,0, new Rotation2d())),
       new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "End")).withTimeout(0.1),
       new WaitCommand(3)
       // new InstantCommand(()->System.out.println("*******Change in x********")),

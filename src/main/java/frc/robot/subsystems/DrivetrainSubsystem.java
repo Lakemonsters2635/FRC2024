@@ -252,14 +252,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
       double loggingState[] = {     //Array for predicted values
-        swerveModuleStates[0].angle.getDegrees(),
-        swerveModuleStates[0].speedMetersPerSecond,
+        swerveModuleStates[3].angle.getDegrees(),
+        swerveModuleStates[3].speedMetersPerSecond,
         swerveModuleStates[1].angle.getDegrees(),
         swerveModuleStates[1].speedMetersPerSecond,
         swerveModuleStates[2].angle.getDegrees(),
         swerveModuleStates[2].speedMetersPerSecond,
-        swerveModuleStates[3].angle.getDegrees(),
-        swerveModuleStates[3].speedMetersPerSecond,
+        swerveModuleStates[0].angle.getDegrees(),
+        swerveModuleStates[0].speedMetersPerSecond,
       };
 
       double actualLoggingState[] = {
