@@ -21,10 +21,12 @@ public class AutonomousCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(()->dts.m_gyro.reset()),
-      // new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))).withTimeout(3.0),
-      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose")).withTimeout(0.1),
-      dts.pathChooser("LeaveAuto")
+      new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0,new Rotation2d()))).withTimeout(0.1),
+      new InstantCommand(()->dts.resetAngle()),
+      new AutoMoveSwerve(dts, 0, 1.4),
+      new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "startPose")).withTimeout(0.1)
+      // dts.goToTargetPos(new Pose2d(1,0,new Rotation2d(0)))
+      // dts.pathChooser("LeaveAuto")
       // dts.goToTargetPos(new Pose2d(0.5,0.5, dts.getPose().getRotation()))
       // new InstantCommand(()->SmartDashboard.putString("AutonomousCommand", "nextPose")).withTimeout(0.1),
       // dts.goToTargetPos(new Pose2d(1,1, new Rotation2d())),

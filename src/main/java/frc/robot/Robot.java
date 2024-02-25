@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -109,12 +110,15 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_autoChooser.getSelected();
+    RobotContainer.m_drivetrainSubsystem.followJoystics = false;
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    // RobotContainer.m_drivetrainSubsystem.followJoystics = true;
   }
 
   /** This function is called periodically during autonomous. */
@@ -128,6 +132,8 @@ public class Robot extends TimedRobot {
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
     RobotContainer.m_drivetrainSubsystem.resetAngle();
     // RobotContainer.m_armSubsystem.m_poseTarget2=80;
+
+    RobotContainer.m_drivetrainSubsystem.followJoystics = true;
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

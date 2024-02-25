@@ -91,6 +91,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_frontRightLocation, 
       m_backLeftLocation, 
       m_backRightLocation);
+    
+    public boolean followJoystics = true;
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
@@ -251,8 +253,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void resetAngle(){
+    double angle=m_gyro.getAngle();
     m_gyro.reset();
     m_gyro.setAngleAdjustment(0);
+    angle = m_gyro.getAngle();
   }
 
   private static double xPowerCommanded = 0;
@@ -276,43 +280,50 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
       // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
-      if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
-        yPowerCommanded = Constants.HAT_POWER_MOVE;
+      if (followJoystics) {
+        if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
+          yPowerCommanded = Constants.HAT_POWER_MOVE;
+        }
+        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
+          yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+        }
+        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
+          xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
+        }
+        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
+          xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+        }
+
+        if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
+          rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
+        }
+        else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
+          rotCommanded = Constants.HAT_POWER_ROTATE;
+        }
+
+        if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
+          yPowerCommanded = rightJoystick.getY() * -1;
+        }
+
+        if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
+          xPowerCommanded = rightJoystick.getX();
+        }
+
+        if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
+          rotCommanded = rightJoystick.getTwist() * -1;
+        }
+        
       }
-      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
-        yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
-      }
-      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
-      }
-      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+      else{
       }
 
-      if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
-        rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
-      }
-      else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
-        rotCommanded = Constants.HAT_POWER_ROTATE;
-      }
-
-      if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
-        yPowerCommanded = rightJoystick.getY() * -1;
-      }
-
-      if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
-        xPowerCommanded = rightJoystick.getX();
-      }
-
-      if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
-        rotCommanded = rightJoystick.getTwist() * -1;
-      }
       
       this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                 yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                 MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                 true);
-
+                yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                true);
+     
+      SmartDashboard.putNumber("rotCommanded", rotCommanded);
 
       double loggingState[] = {     //Array for predicted values
         swerveModuleStates[3].angle.getDegrees(),
@@ -490,10 +501,10 @@ public ChassisSpeeds getChassisSpeeds() {
   public void tuneAngleOffsetPutToDTS() {
     // TUNE ANGLE OFFSETS
     
-    // SmartDashboard.putNumber("FL encoder pos", Math.toDegrees(m_frontLeft.getTurningEncoderRadians()));
-    // SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
-    // SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
-    // SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
+    SmartDashboard.putNumber("FL encoder pos", Math.toDegrees(m_frontLeft.getTurningEncoderRadians()));
+    SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
+    SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
+    SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
 
     // SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
     // SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());
@@ -514,7 +525,7 @@ public ChassisSpeeds getChassisSpeeds() {
 
     SmartDashboard.putNumber("Robot X", getPose().getX());
     SmartDashboard.putNumber("Robot Y", getPose().getY());
-    SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("Robot Angle", m_gyro.getAngle());
 
   }
 }

@@ -55,6 +55,9 @@ public class SwerveModule {
 
     m_driveMotorGain = driveMotorGain;
 
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
+    m_turningMotor.setIdleMode(IdleMode.kBrake);
+    
     /**
      * Parameters can be set by calling the appropriate Set method on the CANSparkMax object
      * whose properties you want to change
