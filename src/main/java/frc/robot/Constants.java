@@ -98,8 +98,8 @@ public final class Constants {
    public static final int CLIMBER_STOP_SPEED = 0;
 
    // CLIMBER RELEASE/SERVO CONSTANTS
-   public static final int SERVO_MOTOR_1 = 0;//TODO Figure out these
-   public static final int SERVO_MOTOR_2 = 1;//TODO Figure out these
+   public static final int SERVO_MOTOR_1 = 0;
+   public static final int SERVO_MOTOR_2 = 1;
 
     public static final double FULL_EXTENDED_SERVO = 1.0;
     public static final double FULL_RETRACTED_SERVO = 0.0;

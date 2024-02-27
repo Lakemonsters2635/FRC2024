@@ -269,7 +269,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public Command createPath(){
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      0.5, 
+      2, 
       0.5)//TODO
       .setKinematics(m_kinematics);
 
