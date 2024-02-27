@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +16,7 @@ public class TelescopeSubsystem extends SubsystemBase {
   /** Creates a new TelescopeSubsystem. */
   public TelescopeSubsystem() {
     telescopeMotor = new CANSparkMax(Constants.TELESCOPE_MOTOR_ID, MotorType.kBrushless);
+    telescopeMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public void extendTelescope() {

@@ -4,7 +4,20 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -12,6 +25,8 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,11 +35,18 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.proto.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -38,6 +60,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
     public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
+
+    private Field2d field = new Field2d();
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -79,6 +103,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_frontRightLocation, 
       m_backLeftLocation, 
       m_backRightLocation);
+    
+    public boolean followJoystics = true;
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
@@ -93,34 +119,189 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
+    // TODO: Delete this if don't needed
     AutoBuilder.configureHolonomic(
-            this::getPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            this::setDesiredStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                    4.5, // Max module speed, in m/s
-                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                    new ReplanningConfig() // Default path replanning config. See the API for the options here
-            ),
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+              this::getPose, // Robot pose supplier
+              this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+              this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+              this::setDesiredStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+              new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                      new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                      4.5, // Max module speed, in m/s
+                      0.42, // Drive base radius in meters. Distance from robot center to furthest module.
+                      new ReplanningConfig() // Default path replanning config. See the API for the options here
+              ),
+              () -> {
+                  // Boolean supplier that controls when the path will be mirrored for the red alliance
+                  // This will flip the path being followed to the red side of the field.
+                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return false;
-            },
-            this // Reference to this subsystem to set requirements
+                  var alliance = DriverStation.getAlliance();
+                  if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                  }
+                  return false;
+              },
+              this // Reference to this subsystem to set requirements
     );
+
+    PathPlannerLogging.setLogCurrentPoseCallback((poses) -> field.getObject("path").getPose());
+
+    SmartDashboard.putData("field" ,field);
+
     getPose();
     zeroOdometry();
     resetAngle();
+  }
+
+  /**
+   * Go to targetPose using pathplanner
+   * @param targetPose
+   * @return command to make robot go to targetPose
+   */
+  public Command goToTargetPos(Pose2d targetPose){
+    // System.out.println("Target pos: "+"x:"+targetPose.getX()+" y:"+targetPose.getY()+" degrees:"+targetPose.getRotation().getDegrees());
+
+    // Since we are using a holonomic drivetrain, the rotation component of this pose
+    // represents the goal holonomic rotation
+
+    // Create the constraints to use while pathfinding
+    // PathConstraints constraints = new PathConstraints(
+    //         0.1, 0.1,
+    //         Units.degreesToRadians(10), Units.degreesToRadians(10));
+
+    // // See the "Follow a single path" example for more info on what gets passed here
+    // Command pathfindingCommand = new PathfindHolonomic(
+    //         targetPose,
+    //         constraints,
+    //         0.0, // Goal end velocity in m/s. Optional
+    //         this::getPose,
+    //         this::getChassisSpeeds,
+    //         this::setDesiredStates,
+    //         new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()), // TODO: Figure out these numbers
+    //         0.0, // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate. Optional
+    //         this // Reference to drive subsystem to set requirements
+    // );
+
+    // return pathfindingCommand;
+    
+    // Create a list of bezier points from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+            getPose(),
+            targetPose
+    );
+
+
+    // Create the path using the bezier points created above
+    PathPlannerPath path = new PathPlannerPath(
+            bezierPoints,
+            new PathConstraints(1, 1, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
+            new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+    );
+
+    PathPlannerTrajectory traj = new PathPlannerTrajectory(
+            path,
+            getChassisSpeeds(),
+            getPose().getRotation()
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    path.preventFlipping =true;
+
+    Command followPathcCommand = new FollowPathHolonomic(
+            path, 
+            this::getPose, 
+            this::getChassisSpeeds, 
+            this::setDesiredStates, 
+            new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()),
+            () -> {
+                  // Boolean supplier that controls when the path will be mirrored for the red alliance
+                  // This will flip the path being followed to the red side of the field.
+                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                  var alliance = DriverStation.getAlliance();
+                  if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                  }
+                  return false;
+            },
+            this
+    );
+    
+    return followPathcCommand;
+  }
+
+  public void stopMotors(){
+    m_backLeft.stop();
+    m_frontLeft.stop();
+    m_backRight.stop();
+    m_frontRight.stop();
+  }
+
+  public Command pathChooser(String autoName){
+
+    PathPlannerAuto c = new PathPlannerAuto(autoName);
+
+    // Command followPathcCommand = new FollowPathHolonomic(
+    //         path, 
+    //         this::getPose, 
+    //         this::getChassisSpeeds, 
+    //         this::setDesiredStates, 
+    //         new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()),
+    //         () -> {
+    //               // Boolean supplier that controls when the path will be mirrored for the red alliance
+    //               // This will flip the path being followed to the red side of the field.
+    //               // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+    //               var alliance = DriverStation.getAlliance();
+    //               if (alliance.isPresent()) {
+    //                 return alliance.get() == DriverStation.Alliance.Red;
+    //               }
+    //               return false;
+    //         },
+    //         this
+    // );
+
+    return c;
+  }
+
+  public Command createPath(){
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+      0.5, 
+      0.5)//TODO
+      .setKinematics(m_kinematics);
+
+    edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0,0, new Rotation2d(0)),
+      List.of(
+        new Translation2d(0,0.5)
+        // new Translation2d(-0.5,0.5)
+      ),
+      new Pose2d(0,1,new Rotation2d(0)),
+      trajectoryConfig
+      );
+
+      TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+
+      PIDController xController = new PIDController(0, 0, 0);
+      PIDController yController = new PIDController(0, 0, 0);
+      ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
+      thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+      SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+        trajectory,
+        this::getPose,
+        m_kinematics,
+        xController,
+        yController,
+        thetaController,
+        this::setModuleStates,
+        this
+      );
+
+      return swerveControllerCommand;
   }
 
   public void resetAngle(){
@@ -148,43 +329,51 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
-      if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
-        yPowerCommanded = Constants.HAT_POWER_MOVE;
+      // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
+      if (followJoystics) {
+        if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
+          yPowerCommanded = Constants.HAT_POWER_MOVE;
+        }
+        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
+          yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+        }
+        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
+          xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
+        }
+        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
+          xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+        }
+
+        if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
+          rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
+        }
+        else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
+          rotCommanded = Constants.HAT_POWER_ROTATE;
+        }
+
+        if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
+          yPowerCommanded = rightJoystick.getY() * -1;
+        }
+
+        if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
+          xPowerCommanded = rightJoystick.getX();
+        }
+
+        if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
+          rotCommanded = rightJoystick.getTwist() * -1;
+        }
+        
       }
-      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
-        yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
-      }
-      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
-      }
-      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
-        xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+      else{
       }
 
-      if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
-        rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
-      }
-      else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
-        rotCommanded = Constants.HAT_POWER_ROTATE;
-      }
-
-      if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
-        yPowerCommanded = rightJoystick.getY() * -1;
-      }
-
-      if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
-        xPowerCommanded = rightJoystick.getX();
-      }
-
-      if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
-        rotCommanded = rightJoystick.getTwist() * -1;
-      }
       
       this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                 yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                 MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                 true);
-
+                yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                true);
+     
+      SmartDashboard.putNumber("rotCommanded", rotCommanded);
 
       double loggingState[] = {     //Array for predicted values
         swerveModuleStates[3].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
@@ -347,7 +536,7 @@ public ChassisSpeeds getChassisSpeeds() {
     m_backLeft.setDesiredState(desiredStates[2]);
     m_backRight.setDesiredState(desiredStates[3]);
   }
-  
+
   /** Displays all 4 module positions + robot pose (forward/back) in SmartDashboard. 
    * </p> For debugging
    */
@@ -383,6 +572,10 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Rotation 2d",m_gyro.getRotation2d().getDegrees());
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
+
+    SmartDashboard.putNumber("Robot X", getPose().getX());
+    SmartDashboard.putNumber("Robot Y", getPose().getY());
+    SmartDashboard.putNumber("Robot Angle", m_gyro.getAngle());
 
   }
 }

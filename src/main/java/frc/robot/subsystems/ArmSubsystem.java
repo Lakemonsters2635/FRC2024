@@ -4,11 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -85,16 +82,16 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void putToBoard(){
-    SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
-    SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
-    SmartDashboard.putNumber("Theta",theta);
-    SmartDashboard.putNumber("Pose Target", m_poseTarget);
-    SmartDashboard.putNumber("FB Power", fbMotorPower);
-    SmartDashboard.putNumber("FF Power", ffMotorPower);
-    SmartDashboard.putNumber("Motor Power", motorPower);
-    SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
-    SmartDashboard.putNumber("Gain", gain);
-    SmartDashboard.putNumber("Slider Angle", MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT));
+    // SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
+    // SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
+    // SmartDashboard.putNumber("Theta",theta);
+    // SmartDashboard.putNumber("Pose Target", m_poseTarget);
+    // SmartDashboard.putNumber("FB Power", fbMotorPower);
+    // SmartDashboard.putNumber("FF Power", ffMotorPower);
+    // SmartDashboard.putNumber("Motor Power", motorPower);
+    // SmartDashboard.putNumber("Input", RobotContainer.rightJoystick.getThrottle());
+    // SmartDashboard.putNumber("Gain", gain);
+    // SmartDashboard.putNumber("Slider Angle", MathUtil.clamp(RobotContainer.rightJoystick.getThrottle()*180, Constants.ARM_LOWER_LIMIT, Constants.ARM_UPPER_LIMIT));
   }
 
   public void setPosTarget(double poseTarget){
@@ -145,7 +142,7 @@ public class ArmSubsystem extends SubsystemBase {
     if(m_poseTarget>102 && theta > 100){
       motorPower = 0;
     }
-    setArmPower(motorPower);
+    // setArmPower(motorPower);
 
   }    
 }

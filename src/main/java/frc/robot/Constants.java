@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -23,25 +25,25 @@ public final class Constants {
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; 
    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
-   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(89.46 - 3.7 + 180); //3.01
+   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(89.46 - 3.7 + 180+6); //3.01
 
    // FRONT RIGHT
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 2;
    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 4;
-   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(199.17+2.5+180); // 3.0775
+   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(199.17+2.5+180+38); // 3.0775
 
    // BACK LEFT
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 9; 
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0;
    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 10; 
-   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-117.06-128); //2.9835
+   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-117.06-128-1.7); //2.9835
  
    // BACK RIGHT
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 8;
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 1;
    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 7; 
-   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(52.93-0.6); //3.0346
+   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(52.93-0.6-1.2); //3.0346
 
    // hat constants 
    public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -84,7 +86,7 @@ public final class Constants {
    public static final int kOperatorControllerPort = 1;
 
    // VISION CONSTANTS
-   public static final double OBJECT_DETECTION_LATENCY = 0.217; // seconds
+   public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
    
    // CLIMBER CONSTANTS
    public static final int CLIMBER_MOTOR_1 = 11;
@@ -143,6 +145,14 @@ public final class Constants {
    public static final double TELESCOPE_EXTEND_SPEED = 0.4;
    public static final double TELESCOPE_RETRACT_SPEED = -0.4;
    public static final int TELESCOPE_STOP_SPEED = 0;
+
+   // AUTOMOVESWERVE CONSTANTS
+   public static final double CHANGE_IN_X_PER_SECOND= 0.714;
+   public static final double CHANGE_IN_Y_PER_SECOND= 0.717;
+
+   // VISION CONSTANTS
+   public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(54);
+   public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
 
    //BUTTON BINDINGS
 

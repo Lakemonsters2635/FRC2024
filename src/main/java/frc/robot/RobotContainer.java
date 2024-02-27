@@ -17,14 +17,19 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AprilTagChooser;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.MoveArmToPoseCommand;
+import frc.robot.commands.NoteTakerCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.SpeakerCommand;
+import frc.robot.commands.ScoreAmpCommand;
+import frc.robot.commands.ScoreShooterCommand;
 import frc.robot.commands.StartReleasingServoCommand;
 import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
@@ -33,6 +38,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
 import frc.robot.subsystems.ReleaseClimber;
 import frc.robot.subsystems.TelescopeSubsystem;
@@ -56,6 +62,8 @@ public class RobotContainer {
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
   public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
+  // public final ObjectTrackerSubsystem m_objectTrackerSubsystemNoteCam = new ObjectTrackerSubsystem("NoteCam");
+  // public final ObjectTrackerSubsystem m_objectTrackerSubsystemAprilTagPro = new ObjectTrackerSubsystem("AprilTagPro");
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
@@ -75,9 +83,17 @@ public class RobotContainer {
 
 
   public SendableChooser<Command> m_autoChooser;
+  private final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  private final AprilTagChooser m_aprilTagChooser = new AprilTagChooser();
+  private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
+  public final AutonomousCommand m_autonomousCommand; //= new AutonomousCommand(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
+    m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem);
+    SmartDashboard.putString("AutonomousCommand", "empty");
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -134,17 +150,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public SendableChooser<Command> getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("Drive Out");
-    m_autoChooser = new SendableChooser<>();
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-
-    SmartDashboard.putData("AutoChooser", m_autoChooser);
-
-
-    // return DrivetrainSubsystem.AutoBuilder;
-    //return AutoBuilder.followPath(path);
-    return null; //autoChooser; //new PathPlannerAuto("Drive Out");
+    return m_autonomousCommand;
+    // return m_autoChooser.getSelected();
   }
 }
