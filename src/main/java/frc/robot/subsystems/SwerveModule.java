@@ -57,7 +57,7 @@ public class SwerveModule {
 
     m_driveMotor.setIdleMode(IdleMode.kBrake);
     m_turningMotor.setIdleMode(IdleMode.kBrake);
-    
+
     /**
      * Parameters can be set by calling the appropriate Set method on the CANSparkMax object
      * whose properties you want to change
@@ -132,6 +132,11 @@ public class SwerveModule {
 
   public double getVelocity() {
     return m_driveEncoder.getVelocity();
+  }
+
+  public void stop(){
+    m_driveMotor.set(0);
+    m_turningMotor.set(0);
   }
   
   private static int loopCtr = 0;

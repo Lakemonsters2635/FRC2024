@@ -20,6 +20,8 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -28,6 +30,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.proto.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -35,6 +41,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -181,6 +188,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
             targetPose
     );
 
+
     // Create the path using the bezier points created above
     PathPlannerPath path = new PathPlannerPath(
             bezierPoints,
@@ -220,6 +228,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return followPathcCommand;
   }
 
+  public void stopMotors(){
+    m_backLeft.stop();
+    m_frontLeft.stop();
+    m_backRight.stop();
+    m_frontRight.stop();
+  }
+
   public Command pathChooser(String autoName){
 
     PathPlannerAuto c = new PathPlannerAuto(autoName);
@@ -247,16 +262,46 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return c;
   }
 
-  public Pose2d getTargetPosition(double rot){
-    return new Pose2d();
-    // return new Pose2d(getPose().getX()+Robot.x, getPose().getY()+Robot.z, Rotation2d.fromDegrees(rot));
+  public Command createPath(){
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+      0.5, 
+      0.5)//TODO
+      .setKinematics(m_kinematics);
+
+    edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0,0, new Rotation2d(0)),
+      List.of(
+        new Translation2d(0,0.5)
+        // new Translation2d(-0.5,0.5)
+      ),
+      new Pose2d(0,1,new Rotation2d(0)),
+      trajectoryConfig
+      );
+
+      TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+
+      PIDController xController = new PIDController(0, 0, 0);
+      PIDController yController = new PIDController(0, 0, 0);
+      ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
+      thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+      SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+        trajectory,
+        this::getPose,
+        m_kinematics,
+        xController,
+        yController,
+        thetaController,
+        this::setModuleStates,
+        this
+      );
+
+      return swerveControllerCommand;
   }
 
   public void resetAngle(){
-    double angle=m_gyro.getAngle();
     m_gyro.reset();
     m_gyro.setAngleAdjustment(0);
-    angle = m_gyro.getAngle();
   }
 
   private static double xPowerCommanded = 0;
