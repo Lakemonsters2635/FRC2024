@@ -19,7 +19,6 @@ public class TelescopeExtendCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_telescopeSubsystem.zeroEncoder();
     m_telescopeSubsystem.extendTelescope();
   }
 

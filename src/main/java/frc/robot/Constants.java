@@ -119,7 +119,7 @@ public final class Constants {
    public static final double ARM_MOTOR_FF_GAIN = -1; // 11V
 
   
-   public static final int ARM_ENCODER_OFFSET = 1867;
+   public static final int ARM_ENCODER_OFFSET = 2986;
 
 
    public static final int ARM_PICKUP_ANGLE = 103;
@@ -144,6 +144,8 @@ public final class Constants {
    public static final int TELESCOPE_MOTOR_ID = 13;
    public static final int TELESCOPE_ENCODER_SOURCE_A = 0;
    public static final int TELESCOPE_ENCODER_SOURCE_B = 1;
+   public static final double TELESCOPE_GAIN = -0.085938*10;
+
 
    public static final double TELESCOPE_EXTEND_SPEED = -0.4;
    public static final double TELESCOPE_RETRACT_SPEED = 0.4;

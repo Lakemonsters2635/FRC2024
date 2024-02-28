@@ -83,6 +83,8 @@ public class Robot extends TimedRobot {
     // RobotContainer.m_armSubsystem.setPosTarget(RobotContainer.m_armSubsystem.getTheta());
     // System.out.println("Theta value: "+RobotContainer.m_armSubsystem.getTheta());
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
+    m_robotContainer.m_telescopeSubsystem.zeroEncoder();
+
     RobotContainer.m_drivetrainSubsystem.resetAngle();
     // RobotContainer.m_armSubsystem.m_poseTarget2=80;
     
