@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AprilTagChooser;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ClimberCommand;
@@ -25,11 +24,8 @@ import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.MoveArmToPoseCommand;
-import frc.robot.commands.NoteTakerCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.SpeakerCommand;
-import frc.robot.commands.ScoreAmpCommand;
-import frc.robot.commands.ScoreShooterCommand;
 import frc.robot.commands.StartReleasingServoCommand;
 import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
@@ -83,10 +79,6 @@ public class RobotContainer {
 
 
   public SendableChooser<Command> m_autoChooser;
-  private final ScoreAmpCommand m_scoreAmpCommand = new ScoreAmpCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
-  private final ScoreShooterCommand m_scoreShooterCommand = new ScoreShooterCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
-  private final AprilTagChooser m_aprilTagChooser = new AprilTagChooser();
-  private final NoteTakerCommand m_noteTakerCommand = new NoteTakerCommand(m_drivetrainSubsystem, m_telescopeExtendCommand, m_telescopeRetractCommand);
   public final AutonomousCommand m_autonomousCommand; //= new AutonomousCommand(m_drivetrainSubsystem);
 
 

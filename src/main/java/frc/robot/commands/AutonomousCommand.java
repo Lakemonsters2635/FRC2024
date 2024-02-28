@@ -4,15 +4,14 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+import java.security.cert.TrustAnchor;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -20,14 +19,27 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonomousCommand extends SequentialCommandGroup {
   /** Creates a new AutonomousCommand. */
+
+  DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public AutonomousCommand(DrivetrainSubsystem dts) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    m_drivetrainSubsystem = dts;
+
     addCommands(
       new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0,new Rotation2d()))).withTimeout(0.1),
       new InstantCommand(()->dts.resetAngle()),
-      dts.createPath(),
-      new InstantCommand(()->dts.stopMotors())
+      goToSpeaker()
     );
+  }
+
+  public SequentialCommandGroup goToSpeaker(){
+    Pose2d initialPose = m_drivetrainSubsystem.getPose();
+    return new SequentialCommandGroup(m_drivetrainSubsystem.createPath(
+          initialPose,
+          new Translation2d(0.5,1),
+          new Pose2d(1, 0, new Rotation2d(initialPose.getRotation().getRadians()))
+      ),
+      new InstantCommand(()->m_drivetrainSubsystem.stopMotors()));
   }
 }

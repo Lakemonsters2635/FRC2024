@@ -62,7 +62,22 @@ public class VisionDriveClosedLoopCommand extends CommandBase {
     m_stopAtEnd = stopAtEnd;
     aprilTagID = Id.length == 1 ? Id[0] : -1;   // Id parameter overrides value in label
 
-    if (DriverStation.getAlliance() == Alliance.Blue) {
+    // TODO: Figure out this part
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      // Source
+      if (aprilTagID<=10 && aprilTagID>=9) {
+        aprilTagID -=8;
+      }
+      // Speaker
+      else if(aprilTagID>=3 && aprilTagID<=4){
+        aprilTagID +=4;
+      }
+      // Amp
+      else if(aprilTagID==5){
+        aprilTagID +=1;
+      }
+
+      // Old code:
       aprilTagID += 5;
     }
     addRequirements(m_drivetrainSubsystem);
@@ -71,19 +86,19 @@ public class VisionDriveClosedLoopCommand extends CommandBase {
   // TODO: beter name? This actually sets / initializes the targetObjectLabel instance parameter
   private void checkUpdateObjectLabel(String label) {
     // checks targetObjectLabel given to constructor, normalizes case
-    if (label.equalsIgnoreCase("cone")) {
-      this.targetObjectLabel = "cone";
-      this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_CONE;
+    // if (label.equalsIgnoreCase("cone")) {
+    //   this.targetObjectLabel = "cone";
+    //   this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_CONE;
 
-    } else if (label.equalsIgnoreCase("cube")) {
-      this.targetObjectLabel = "cube"; 
-      this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_CUBE;
+    // } else if (label.equalsIgnoreCase("cube")) {
+    //   this.targetObjectLabel = "cube"; 
+    //   this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_CUBE;
 
-    } else if (label.equalsIgnoreCase("any")) {
-      this.targetObjectLabel = "any"; 
-      this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_ANY;
-
-    } else if (label.contains("tag16h5")) {
+    // } else if (label.equalsIgnoreCase("any")) {
+    //   this.targetObjectLabel = "any"; 
+    //   this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_ANY;
+    // } 
+    if (label.contains("tag16h5")) {
       this.targetObjectLabel = "tag";
       try {
         this.aprilTagID = Integer.valueOf(label.substring(label.indexOf(" "),label.length()-1)); 
@@ -127,7 +142,7 @@ public class VisionDriveClosedLoopCommand extends CommandBase {
 
     // Try to align with field.  Make our pose angle 0deg or 180deg; whichever is closest
 
-    m_targetPoseAngle = m_drivetrainSubsystem.m_gyro.getAngle().getCos() > 0 ? 0 : 180;
+    m_targetPoseAngle = Math.cos(m_drivetrainSubsystem.m_gyro.getAngle()) > 0 ? 0 : 180;// TODO: added Math.cos not sure whether works or not
 
     m_objectTrackerSubsystem.data();
 
@@ -181,7 +196,7 @@ public class VisionDriveClosedLoopCommand extends CommandBase {
     {
       // Get current pose, normalized to 0-360deg
 
-      double poseAngle = m_drivetrainSubsystem.m_gyro.getAngle().getDegrees() % 360;
+      double poseAngle = m_drivetrainSubsystem.m_gyro.getAngle() % 360; // TODO: not sure works or not deleted .getDegreees() after getAngle()
       if (poseAngle < 0)
         poseAngle += 360;
 
