@@ -97,6 +97,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                               1.0);
   
     public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+
+    public boolean isBlueAliance;
   
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
       m_frontLeftLocation,
@@ -119,6 +121,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
+    
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      isBlueAliance = false;
+    }
+    else{
+      isBlueAliance = true;
+    }
+
     // TODO: Delete this if don't needed
     AutoBuilder.configureHolonomic(
               this::getPose, // Robot pose supplier
@@ -241,45 +251,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command pathChooser(String autoName){
-
     PathPlannerAuto c = new PathPlannerAuto(autoName);
-
-    // Command followPathcCommand = new FollowPathHolonomic(
-    //         path, 
-    //         this::getPose, 
-    //         this::getChassisSpeeds, 
-    //         this::setDesiredStates, 
-    //         new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()),
-    //         () -> {
-    //               // Boolean supplier that controls when the path will be mirrored for the red alliance
-    //               // This will flip the path being followed to the red side of the field.
-    //               // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-    //               var alliance = DriverStation.getAlliance();
-    //               if (alliance.isPresent()) {
-    //                 return alliance.get() == DriverStation.Alliance.Red;
-    //               }
-    //               return false;
-    //         },
-    //         this
-    // );
 
     return c;
   }
 
-  public Command createPath(){
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
+
+    if (!isBlueAliance) {
+      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
+      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+    }
+
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      2, 
-      0.5)//TODO
+      0.5, 
+      0.5)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
     edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0,0, new Rotation2d(0)),
+      startPose,
       List.of(
-        new Translation2d(0,0.5)
-        // new Translation2d(-0.5,0.5)
+        middlePose
       ),
-      new Pose2d(0,1,new Rotation2d(0)),
+      endPose,
       trajectoryConfig
       );
 
