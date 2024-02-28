@@ -98,7 +98,7 @@ public class VisionDriveClosedLoopCommand extends CommandBase {
     //   this.targetObjectLabel = "any"; 
     //   this.triggerDistance = Constants.TARGET_TRIGGER_DISTANCE_ANY;
     // } 
-    if (label.contains("tag16h5")) {
+    if (label.contains("tag32h11")) {
       this.targetObjectLabel = "tag";
       try {
         this.aprilTagID = Integer.valueOf(label.substring(label.indexOf(" "),label.length()-1)); 

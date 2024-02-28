@@ -122,12 +122,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
     
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      isBlueAliance = false;
-    }
-    else{
-      isBlueAliance = true;
-    }
 
     // TODO: Delete this if don't needed
     AutoBuilder.configureHolonomic(
@@ -258,6 +252,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
 
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      isBlueAliance = false;
+    }
+    else{
+      isBlueAliance = true;
+    }
+
     if (!isBlueAliance) {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
@@ -265,8 +266,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      0.5, 
-      0.5)// TODO figure out these numbers
+      7,  // TODO: this should be 7 during competetion
+      7)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
     edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -280,7 +281,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
       TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
-      PIDController xController = new PIDController(0, 0, 0);
+      PIDController xController = new PIDController(0.1, 0, 0);
       PIDController yController = new PIDController(0, 0, 0);
       ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
       thetaController.enableContinuousInput(-Math.PI, Math.PI);

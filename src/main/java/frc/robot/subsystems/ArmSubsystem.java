@@ -83,7 +83,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void putToBoard(){
     // SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
-    // SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
+    SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
     // SmartDashboard.putNumber("Theta",theta);
     // SmartDashboard.putNumber("Pose Target", m_poseTarget);
     // SmartDashboard.putNumber("FB Power", fbMotorPower);
@@ -142,7 +142,7 @@ public class ArmSubsystem extends SubsystemBase {
     if(m_poseTarget>102 && theta > 100){
       motorPower = 0;
     }
-    // setArmPower(motorPower);
+    setArmPower(motorPower);
 
   }    
 }

@@ -83,7 +83,7 @@ public class RobotContainer {
 
 
   public RobotContainer() {
-    m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem);
+    m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
     SmartDashboard.putString("AutonomousCommand", "empty");
 
     // Configure the trigger bindings
