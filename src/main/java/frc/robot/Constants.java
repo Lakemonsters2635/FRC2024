@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalSource;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -118,12 +119,12 @@ public final class Constants {
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
   
-   public static final int ARM_ENCODER_OFFSET = 1117;
+   public static final int ARM_ENCODER_OFFSET = 1270;
 
 
    public static final int ARM_PICKUP_ANGLE = 103;
    public static final int ARM_AMP_ANGLE = -14;
-   public static final int ARM_SHOOTER_ANGLE = 55;
+   public static final int ARM_SHOOTER_ANGLE = 58;
 
 
    // INTAKE CONSTANTS
@@ -145,6 +146,9 @@ public final class Constants {
    public static final double TELESCOPE_EXTEND_SPEED = 0.4;
    public static final double TELESCOPE_RETRACT_SPEED = -0.4;
    public static final int TELESCOPE_STOP_SPEED = 0;
+
+   public static final int TELESCOPE_ENCODER_ID1 = 0;
+   public static final int TELESCOPE_ENCODER_ID2 = 1;
 
    // AUTOMOVESWERVE CONSTANTS
    public static final double CHANGE_IN_X_PER_SECOND= 0.714;
@@ -174,6 +178,7 @@ public final class Constants {
    public static final int TELESCOPE_EXTEND_BUTTON = 3;
    public static final int TELESCOPE_RETRACT_BUTTON = 5;
    public static final int CLIMBER_BUTTON = 6;
+  
 
 //    public static final int ARM_START_BUTTON = 5;
 }

@@ -35,6 +35,11 @@ public class TelescopeExtendCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_telescopeSubsystem.getEncoderCounts()>1950){
+      m_telescopeSubsystem.stopTelescope();
+      return true;
+      }
     return false;
+    
   }
 }

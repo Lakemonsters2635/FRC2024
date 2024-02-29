@@ -266,8 +266,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      7,  // TODO: this should be 7 during competetion
-      7)// TODO figure out these numbers
+      3,  // TODO: this should be 7 during competetion
+      2)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
     edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -358,17 +358,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
           rotCommanded = rightJoystick.getTwist() * -1;
         }
+
+        
+        this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                  true);
         
       }
-      else{
-      }
-
       
-      this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                true);
-     
       SmartDashboard.putNumber("rotCommanded", rotCommanded);
 
       double loggingState[] = {     //Array for predicted values

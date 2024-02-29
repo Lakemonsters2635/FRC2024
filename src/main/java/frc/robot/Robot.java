@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -46,6 +47,8 @@ public class Robot extends TimedRobot {
   public static double[] time;
   public static double[] angle;
 
+  public SendableChooser<Command> m_autoChooser;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -56,24 +59,12 @@ public class Robot extends TimedRobot {
     time = new double[circularBufferSize]; 
     angle =  new double[circularBufferSize];
 
-    // Front camera network table
-    // NetworkTable table = NetworkTableInstance.getDefault().getTable("MonsterVision");
-    // xSub = table.getDoubleTopic("x").subscribe(0);
-    // ySub = table.getDoubleTopic("y").subscribe(0);
-    // zSub = table.getDoubleTopic("z").subscribe(0);
-    // objectSub = table.getStringTopic("objectLabel").genericSubscribe("");
-
-    // // Back camera network table
-    // NetworkTable tableBack = NetworkTableInstance.getDefault().getTable("");// TODO: Enter back camera key
-    // xSubBack = tableBack.getDoubleTopic("x").subscribe(0);
-    // ySubBack = tableBack.getDoubleTopic("y").subscribe(0);
-    // zSubBack = tableBack.getDoubleTopic("z").subscribe(0);
-    // objectSubBack = tableBack.getStringTopic("object").genericSubscribe("");
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
+    
+    // m_autoChooser = m_robotContainer.getAutonomousCommand();
     // m_autoChooser = m_robotContainer.getAutonomousCommand();
 
   }
@@ -87,6 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Telescope Encoder Counts", m_robotContainer.m_telescopeSubsystem.getEncoderCounts());
     // RobotContainer.m_armSubsystem.putToBoard();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
@@ -110,6 +102,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     RobotContainer.m_drivetrainSubsystem.followJoystics = false;
+    // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -130,6 +123,7 @@ public class Robot extends TimedRobot {
     // System.out.println("Theta value: "+RobotContainer.m_armSubsystem.getTheta());
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
     RobotContainer.m_drivetrainSubsystem.resetAngle();
+    RobotContainer.m_telescopeSubsystem.resetEncoder();
     // RobotContainer.m_armSubsystem.m_poseTarget2=80;
 
     RobotContainer.m_drivetrainSubsystem.followJoystics = true;

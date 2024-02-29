@@ -17,12 +17,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AmpAuto;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
+import frc.robot.commands.LeaveHomeAuto;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.SpeakerCommand;
@@ -76,16 +78,14 @@ public class RobotContainer {
   public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
   public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
+  public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
 
+  public final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
 
-  public SendableChooser<Command> m_autoChooser;
-  public final AutonomousCommand m_autonomousCommand; //= new AutonomousCommand(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
-    m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
-    SmartDashboard.putString("AutonomousCommand", "empty");
-
     // Configure the trigger bindings
     configureBindings();
   }
@@ -143,8 +143,15 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+
     // An example command will be run in autonomous
-    return m_autonomousCommand;
+    m_autoChooser.addOption("SpeakerAuto", m_autonomousCommand);
+    m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
+
+    SmartDashboard.putData("AutoChooser", m_autoChooser);
+
+    return m_ampAuto;
     // return m_autoChooser.getSelected();
   }
 }
