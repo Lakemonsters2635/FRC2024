@@ -24,22 +24,17 @@ public class AmpAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     m_dts = dts;
     addCommands(
-      new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d()))),
+      new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d(0)))),
       new InstantCommand(()->dts.resetAngle()),
       goToAmp()
     );
   }
 
   public Command goToAmp(){
-    // return m_dts.createPath(
-    //   new Pose2d(0,0,new Rotation2d()), 
-    //   new Translation2d(0, 0.63), 
-    //   new Pose2d(0,1.26,new Rotation2d())
-    // );
     return m_dts.createPath(
-      new Pose2d(0,0,new Rotation2d()), 
-      new Translation2d(0, 0), 
-      new Pose2d(0,0,Rotation2d.fromDegrees(90))
+      new Pose2d(0,0, Rotation2d.fromDegrees(0)), 
+      new Translation2d(0, 0.63), 
+      new Pose2d(0,1.26, Rotation2d.fromDegrees(90))
     );
   }
 }
