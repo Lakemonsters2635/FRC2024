@@ -30,6 +30,22 @@ public class ClimberSubsystem extends SubsystemBase {
   m_climberMotor2.set(Constants.CLIMBER_STOP_SPEED);  
   }
 
+  public void runClimber1(){
+    m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED * -1);
+    }
+  
+    public void runClimber2(){
+    m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED * -1);
+    }
+  
+    public void stopClimber1(){
+    m_climberMotor1.set(Constants.CLIMBER_STOP_SPEED);
+    }
+  
+    public void stopClimber2(){
+    m_climberMotor2.set(Constants.CLIMBER_STOP_SPEED);  
+    }
+
 
   @Override
   public void periodic() {

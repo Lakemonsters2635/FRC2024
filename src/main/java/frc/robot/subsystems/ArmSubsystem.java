@@ -74,7 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public boolean areWeThere(){
     double currentTheta = getTheta();
-    if (currentTheta > (m_poseTarget - 4) || currentTheta > (m_poseTarget + 4)){
+    if (currentTheta > (m_poseTarget - 2) || currentTheta > (m_poseTarget + 2)){
       return true;
     } else{
       return false;

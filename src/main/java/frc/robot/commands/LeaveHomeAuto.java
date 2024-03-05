@@ -20,8 +20,8 @@ public class LeaveHomeAuto extends SequentialCommandGroup {
     addCommands(
       dts.createPath(
         dts.getPose(),
-        new Translation2d(0,-0.9), 
-        new Pose2d(0,-1.8, dts.getPose().getRotation()))
+        new Translation2d(0,0.9), 
+        new Pose2d(0,2.1, dts.getPose().getRotation())) //was short at y =-1.8     1 unit=44in  1ft= 0.2732 units
     );
   }
 }

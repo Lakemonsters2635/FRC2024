@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpAuto;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.Climber1Command;
+import frc.robot.commands.Climber2Command;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
@@ -74,6 +76,9 @@ public class RobotContainer {
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
+  public static final Climber1Command m_climber1Command = new Climber1Command(m_climberSubsystem);
+  public static final Climber2Command m_climber2Command = new Climber2Command(m_climberSubsystem);
+
 
   public final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
 
@@ -101,33 +106,33 @@ public class RobotContainer {
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
     Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
-    Trigger speakerPoseButton = new JoystickButton(rightJoystick, Constants.SPEAKER_POSE_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
-    // Trigger startReleasingServoButton = new JoystickButton(rightJoystick, Constants.START_RELEASING_SERVO_BUTTON);
-    // Trigger stopReleasingServoButton = new JoystickButton(rightJoystick, Constants.STOP_RELEASING_SERVO_BUTTON);
 
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
     Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
+    Trigger climber1Button = new JoystickButton(leftJoystick, Constants.CLIMBER1_BUTTON);
+    Trigger climber2Button = new JoystickButton(leftJoystick, Constants.CLIMBER2_BUTTON);
+
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
     armPickupPoseButton.onTrue(m_pickUpPoseCommand);
     armAmpPoseButton.onTrue(m_ampPoseCommand);
     intakeOutButton.onTrue(m_intakeOutCommand);
-    speakerPoseButton.onTrue(m_speakerPoseCommand);
-    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     speakerButton.onTrue(m_speakerCommand);
-    // startReleasingServoButton.onTrue(m_startReleasingServoCommand);
-    // stopReleasingServoButton.onTrue(m_stopReleasingServoCommand);
+    swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
 
     outakeButton.whileTrue(m_outakeCommand);
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
     climberButton.whileTrue(m_climberCommand);
+    climber1Button.whileTrue(m_climber1Command);
+    climber2Button.whileTrue(m_climber2Command);
+
     // armStartButton.whileTrue(m_armCommand);
   }
 
@@ -145,7 +150,8 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);
 
-    return m_ampAuto;
-    // return m_autoChooser.getSelected();
+    return m_autonomousCommand;// Speaker auto
+    // return m_leaveHomeAuto;
+    // return m_speakerCommand;
   }
 }

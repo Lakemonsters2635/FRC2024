@@ -296,7 +296,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void resetAngle(){
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(0);
+    m_gyro.setAngleAdjustment(180);
   }
 
   private static double xPowerCommanded = 0;
