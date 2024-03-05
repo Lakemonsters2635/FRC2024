@@ -4,12 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.datalog.BooleanLogEntry;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.datalog.StringLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -24,16 +21,51 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  // private DoubleSubscriber xSub;
+  // private DoubleSubscriber ySub;
+  // private DoubleSubscriber zSub;
+  // private GenericSubscriber objectSub;
+
+  // private DoubleSubscriber xSubBack;
+  // private DoubleSubscriber ySubBack;
+  // private DoubleSubscriber zSubBack;
+  // private GenericSubscriber objectSubBack;
+
+  // public static double x;
+  // public double y;
+  // public static double z;
+  // public String object;
+
+  // public double xBack;
+  // public double yBack;
+  // public double zBack;
+  // public String objectBack;
+
+  // for motion compensate (vision)
+  public static int circularBufferSize = 50;
+  public static int bufferSlotNumber = 0;
+  public static double[] time;
+  public static double[] angle;
+
+  public SendableChooser<Command> m_autoChooser;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    // motion compensate (vision)
+    time = new double[circularBufferSize]; 
+    angle =  new double[circularBufferSize];
+
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     
+    // m_autoChooser = m_robotContainer.getAutonomousCommand();
+    // m_autoChooser = m_robotContainer.getAutonomousCommand();
 
   }
 
@@ -46,11 +78,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Telescope Encoder Counts", m_robotContainer.m_telescopeSubsystem.getEncoderCounts());
+    // RobotContainer.m_armSubsystem.putToBoard();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    // m_robotContainer.m_objectTrackerSubsystemAprilTagPro.data();
+    // m_robotContainer.m_objectTrackerSubsystemNoteCam.data();
+    // SmartDashboard.putString("NetworkTables Note Cam", m_robotContainer.m_objectTrackerSubsystemNoteCam.getObjectsJson());
+    // SmartDashboard.putString("NetworkTables April Tag Pro", m_robotContainer.m_objectTrackerSubsystemAprilTagPro.getObjectsJson());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -63,12 +101,16 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    RobotContainer.m_drivetrainSubsystem.followJoystics = false;
+    // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    // RobotContainer.m_drivetrainSubsystem.followJoystics = true;
   }
 
   /** This function is called periodically during autonomous. */
@@ -77,8 +119,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // RobotContainer.m_armSubsystem.setPosTarget(RobotContainer.m_armSubsystem.getTheta());
+    // System.out.println("Theta value: "+RobotContainer.m_armSubsystem.getTheta());
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
     RobotContainer.m_drivetrainSubsystem.resetAngle();
+    RobotContainer.m_telescopeSubsystem.resetEncoder();
+    // RobotContainer.m_armSubsystem.m_poseTarget2=80;
+
+    RobotContainer.m_drivetrainSubsystem.followJoystics = true;
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -89,6 +137,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     RobotContainer.m_driveTrainCommand.execute();
+    
   }
 
   @Override

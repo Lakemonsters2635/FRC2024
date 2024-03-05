@@ -5,21 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TelescopeSubsystem;
+import frc.robot.subsystems.ReleaseClimber;
 
-public class TelescopeExtendCommand extends Command {
-  private TelescopeSubsystem m_telescopeSubsystem;
-  /** Creates a new TelescopeExtendComman. */
-  public TelescopeExtendCommand(TelescopeSubsystem telescopeSubsystem) {
-    m_telescopeSubsystem = telescopeSubsystem;
+public class StopReleasingServoCommand extends Command {
+  /** Creates a new StopReleasingServoCommand. */
+  ReleaseClimber m_releaseClimber;
+  public StopReleasingServoCommand(ReleaseClimber releaseClimber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_telescopeSubsystem);
+    m_releaseClimber = releaseClimber;
+    addRequirements(m_releaseClimber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_telescopeSubsystem.extendTelescope();
+    m_releaseClimber.stopReleasing();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,18 +28,11 @@ public class TelescopeExtendCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_telescopeSubsystem.stopTelescope();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_telescopeSubsystem.getEncoderCounts()>1920 ){
-      m_telescopeSubsystem.stopTelescope();
-      return true;
-      }
     return false;
-    
   }
 }

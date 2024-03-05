@@ -28,6 +28,7 @@ public class DrivetrainCommand extends Command {
     double y = RobotContainer.rightJoystick.getY();
     double rot = RobotContainer.rightJoystick.getTwist();
 
+
     m_dts.setXPowerCommanded(Math.copySign(Math.pow(x, 3), x));
     m_dts.setYPowerCommanded(Math.copySign(Math.pow(y, 3), y));
     m_dts.setRotCommanded(Math.copySign(Math.pow(rot, 3), rot));

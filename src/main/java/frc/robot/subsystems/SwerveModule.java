@@ -27,8 +27,6 @@ public class SwerveModule {
   public final RelativeEncoder m_driveEncoder;
   public final AnalogInput m_turningEncoder;
 
-  private final int CPR = 4096;
-
   private double turningMotorOffset;
 
   private final PIDController m_drivePIDController = new PIDController(0.0, 0, 0.00);
@@ -56,6 +54,9 @@ public class SwerveModule {
     this.turningMotorOffset = turningMotorOffset;
 
     m_driveMotorGain = driveMotorGain;
+
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
+    m_turningMotor.setIdleMode(IdleMode.kBrake);
 
     /**
      * Parameters can be set by calling the appropriate Set method on the CANSparkMax object
@@ -131,6 +132,11 @@ public class SwerveModule {
 
   public double getVelocity() {
     return m_driveEncoder.getVelocity();
+  }
+
+  public void stop(){
+    m_driveMotor.set(0);
+    m_turningMotor.set(0);
   }
   
   private static int loopCtr = 0;

@@ -4,42 +4,47 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TelescopeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class TelescopeExtendCommand extends Command {
-  private TelescopeSubsystem m_telescopeSubsystem;
-  /** Creates a new TelescopeExtendComman. */
-  public TelescopeExtendCommand(TelescopeSubsystem telescopeSubsystem) {
-    m_telescopeSubsystem = telescopeSubsystem;
+public class IntakeOutCommand extends Command {
+  /** Creates a new IntakeOutCommand. */
+  private IntakeSubsystem m_intakeSubsystem;
+  private Timer m_timer;
+  public IntakeOutCommand(IntakeSubsystem intakeSubsystem) {
+    m_intakeSubsystem = intakeSubsystem;
+    m_timer = new Timer();
+    addRequirements(m_intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_telescopeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_telescopeSubsystem.extendTelescope();
+    m_timer.reset();
+    m_timer.start();
+    m_intakeSubsystem.outIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_telescopeSubsystem.stopTelescope();
+    m_intakeSubsystem.stopIntake();
+    m_timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_telescopeSubsystem.getEncoderCounts()>1920 ){
-      m_telescopeSubsystem.stopTelescope();
+    if(m_timer.get()>0.2){
       return true;
-      }
+    }
     return false;
-    
   }
 }

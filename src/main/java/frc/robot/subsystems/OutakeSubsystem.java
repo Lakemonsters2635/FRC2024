@@ -28,6 +28,10 @@ public class OutakeSubsystem extends SubsystemBase {
     m_outakeMotor.set(Constants.OUTTAKE_STOP_SPEED);
   }
 
+  public void manualOutake(){
+    m_outakeMotor.set(0.6);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

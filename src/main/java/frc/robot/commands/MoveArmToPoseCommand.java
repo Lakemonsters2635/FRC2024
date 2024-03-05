@@ -5,21 +5,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TelescopeSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
-public class TelescopeExtendCommand extends Command {
-  private TelescopeSubsystem m_telescopeSubsystem;
-  /** Creates a new TelescopeExtendComman. */
-  public TelescopeExtendCommand(TelescopeSubsystem telescopeSubsystem) {
-    m_telescopeSubsystem = telescopeSubsystem;
+public class MoveArmToPoseCommand extends Command {
+  /** Creates a new MoveArmToPoseCommand. */
+  private ArmSubsystem m_armSubsystem;
+  private int m_angle;
+
+  public MoveArmToPoseCommand(ArmSubsystem armSubsystem, int angle) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_telescopeSubsystem);
+    m_angle = angle;
+    m_armSubsystem = armSubsystem;
+    addRequirements(m_armSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_telescopeSubsystem.extendTelescope();
+    m_armSubsystem.setPosTarget(m_angle);
+    System.out.println("MOVE ARM COMMANDED");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,18 +32,11 @@ public class TelescopeExtendCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_telescopeSubsystem.stopTelescope();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_telescopeSubsystem.getEncoderCounts()>1920 ){
-      m_telescopeSubsystem.stopTelescope();
-      return true;
-      }
-    return false;
-    
+    return m_armSubsystem.areWeThere();
   }
 }
