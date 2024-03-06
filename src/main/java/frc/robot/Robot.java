@@ -21,26 +21,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  // private DoubleSubscriber xSub;
-  // private DoubleSubscriber ySub;
-  // private DoubleSubscriber zSub;
-  // private GenericSubscriber objectSub;
-
-  // private DoubleSubscriber xSubBack;
-  // private DoubleSubscriber ySubBack;
-  // private DoubleSubscriber zSubBack;
-  // private GenericSubscriber objectSubBack;
-
-  // public static double x;
-  // public double y;
-  // public static double z;
-  // public String object;
-
-  // public double xBack;
-  // public double yBack;
-  // public double zBack;
-  // public String objectBack;
-
   // for motion compensate (vision)
   public static int circularBufferSize = 50;
   public static int bufferSlotNumber = 0;

@@ -92,8 +92,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
     public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
-    public boolean isBlueAliance;
-  
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
       m_frontLeftLocation,
       m_frontRightLocation, 
@@ -245,15 +243,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
+    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      isBlueAliance = false;
-    }
-    else{
-      isBlueAliance = true;
-    }
-
-    if (!isBlueAliance) {
+    if (isRedAliance) {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
@@ -276,7 +268,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
       PIDController xController = new PIDController(0.1, 0, 0);
-      PIDController yController = new PIDController(0, 0, 0);
+      PIDController yController = new PIDController(0.1, 0, 0);
       ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
       thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -287,7 +279,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         xController,
         yController,
         thetaController,
-        this::setModuleStates,
+        this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
         this
       );
 
