@@ -30,6 +30,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -43,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.utils.TrajGenerator;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     public static final double kMaxSpeed = 3.63; // 3.63 meters per second
@@ -256,7 +258,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       2)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
-    edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
       List.of(
         middlePose

@@ -55,7 +55,13 @@ public class AutonomousCommand extends SequentialCommandGroup {
       new InstantCommand(()->System.out.println("After leaveHome:"+ dts.getPose())),
       goToSpeaker(),
       new SpeakerCommand(as, is, os),
-      new InstantCommand(()->System.out.println("End pose:"+ dts.getPose()))
+      new InstantCommand(()->System.out.println("End pose:"+ dts.getPose())),
+      secondNote(),
+      goToSpeaker2(),
+      new SpeakerCommand(as, is, os),
+      thirdNote(),
+      goToSpeaker3(),
+      new SpeakerCommand(as, is, os)
 
     );
   }
@@ -64,7 +70,27 @@ public class AutonomousCommand extends SequentialCommandGroup {
     return new SequentialCommandGroup(m_dts.createPath(
           initialPose,
           new Translation2d(0,0.9),
-          new Pose2d(0, 1.8, new Rotation2d(0))
+          new Pose2d(0, 1.8, initialPose.getRotation())
+      ),
+      new InstantCommand(()->m_dts.stopMotors()),
+      new IntakeCommand(m_is).withTimeout(0.1));
+  }
+
+  public Command goToSpeaker2(){
+    return new SequentialCommandGroup(m_dts.createPath(
+          initialPose,
+          new Translation2d(0.5,0.9),
+          new Pose2d(1.3, 1.8, initialPose.getRotation())
+      ),
+      new InstantCommand(()->m_dts.stopMotors()),
+      new IntakeCommand(m_is).withTimeout(0.1));
+  }
+
+  public Command goToSpeaker3(){
+    return new SequentialCommandGroup(m_dts.createPath(
+          initialPose,
+          new Translation2d(-0.5,0.9),
+          new Pose2d(-1.3, 1.8, initialPose.getRotation())
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new IntakeCommand(m_is).withTimeout(0.1));
@@ -74,7 +100,27 @@ public class AutonomousCommand extends SequentialCommandGroup {
     return new ParallelRaceGroup(new SequentialCommandGroup(m_dts.createPath(
       initialPose,
       new Translation2d(0, -0.9),
-      new Pose2d(0, -1.8, new Rotation2d(0))
+      new Pose2d(0, -1.8, initialPose.getRotation())
+    ),
+    new InstantCommand(()->m_dts.stopMotors())),
+    new IntakeCommand(m_is));
+  }
+
+  private Command secondNote(){
+    return new ParallelRaceGroup(new SequentialCommandGroup(m_dts.createPath(
+      initialPose,
+      new Translation2d(-0.5, -0.9),
+      new Pose2d(-1.3, -1.8, initialPose.getRotation())
+    ),
+    new InstantCommand(()->m_dts.stopMotors())),
+    new IntakeCommand(m_is));
+  }
+
+  private Command thirdNote(){
+    return new ParallelRaceGroup(new SequentialCommandGroup(m_dts.createPath(
+      initialPose,
+      new Translation2d(0.5, -0.9),
+      new Pose2d(1.3, -1.8, initialPose.getRotation())
     ),
     new InstantCommand(()->m_dts.stopMotors())),
     new IntakeCommand(m_is));
