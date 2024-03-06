@@ -20,6 +20,12 @@ public class TelescopeExtendCommand extends Command {
   @Override
   public void initialize() {
     m_telescopeSubsystem.extendTelescope();
+    if(m_telescopeSubsystem.getEncoderCounts()>2100){
+      m_telescopeSubsystem.retractTelescope();
+    }
+    if(m_telescopeSubsystem.getEncoderCounts()<100){
+      m_telescopeSubsystem.extendTelescope();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
