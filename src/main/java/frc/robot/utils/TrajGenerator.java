@@ -145,17 +145,17 @@ public final class TrajGenerator {
    * quintic hermite splines -- therefore, all points must be represented by control vectors.
    * Continuous curvature is guaranteed in this method.
    *
-   * @param controlVectors List of quintic control vectors.
+   * @param cvl List of quintic control vectors.
    * @param config The configuration for the trajectory.
    * @return The generated trajectory.
    */
   public static Trajectory generateTrajectory(
-      ControlVectorList controlVectors, TrajectoryConfig config) {
+      edu.wpi.first.math.trajectory.TrajectoryGenerator.ControlVectorList cvl, TrajectoryConfig config) {
     final var flip = new Transform2d(new Translation2d(), Rotation2d.fromDegrees(180.0));
-    final var newControlVectors = new ArrayList<Spline.ControlVector>(controlVectors.size());
+    final var newControlVectors = new ArrayList<Spline.ControlVector>(cvl.size());
 
     // Create a new control vector list, flipping the orientation if reversed.
-    for (final var vector : controlVectors) {
+    for (final var vector : cvl) {
       var newVector = new Spline.ControlVector(vector.x, vector.y);
       if (config.isReversed()) {
         newVector.x[1] *= -1;

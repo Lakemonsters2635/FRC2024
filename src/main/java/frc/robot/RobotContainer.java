@@ -150,8 +150,8 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);
 
-    return m_autonomousCommand;// Speaker auto
-    // return m_leaveHomeAuto;
+    // return m_autonomousCommand;// Speaker auto
+    return m_leaveHomeAuto;
     // return m_speakerCommand;
   }
 }

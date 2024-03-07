@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -30,10 +31,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.spline.Spline;
+import edu.wpi.first.math.spline.Spline.ControlVector;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator.ControlVectorList;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -258,14 +262,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
       2)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      startPose,
-      List.of(
-        middlePose
-      ),
-      endPose,
-      trajectoryConfig
-      );
+    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    //   startPose,
+    //   List.of(
+    //     middlePose
+    //   ),
+    //   endPose,
+    //   trajectoryConfig
+    //   );
+
+    double[] x1 = {0.0, 0.0, 0.0};
+    double[] y1 = {0.0, -1.0, 0.0};
+
+    double[] x2 = {0.0, 0.0, 0.0};
+    double[] y2 = {-1.0, -1.0, 0.0};
+
+
+    ControlVector cV1 = new ControlVector(x1, y1);
+    ControlVector cV2 = new ControlVector(x2, y2);
+
+    ControlVectorList cvl = new ControlVectorList();
+
+    cvl.add(cV1);
+    cvl.add(cV2);
+    
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
 
       TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
