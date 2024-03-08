@@ -68,11 +68,10 @@ public final class Constants {
    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
    public static final int kEncoderCPR = 42; // neo encoder ticks per revolution
-   public static final double kWheelDiameterMeters = 4.11 / 39.37;
+   public static final double kWheelDiameterMeters = 4.0 / 39.37;
    public static final double kDriveEncoderDistancePerPulse =
        // Assumes the encoders are directly mounted on the wheel shafts
-       (kWheelDiameterMeters * Math.PI) * (1.0 / (60.0 / 15.0) / (20.0 / 24.0) / (40.0 / 16.0));
-
+       (kWheelDiameterMeters * Math.PI) * (1.0 / (45.0 / 15.0) / (17.0 / 27.0) / (50.0 / 14.0));  //Mark 4i L2 Gear Ratio 
    // put into manual mode, manually read position and rotate wheel
 
    public static final double kTurningEncoderDistancePerPulse =

@@ -271,22 +271,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //   trajectoryConfig
     //   );
 
-    double[] x1 = {0.0, 0.0, 0.0};
-    double[] y1 = {0.0, -1.0, 0.0};
+    Trajectory trajectory = Trajectory2635.generateTrajectory(
+      startPose,
+      List.of(
+        middlePose
+      ),
+      endPose,
+      trajectoryConfig
+      );
 
-    double[] x2 = {0.0, 0.0, 0.0};
-    double[] y2 = {-1.0, -1.0, 0.0};
+    // double[] x1 = {0.0, 0.0, 0.0};
+    // double[] y1 = {0.0, -1.0, 0.0};
+
+    // double[] x2 = {0.0, 0.0, 0.0};
+    // double[] y2 = {-1.0, -1.0, 0.0};
 
 
-    ControlVector cV1 = new ControlVector(x1, y1);
-    ControlVector cV2 = new ControlVector(x2, y2);
+    // ControlVector cV1 = new ControlVector(x1, y1);
+    // ControlVector cV2 = new ControlVector(x2, y2);
 
-    ControlVectorList cvl = new ControlVectorList();
+    // ControlVectorList cvl = new ControlVectorList();
 
-    cvl.add(cV1);
-    cvl.add(cV2);
+    // cvl.add(cV1);
+    // cvl.add(cV2);
     
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
+    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
 
       TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
