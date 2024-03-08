@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpAuto;
 import frc.robot.commands.ArmCommand;
-import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.Climber1Command;
 import frc.robot.commands.Climber2Command;
 import frc.robot.commands.ClimberCommand;
@@ -78,10 +78,7 @@ public class RobotContainer {
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
   public static final Climber1Command m_climber1Command = new Climber1Command(m_climberSubsystem);
   public static final Climber2Command m_climber2Command = new Climber2Command(m_climberSubsystem);
-
-
-  public final AutonomousCommand m_autonomousCommand = new AutonomousCommand(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
-
+  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
@@ -141,17 +138,24 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public SendableChooser<Command> getAutonomousCommand() {
     SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
     // An example command will be run in autonomous
-    m_autoChooser.addOption("SpeakerAuto", m_autonomousCommand);
-    m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
+    m_autoChooser.addOption("shootMidCommand", m_autonomousCommands.shootMidCommand());
+    m_autoChooser.addOption("shootRightCommand", m_autonomousCommands.shootRightCommand());
+    m_autoChooser.addOption("shootLeftCommand", m_autonomousCommands.shootLeftCommand());
+    m_autoChooser.addOption("shootMidLeftCommand", m_autonomousCommands.shootMidLeftCommand());
+    m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
+    // m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
+    // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
+    // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);
 
     // return m_autonomousCommand;// Speaker auto
-    return m_leaveHomeAuto;
+    // return m_leaveHomeAuto;
     // return m_speakerCommand;
+    return m_autoChooser;
   }
 }

@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DigitalSource;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -96,6 +95,10 @@ public final class Constants {
    public static final double CLIMBER_2_START_SPEED = 0.20;
 
    public static final int CLIMBER_STOP_SPEED = 0;
+
+   // AUTO CONSTANTS
+   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(57);
+   public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(55);
 
    // CLIMBER RELEASE/SERVO CONSTANTS
    public static final int SERVO_MOTOR_1 = 0;

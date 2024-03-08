@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -31,13 +30,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.spline.Spline;
-import edu.wpi.first.math.spline.Spline.ControlVector;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator.ControlVectorList;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -48,7 +44,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.utils.TrajGenerator;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     public static final double kMaxSpeed = 3.63; // 3.63 meters per second
@@ -271,7 +266,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //   trajectoryConfig
     //   );
 
-    Trajectory trajectory = Trajectory2635.generateTrajectory(
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
       List.of(
         middlePose
