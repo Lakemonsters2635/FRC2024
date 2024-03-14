@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -23,13 +24,13 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             m_dts.createPath(
                 new Pose2d(0,0, new Rotation2d(Math.toRadians(-45))),
-                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, (Constants.DISTANCE_TO_NOTE/2)),
-                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, (Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-45)))
+                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE/2)),
+                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-45)))
             ),
             m_dts.createPath(
-                new Pose2d(1, -1.8, new Rotation2d(Math.toRadians(45))),
-                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, Constants.DISTANCE_TO_NOTE/2),
-                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES,Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(45)))
+                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(45))),// 135?
+                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -Constants.DISTANCE_TO_NOTE/2),
+                new Pose2d(0, 0, new Rotation2d(Math.toRadians(45))) // 135?
             )
         );
 
@@ -38,14 +39,14 @@ public class AutonomousCommands {
     private Command rightNotePath(){
         return new SequentialCommandGroup(
             m_dts.createPath(
-                new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
-                new Translation2d((Constants.DISTANCE_BETWEEN_NOTES/2), (Constants.DISTANCE_TO_NOTE/2)),
-                new Pose2d((Constants.DISTANCE_BETWEEN_NOTES), (Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(135)))
+                new Pose2d(0,0, new Rotation2d(Math.toRadians(-135))),
+                new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE/2)),
+                new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-135)))
             ),
             m_dts.createPath(
-                new Pose2d((Constants.DISTANCE_BETWEEN_NOTES), Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(-135))),
-                new Translation2d((Constants.DISTANCE_BETWEEN_NOTES/2), (Constants.DISTANCE_TO_NOTE/2)),
-                new Pose2d(0,0, new Rotation2d(Math.toRadians(-135)))
+                new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(135))), // 45?
+                new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES/2, -Constants.DISTANCE_TO_NOTE/2),
+                new Pose2d(0, 0, new Rotation2d(Math.toRadians(135))) // 45?
             )
         );
     }
@@ -53,32 +54,46 @@ public class AutonomousCommands {
     private Command midNotePath(){
         return new SequentialCommandGroup(
             m_dts.createPath(
-                new Pose2d(0,0, new Rotation2d(Math.toRadians(90))),
-                new Translation2d(0, (Constants.DISTANCE_TO_NOTE/2)),
-                new Pose2d(0, (Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(90)))
+                new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
+                new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
+                new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
             ),
             m_dts.createPath(
-                new Pose2d(0, (Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90))),
-                new Translation2d(0, (Constants.DISTANCE_TO_NOTE/2)),
-                new Pose2d(0,0, new Rotation2d(Math.toRadians(-90)))
+                new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(90))),
+                new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
+                new Pose2d(0,0, new Rotation2d(Math.toRadians(90)))
             )
         );
     }
 
     public Command shootMidCommand(){
-        return midNotePath();
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            midNotePath()
+        );
     }
 
     public Command shootLeftCommand(){
-        return leftNotePath();
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            leftNotePath()
+        );
     }
 
     public Command shootRightCommand(){
-        return rightNotePath();
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            rightNotePath()
+        );
     }
 
     public Command shootMidLeftCommand(){
         return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
             midNotePath(),
             leftNotePath()
         );
@@ -86,6 +101,8 @@ public class AutonomousCommands {
 
     public Command shootMidRightCommand(){
         return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
             midNotePath(),
             rightNotePath()
         );
@@ -93,6 +110,8 @@ public class AutonomousCommands {
 
     public Command shootAllThreeCommand(){
         return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
             leftNotePath(),
             midNotePath(),
             rightNotePath()

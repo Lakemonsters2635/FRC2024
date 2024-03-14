@@ -37,7 +37,7 @@ public final class Constants {
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 9; 
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0;
    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 10; 
-   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-117.06-128-1.7-82+180-45-2+82+90); //2.9835
+   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-117.06-128-1.7-82-45-2+82+90); //2.9835
  
    // BACK RIGHT
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 8;

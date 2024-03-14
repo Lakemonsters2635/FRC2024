@@ -257,15 +257,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       2)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
-    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-    //   startPose,
-    //   List.of(
-    //     middlePose
-    //   ),
-    //   endPose,
-    //   trajectoryConfig
-    //   );
-
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
       List.of(
@@ -292,31 +283,32 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
 
-      TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
-      PIDController xController = new PIDController(0.1, 0, 0);
-      PIDController yController = new PIDController(0.1, 0, 0);
-      ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
-      thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    PIDController xController = new PIDController(0.1, 0, 0);
+    PIDController yController = new PIDController(0.1, 0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-      SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        trajectory,
-        this::getPose,
-        m_kinematics,
-        xController,
-        yController,
-        thetaController,
-        this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
-        this
-      );
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+      trajectory,
+      this::getPose,
+      m_kinematics,
+      xController,
+      yController,
+      thetaController,
+      this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
+      this
+    );
 
-      return swerveControllerCommand;
+    return swerveControllerCommand;
   }
 
   public void resetAngle(){
     m_gyro.reset();
     m_gyro.setAngleAdjustment(180);
   }
+
 
   private static double xPowerCommanded = 0;
   private static double yPowerCommanded = 0;
