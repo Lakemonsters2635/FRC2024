@@ -4,6 +4,11 @@
 
 package frc.robot.commands;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.path.PathPoint;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,6 +23,22 @@ public class AutonomousCommands {
     private DrivetrainSubsystem m_dts;
     public AutonomousCommands(DrivetrainSubsystem dts){
         m_dts = dts;
+    }
+
+    public Command testCommand() {
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(0)))),
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            m_dts.goToTargetPos(new Pose2d(0,0, Rotation2d.fromDegrees(0)))
+        );
+    }
+
+    public Command pathPlannerTestCommand() {
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.resetOdometry(new Pose2d(0,0, Rotation2d.fromDegrees(0)))),
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            m_dts.pathPlannerAuto(new Pose2d(0,1, m_dts.getPose().getRotation()))
+        );
     }
 
     private Command leftNotePath(){

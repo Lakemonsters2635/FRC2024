@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -147,6 +149,10 @@ public class RobotContainer {
     m_autoChooser.addOption("shootLeftCommand", m_autonomousCommands.shootLeftCommand());
     m_autoChooser.addOption("shootMidLeftCommand", m_autonomousCommands.shootMidLeftCommand());
     m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
+
+    // Test autos:
+    m_autoChooser.addOption("OldPathPlanner", m_autonomousCommands.testCommand());
+    m_autoChooser.addOption("NewPathPlanner", m_autonomousCommands.pathPlannerTestCommand());
     // m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);

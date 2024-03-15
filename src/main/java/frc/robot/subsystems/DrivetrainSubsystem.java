@@ -34,6 +34,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -133,12 +134,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
                   // Boolean supplier that controls when the path will be mirrored for the red alliance
                   // This will flip the path being followed to the red side of the field.
                   // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                  var alliance = DriverStation.getAlliance();
-                  if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                  }
                   return false;
+                  // TODO: uncomment these
+                  // var alliance = DriverStation.getAlliance();
+                  // if (alliance.isPresent()) {
+                  //   return alliance.get() == DriverStation.Alliance.Red;
+                  // }
+                  // return false;
               },
               this // Reference to this subsystem to set requirements
     );
@@ -152,11 +154,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     resetAngle();
   }
 
-  /**
-   * Go to targetPose using pathplanner
-   * @param targetPose
-   * @return command to make robot go to targetPose
-   */
+  public Command pathPlannerAuto(Pose2d targetPose){
+    return AutoBuilder.pathfindToPose(
+      targetPose,
+      new PathConstraints(
+        4.0, 4.0, 
+        Units.degreesToRadians(360), Units.degreesToRadians(540)
+      ), 
+      0, 
+      2.0
+    );
+  }
+
   public Command goToTargetPos(Pose2d targetPose){
     // System.out.println("Target pos: "+"x:"+targetPose.getX()+" y:"+targetPose.getY()+" degrees:"+targetPose.getRotation().getDegrees());
 
@@ -185,9 +194,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     // Create a list of bezier points from poses. Each pose represents one waypoint.
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+
+    // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+    //         getPose(),
+    //         targetPose
+    // );
     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-            getPose(),
-            targetPose
+            new Pose2d(0,0, Rotation2d.fromDegrees(0)),
+            // new Pose2d(0.5,0, Rotation2d.fromDegrees(0)),
+            new Pose2d(1,0, Rotation2d.fromDegrees(0))
     );
 
 
@@ -198,11 +213,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
             new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
     );
 
-    PathPlannerTrajectory traj = new PathPlannerTrajectory(
-            path,
-            getChassisSpeeds(),
-            getPose().getRotation()
-    );
+    // PathPlannerTrajectory traj = new PathPlannerTrajectory(
+    //         path,
+    //         getChassisSpeeds(),
+    //         getPose().getRotation()
+    // );
 
     // Prevent the path from being flipped if the coordinates are already correct
     path.preventFlipping =true;
@@ -214,10 +229,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
             this::setDesiredStates, 
             new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()),
             () -> {
-                  // Boolean supplier that controls when the path will be mirrored for the red alliance
-                  // This will flip the path being followed to the red side of the field.
-                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
                   var alliance = DriverStation.getAlliance();
                   if (alliance.isPresent()) {
                     return alliance.get() == DriverStation.Alliance.Red;
