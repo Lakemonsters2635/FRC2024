@@ -7,22 +7,22 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class Climber1Command extends Command {
-  /** Creates a new ClimberCommand. */
+public class ClimberUpCommand extends Command {
+  /** Creates a new ClimberUpCommand. */
   ClimberSubsystem m_climberSubsystem;
 
 
-  public Climber1Command(ClimberSubsystem climberSubsystem) {
+  public ClimberUpCommand(ClimberSubsystem climberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-  m_climberSubsystem = climberSubsystem;
-  addRequirements(m_climberSubsystem);
+    m_climberSubsystem = climberSubsystem;
+    addRequirements(m_climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climberSubsystem.climberUp1();
-   }
+    m_climberSubsystem.climberUp();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -31,7 +31,7 @@ public class Climber1Command extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   m_climberSubsystem.stopClimber1();
+   m_climberSubsystem.stopClimber();
   }
 
   // Returns true when the command should end.
