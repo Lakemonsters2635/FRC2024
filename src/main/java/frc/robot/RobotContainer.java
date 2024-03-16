@@ -16,8 +16,11 @@ import frc.robot.commands.AmpAuto;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.Climber1Command;
+import frc.robot.commands.Climber1DownCommand;
 import frc.robot.commands.Climber2Command;
+import frc.robot.commands.Climber2DownCommand;
 import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
@@ -63,6 +66,7 @@ public class RobotContainer {
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
   public static final ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
+  public static final ClimberDownCommand m_climberDownCommand = new ClimberDownCommand(m_climberSubsystem);
   public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
   public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
@@ -78,6 +82,8 @@ public class RobotContainer {
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
   public static final Climber1Command m_climber1Command = new Climber1Command(m_climberSubsystem);
   public static final Climber2Command m_climber2Command = new Climber2Command(m_climberSubsystem);
+  public static final Climber1DownCommand m_climber1DownCommand = new Climber1DownCommand(m_climberSubsystem);
+  public static final Climber2DownCommand m_climber2DownCommand = new Climber2DownCommand(m_climberSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
 
 
@@ -113,6 +119,9 @@ public class RobotContainer {
     Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
     Trigger climber1Button = new JoystickButton(leftJoystick, Constants.CLIMBER1_BUTTON);
     Trigger climber2Button = new JoystickButton(leftJoystick, Constants.CLIMBER2_BUTTON);
+    Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
+    Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
+    Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -129,6 +138,9 @@ public class RobotContainer {
     climberButton.whileTrue(m_climberCommand);
     climber1Button.whileTrue(m_climber1Command);
     climber2Button.whileTrue(m_climber2Command);
+    climberDownButton.whileTrue(m_climberDownCommand);
+    climber1DownButton.whileTrue(m_climber1DownCommand);
+    climber2DownButton.whileTrue(m_climber2DownCommand);
 
     // armStartButton.whileTrue(m_armCommand);
   }

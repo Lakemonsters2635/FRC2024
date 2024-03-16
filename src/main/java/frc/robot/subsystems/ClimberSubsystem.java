@@ -24,9 +24,14 @@ public class ClimberSubsystem extends SubsystemBase {
   m_climberMotor2.setIdleMode(IdleMode.kBrake);
   }
 
-  public void runClimber(){
+  public void climberUp(){
   m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED * -1);
   m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED * -1);
+  }
+  
+  public void climberDown(){
+  m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED);
+  m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED);
   }
 
   public void stopClimber(){
@@ -34,12 +39,20 @@ public class ClimberSubsystem extends SubsystemBase {
   m_climberMotor2.set(Constants.CLIMBER_STOP_SPEED);  
   }
 
-  public void runClimber1(){
+  public void climberUp1(){
     m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED * -1);
     }
   
-    public void runClimber2(){
+    public void climberUp2(){
     m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED * -1);
+    }
+
+  public void climberDown1(){
+    m_climberMotor1.set(Constants.CLIMBER_1_START_SPEED);
+    }
+  
+    public void climberDown2(){
+    m_climberMotor2.set(Constants.CLIMBER_2_START_SPEED);
     }
   
     public void stopClimber1(){

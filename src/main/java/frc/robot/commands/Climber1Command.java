@@ -21,7 +21,7 @@ public class Climber1Command extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climberSubsystem.runClimber1();
+    m_climberSubsystem.climberUp1();
    }
 
   // Called every time the scheduler runs while the command is scheduled.
