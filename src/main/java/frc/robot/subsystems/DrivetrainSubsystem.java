@@ -285,8 +285,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
-    PIDController xController = new PIDController(0.1, 0, 0);
-    PIDController yController = new PIDController(0.1, 0, 0);
+    PIDController xController = new PIDController(0.4, 0, 0);
+    PIDController yController = new PIDController(0.4, 0, 0);
     ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -331,6 +331,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
       // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
+      System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
       if (followJoystics) {
         if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
           yPowerCommanded = Constants.HAT_POWER_MOVE;
