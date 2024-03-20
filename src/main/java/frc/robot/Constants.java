@@ -97,8 +97,8 @@ public final class Constants {
    public static final int CLIMBER_STOP_SPEED = 0;
 
    // AUTO CONSTANTS
-   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(30); // 57
-   public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(55); //55
+   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
+   public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6); //45
 
    // CLIMBER RELEASE/SERVO CONSTANTS
    public static final int SERVO_MOTOR_1 = 0;

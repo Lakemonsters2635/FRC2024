@@ -104,7 +104,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
-            m_gyro.getRotation2d(),
+            m_gyro.getRotation2d().unaryMinus(),
             new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
@@ -414,7 +414,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(0);
+    m_gyro.setAngleAdjustment(180);
     System.out.println(m_gyro.getRotation2d());
   }
 
@@ -442,7 +442,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
-        m_gyro.getRotation2d(),
+        m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -474,7 +474,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_gyro.getRotation2d(),
+        m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -573,9 +573,9 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
 
-    SmartDashboard.putNumber("Robot X", getPose().getX());
-    SmartDashboard.putNumber("Robot Y", getPose().getY());
-    SmartDashboard.putNumber("Robot Angle", m_gyro.getAngle());
-
+    SmartDashboard.putNumber("Robot pos_X", getPose().getX());
+    SmartDashboard.putNumber("Robot pos_Y", getPose().getY());
+    SmartDashboard.putNumber("Robot gyro_Angle", m_gyro.getAngle());
+    SmartDashboard.putNumber("Robot pos_rot", getPose().getRotation().getDegrees());
   }
 }

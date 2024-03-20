@@ -14,21 +14,21 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   public CANSparkMax intakeMotor;
   public IntakeSubsystem() {
-    intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+    // intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
     // intakeMotor.setInverted(true);    
 
   }
 
   public void inIntake() {
-    intakeMotor.setVoltage(Constants.INTAKE_IN_SPEED * 10);
+    // intakeMotor.setVoltage(Constants.INTAKE_IN_SPEED * 10);
   }
 
   public void outIntake() {
-    intakeMotor.setVoltage(Constants.INTAKE_OUT_SPEED * 10);
+    // intakeMotor.setVoltage(Constants.INTAKE_OUT_SPEED * 10);
   }
 
   public void stopIntake() {
-    intakeMotor.set(Constants.INTAKE_STOP_SPEED);
+    // intakeMotor.set(Constants.INTAKE_STOP_SPEED);
   }
 
   @Override
