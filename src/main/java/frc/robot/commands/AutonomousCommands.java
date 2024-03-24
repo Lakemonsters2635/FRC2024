@@ -34,14 +34,20 @@ public class AutonomousCommands {
 
     private Command leftNotePath(){
         return new SequentialCommandGroup(
-            m_dts.createPath(
-                new Pose2d(0,0, new Rotation2d(Math.toRadians(-20))),
-                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2-0.15, -(Constants.DISTANCE_TO_NOTE/2)),
-                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES-0.25, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0,0, new Rotation2d(Math.toRadians(-20))),
+                    new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE/2)),
+                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
+                ),
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE), // Never arrive to ARM_PICKUP_ANGLE(never ends)
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
             ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
             m_dts.createPath(
-                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES-0.25, -Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(160))),// 135?
-                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2-.15, -Constants.DISTANCE_TO_NOTE/2),
+                new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(160))),// 135?
+                new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -Constants.DISTANCE_TO_NOTE/2),
                 new Pose2d(0, 0, new Rotation2d(Math.toRadians(90))) // 135?
             )
         );
@@ -56,9 +62,11 @@ public class AutonomousCommands {
                     new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE/2)),
                     new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))//-135
                 ),
-                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE)
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
             ),
-
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
             m_dts.createPath(
                 new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(30))), // 45?
                 new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES/2, -Constants.DISTANCE_TO_NOTE/2),
@@ -67,56 +75,67 @@ public class AutonomousCommands {
         );
     }
 
-    // private Command midNotePath(){
-    //     return new SequentialCommandGroup(
-    //         new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-    //         new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
-    //         new ParallelCommandGroup(
-    //             m_dts.createPath(
-    //                 new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
-    //                 new Translation2d(0, (-Constants.DISTANCE_TO_NOTE/2)),
-    //                 new Pose2d(0.1, (-Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(0)))
-    //             ),
-    //             new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE)
-    //         ),
-    //         // new InstantCommand(()->System.out.println("Start of move arm")),
-    //         // new InstantCommand(()->m_is.inIntake()).withTimeout(0.2),
-    //         // new WaitCommand(0.5),
-    //         // new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
-    //         m_dts.createPath(
-    //             new Pose2d(0.1, (-Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(0))),
-    //             new Translation2d(0, (-Constants.DISTANCE_TO_NOTE/2)),
-    //             new Pose2d(0,0, new Rotation2d(Math.toRadians(0)))
-    //         )
-    //     );
-    // }
-
-    private Command midNotePath(){
+    private Command shootFromMidCommand(){
         return new SequentialCommandGroup(
-            // new SpeakerCommand(m_as, m_is, m_os),
+            new ParallelCommandGroup( new MoveArmToPoseCommand(m_as, Constants.ARM_SHOOTER_ANGLE_AUTO),
+                                          new SequentialCommandGroup( new IntakeOutCommand(m_is),
+                                                                      new WaitCommand(0.2),
+                                                                      new InstantCommand(()->m_os.setOutakePower()).withTimeout(0.1)
+                                                                    )
+                                        ), 
+                new WaitCommand(0.8),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.2),
+                new WaitCommand(0.5),
+                new InstantCommand(()->m_is.stopIntake()).withTimeout(0.1),
+                new InstantCommand(()->m_os.zeroOutakePower()),
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE).withTimeout(0.3)
+        );
+    }
+
+    private Command midToRightPath(){
+        return new SequentialCommandGroup(
             new ParallelCommandGroup(
                 m_dts.createPath(
                     new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
                     new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
                     new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
                 ),
-                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE)
-                // new InstantCommand(()->m_is.inIntake()).withTimeout(0.3)
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
             ),
-            new InstantCommand(()->System.out.println("Start of move arm")).withTimeout(0.05),
-            new WaitCommand(0.5),
-            // new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
-            // m_dts.createPath(
-            //     new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
-            //     new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
-            //     new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
-            // ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
+            shootFromMidCommand(),
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90))),
+                    new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE/2)),
+                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))//-135
+                ),
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
+            )
+        );
+    }
+
+    private Command midNotePath(){
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
+                    new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
+                    new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
+                ),
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
+            ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
             m_dts.createPath(
                 new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(90))),
                 new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
                 new Pose2d(0,0, new Rotation2d(Math.toRadians(90)))
             )
-            // new SpeakerCommand(m_as, m_is, m_os)
         );
     }
 
@@ -124,7 +143,9 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
-            midNotePath()
+            new SpeakerCommand(m_as, m_is, m_os),
+            midNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os)
         );
     }
 
@@ -132,7 +153,9 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
-            leftNotePath()
+            new SpeakerCommand(m_as, m_is, m_os),
+            leftNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os)
         );
     }
 
@@ -140,7 +163,9 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
-            rightNotePath()
+            new SpeakerCommand(m_as, m_is, m_os),
+            rightNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os)
         );
     }
 
@@ -148,8 +173,11 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
+            new SpeakerCommand(m_as, m_is, m_os),
             midNotePath(),
-            leftNotePath()
+            new SpeakerCommand(m_as, m_is, m_os),
+            leftNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os)
         );
     }
 
@@ -157,8 +185,11 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
+            new SpeakerCommand(m_as, m_is, m_os),
             midNotePath(),
-            rightNotePath()
+            new SpeakerCommand(m_as, m_is, m_os),
+            rightNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os)
         );
     }
 
@@ -166,9 +197,21 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
+            new SpeakerCommand(m_as, m_is, m_os),
             leftNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os),
             midNotePath(),
-            rightNotePath()
+            new SpeakerCommand(m_as, m_is, m_os),
+            rightNotePath(),
+            new SpeakerCommand(m_as, m_is, m_os)
         );
+    }
+
+    public Command leaveHomeCommand(){
+        return m_dts.createPath(
+                    new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
+                    new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
+                    new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90)))
+                );
     }
 }

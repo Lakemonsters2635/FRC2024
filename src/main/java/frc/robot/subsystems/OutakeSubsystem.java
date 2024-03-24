@@ -26,6 +26,10 @@ public class OutakeSubsystem extends SubsystemBase {
     m_outakeMotor.set(Constants.OUTTAKE_SPEED);
   }
 
+  public void setAmpOutakePower(){
+    m_outakeMotor.set(Constants.AMP_OUTTAKE_SPEED);
+  }
+
   public void zeroOutakePower(){
     m_outakeMotor.set(Constants.OUTTAKE_STOP_SPEED);
   }

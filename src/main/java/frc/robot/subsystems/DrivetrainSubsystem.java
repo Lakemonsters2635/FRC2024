@@ -244,13 +244,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
-    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    // boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
-    if (isRedAliance) {
-      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
-      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
-      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
-    }
+    // if (isRedAliance) {
+    //   startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+    //   middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
+    //   endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+    // }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       3,  // TODO: this should be 7 during competetion
