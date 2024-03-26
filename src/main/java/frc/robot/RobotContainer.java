@@ -15,11 +15,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpAuto;
+import frc.robot.commands.AmpCommand;
+import frc.robot.commands.AmpOutakeCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommands;
-import frc.robot.commands.Climber1Command;
-import frc.robot.commands.Climber2Command;
-import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.Climber1UpCommand;
+import frc.robot.commands.Climber1DownCommand;
+import frc.robot.commands.Climber2UpCommand;
+import frc.robot.commands.Climber2DownCommand;
+import frc.robot.commands.ClimberUpCommand;
+import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
@@ -31,6 +36,7 @@ import frc.robot.commands.StartReleasingServoCommand;
 import frc.robot.commands.StopReleasingServoCommand;
 import frc.robot.commands.TelescopeExtendCommand;
 import frc.robot.commands.TelescopeRetractCommand;
+import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -64,10 +70,12 @@ public class RobotContainer {
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
-  public static final ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
+  public static final ClimberUpCommand m_climberUpCommand = new ClimberUpCommand(m_climberSubsystem);
+  public static final ClimberDownCommand m_climberDownCommand = new ClimberDownCommand(m_climberSubsystem);
   public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
   public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
+  public static final AmpOutakeCommand m_ampOutakeCommand = new AmpOutakeCommand(m_outakeSubsystem);
   public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
   public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
   public static final MoveArmToPoseCommand m_pickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
@@ -76,11 +84,15 @@ public class RobotContainer {
   public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
   public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final TrapShootCommand m_trapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
-  public static final Climber1Command m_climber1Command = new Climber1Command(m_climberSubsystem);
-  public static final Climber2Command m_climber2Command = new Climber2Command(m_climberSubsystem);
-  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
+  public static final Climber1UpCommand m_climber1UpCommand = new Climber1UpCommand(m_climberSubsystem);
+  public static final Climber2UpCommand m_climber2UpCommand = new Climber2UpCommand(m_climberSubsystem);
+  public static final Climber1DownCommand m_climber1DownCommand = new Climber1DownCommand(m_climberSubsystem);
+  public static final Climber2DownCommand m_climber2DownCommand = new Climber2DownCommand(m_climberSubsystem);
+  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final AmpCommand m_ampCommand = new AmpCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
 
 
   public RobotContainer() {
@@ -107,14 +119,19 @@ public class RobotContainer {
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
+    Trigger trapShootButton = new JoystickButton(rightJoystick, Constants.TRAP_SHOOT_BUTTON);
 
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
+    Trigger ampButton = new JoystickButton(leftJoystick, Constants.AMP_BUTTON);
     Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
     Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
-    Trigger climberButton = new JoystickButton(leftJoystick, Constants.CLIMBER_BUTTON);
-    Trigger climber1Button = new JoystickButton(leftJoystick, Constants.CLIMBER1_BUTTON);
-    Trigger climber2Button = new JoystickButton(leftJoystick, Constants.CLIMBER2_BUTTON);
+    Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
+    Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
+    Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
+    Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
+    Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
+    Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -124,13 +141,18 @@ public class RobotContainer {
     intakeOutButton.onTrue(m_intakeOutCommand);
     speakerButton.onTrue(m_speakerCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    trapShootButton.onTrue(m_trapShootCommand);
 
-    outakeButton.whileTrue(m_outakeCommand);
+    outakeButton.whileTrue(m_ampOutakeCommand);
+    ampButton.onTrue(m_ampCommand);
     telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
     telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
-    climberButton.whileTrue(m_climberCommand);
-    climber1Button.whileTrue(m_climber1Command);
-    climber2Button.whileTrue(m_climber2Command);
+    climberUpButton.whileTrue(m_climberUpCommand);
+    climber1UpButton.whileTrue(m_climber1UpCommand);
+    climber2UpButton.whileTrue(m_climber2UpCommand);
+    climberDownButton.whileTrue(m_climberDownCommand);
+    climber1DownButton.whileTrue(m_climber1DownCommand);
+    climber2DownButton.whileTrue(m_climber2DownCommand);
 
     // armStartButton.whileTrue(m_armCommand);
   }
@@ -154,6 +176,8 @@ public class RobotContainer {
     m_autoChooser.addOption("OldPathPlanner", m_autonomousCommands.testCommand());
     m_autoChooser.addOption("NewPathPlanner", m_autonomousCommands.pathPlannerTestCommand());
     // m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
+    m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
+    m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 

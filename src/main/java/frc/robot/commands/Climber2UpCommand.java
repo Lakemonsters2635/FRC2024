@@ -5,40 +5,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class MoveArmToPoseCommand extends Command {
-  /** Creates a new MoveArmToPoseCommand. */
-  private ArmSubsystem m_armSubsystem;
-  private int m_angle;
+public class Climber2UpCommand extends Command {
+  /** Creates a new ClimberUpCommand. */
+  ClimberSubsystem m_climberSubsystem;
 
-  public MoveArmToPoseCommand(ArmSubsystem armSubsystem, int angle) {
+
+  public Climber2UpCommand(ClimberSubsystem climberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_angle = angle;
-    m_armSubsystem = armSubsystem;
-    addRequirements(m_armSubsystem);
+    m_climberSubsystem = climberSubsystem;
+    addRequirements(m_climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_armSubsystem.setPosTarget(m_angle);
-    System.out.println("MOVE ARM COMMANDED");
+    m_climberSubsystem.climberUp2();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    System.out.println(m_armSubsystem.getArmDegrees());
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_climberSubsystem.stopClimber2();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_armSubsystem.areWeThere();
+    return false;
   }
 }

@@ -105,7 +105,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
-            m_gyro.getRotation2d(),
+            m_gyro.getRotation2d().unaryMinus(),
             new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
@@ -255,13 +255,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
-    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    // boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
-    if (isRedAliance) {
-      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
-      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
-      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
-    }
+    // if (isRedAliance) {
+    //   startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+    //   middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
+    //   endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+    // }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       3,  // TODO: this should be 7 during competetion
@@ -296,8 +296,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
-    PIDController xController = new PIDController(0.1, 0, 0);
-    PIDController yController = new PIDController(0.1, 0, 0);
+    PIDController xController = new PIDController(0.4, 0, 0);
+    PIDController yController = new PIDController(0.4, 0, 0);
     ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -342,6 +342,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
       // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
+      System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
       if (followJoystics) {
         if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
           yPowerCommanded = Constants.HAT_POWER_MOVE;
@@ -424,7 +425,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(0);
+    m_gyro.setAngleAdjustment(180);
     System.out.println(m_gyro.getRotation2d());
   }
 
@@ -452,7 +453,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
-        m_gyro.getRotation2d(),
+        m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -484,7 +485,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_gyro.getRotation2d(),
+        m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -583,9 +584,9 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
 
-    SmartDashboard.putNumber("Robot X", getPose().getX());
-    SmartDashboard.putNumber("Robot Y", getPose().getY());
-    SmartDashboard.putNumber("Robot Angle", m_gyro.getAngle());
-
+    SmartDashboard.putNumber("Robot pos_X", getPose().getX());
+    SmartDashboard.putNumber("Robot pos_Y", getPose().getY());
+    SmartDashboard.putNumber("Robot gyro_Angle", m_gyro.getAngle());
+    SmartDashboard.putNumber("Robot pos_rot", getPose().getRotation().getDegrees());
   }
 }
