@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -61,17 +60,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Telescope Encoder Counts", m_robotContainer.m_telescopeSubsystem.getEncoderCounts());
     // RobotContainer.m_armSubsystem.putToBoard();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // m_robotContainer.m_objectTrackerSubsystemAprilTagPro.data();
-    // m_robotContainer.m_objectTrackerSubsystemNoteCam.data();
-    // SmartDashboard.putString("NetworkTables Note Cam", m_robotContainer.m_objectTrackerSubsystemNoteCam.getObjectsJson());
-    // SmartDashboard.putString("NetworkTables April Tag Pro", m_robotContainer.m_objectTrackerSubsystemAprilTagPro.getObjectsJson());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -106,7 +100,6 @@ public class Robot extends TimedRobot {
     // System.out.println("Theta value: "+RobotContainer.m_armSubsystem.getTheta());
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
     RobotContainer.m_drivetrainSubsystem.resetAngle();
-    RobotContainer.m_telescopeSubsystem.resetEncoder();
     // RobotContainer.m_armSubsystem.m_poseTarget2=80;
 
     RobotContainer.m_drivetrainSubsystem.followJoystics = true;
