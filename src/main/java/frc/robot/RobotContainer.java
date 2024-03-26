@@ -13,16 +13,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AmpAuto;
-import frc.robot.commands.AmpCommand;
 import frc.robot.commands.AmpOutakeCommand;
-import frc.robot.commands.ArmCommand;
+import frc.robot.commands.AmpSequenceCommand;
+import frc.robot.commands.ArmThrottleCommand;
 import frc.robot.commands.AutonomousCommands;
-import frc.robot.commands.Climber1UpCommand;
 import frc.robot.commands.Climber1DownCommand;
-import frc.robot.commands.Climber2UpCommand;
+import frc.robot.commands.Climber1UpCommand;
 import frc.robot.commands.Climber2DownCommand;
-import frc.robot.commands.ClimberUpCommand;
+import frc.robot.commands.Climber2UpCommand;
 import frc.robot.commands.ClimberDownCommand;
+import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
@@ -30,18 +30,12 @@ import frc.robot.commands.LeaveHomeAuto;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.SpeakerCommand;
-import frc.robot.commands.StartReleasingServoCommand;
-import frc.robot.commands.StopReleasingServoCommand;
-import frc.robot.commands.TelescopeExtendCommand;
-import frc.robot.commands.TelescopeRetractCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
-import frc.robot.subsystems.ReleaseClimber;
-import frc.robot.subsystems.TelescopeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -60,27 +54,19 @@ public class RobotContainer {
   public static final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
-  public static final TelescopeSubsystem m_telescopeSubsystem = new TelescopeSubsystem();
-  public static final ReleaseClimber m_releaseClimber = new ReleaseClimber();
-  // public final ObjectTrackerSubsystem m_objectTrackerSubsystemNoteCam = new ObjectTrackerSubsystem("NoteCam");
-  // public final ObjectTrackerSubsystem m_objectTrackerSubsystemAprilTagPro = new ObjectTrackerSubsystem("AprilTagPro");
 
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
-  public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
+  public static final ArmThrottleCommand m_armThrottleCommand = new ArmThrottleCommand(m_armSubsystem);
   public static final ClimberUpCommand m_climberUpCommand = new ClimberUpCommand(m_climberSubsystem);
   public static final ClimberDownCommand m_climberDownCommand = new ClimberDownCommand(m_climberSubsystem);
   public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
   public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
   public static final AmpOutakeCommand m_ampOutakeCommand = new AmpOutakeCommand(m_outakeSubsystem);
-  public static final TelescopeExtendCommand m_telescopeExtendCommand = new TelescopeExtendCommand(m_telescopeSubsystem);
-  public static final TelescopeRetractCommand m_telescopeRetractCommand = new TelescopeRetractCommand(m_telescopeSubsystem);
   public static final MoveArmToPoseCommand m_pickUpPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE);
   public static final MoveArmToPoseCommand m_ampPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
   public static final MoveArmToPoseCommand m_speakerPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE);
-  public static final StartReleasingServoCommand m_startReleasingServoCommand = new StartReleasingServoCommand(m_releaseClimber);
-  public static final StopReleasingServoCommand m_stopReleasingServoCommand = new StopReleasingServoCommand(m_releaseClimber);
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final TrapShootCommand m_trapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
@@ -90,7 +76,7 @@ public class RobotContainer {
   public static final Climber1DownCommand m_climber1DownCommand = new Climber1DownCommand(m_climberSubsystem);
   public static final Climber2DownCommand m_climber2DownCommand = new Climber2DownCommand(m_climberSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
-  public static final AmpCommand m_ampCommand = new AmpCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final AmpSequenceCommand m_ampSequenceCommand = new AmpSequenceCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
 
 
   public RobotContainer() {
@@ -121,9 +107,7 @@ public class RobotContainer {
 
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
-    Trigger ampButton = new JoystickButton(leftJoystick, Constants.AMP_BUTTON);
-    Trigger telescopeExtendButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_EXTEND_BUTTON);
-    Trigger telescopeRetractButton = new JoystickButton(leftJoystick, Constants.TELESCOPE_RETRACT_BUTTON);
+    Trigger ampSequenceButton = new JoystickButton(leftJoystick, Constants.AMP_SEQUENCE_BUTTON);
     Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
     Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
     Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
@@ -142,9 +126,7 @@ public class RobotContainer {
     trapShootButton.onTrue(m_trapShootCommand);
 
     outakeButton.whileTrue(m_ampOutakeCommand);
-    ampButton.onTrue(m_ampCommand);
-    telescopeExtendButton.whileTrue(m_telescopeExtendCommand);
-    telescopeRetractButton.whileTrue(m_telescopeRetractCommand);
+    ampSequenceButton.onTrue(m_ampSequenceCommand);
     climberUpButton.whileTrue(m_climberUpCommand);
     climber1UpButton.whileTrue(m_climber1UpCommand);
     climber2UpButton.whileTrue(m_climber2UpCommand);
@@ -152,7 +134,7 @@ public class RobotContainer {
     climber1DownButton.whileTrue(m_climber1DownCommand);
     climber2DownButton.whileTrue(m_climber2DownCommand);
 
-    // armStartButton.whileTrue(m_armCommand);
+    // armStartButton.whileTrue(m_armThrottleCommand);
   }
 
   /**
@@ -176,9 +158,6 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);
 
-    // return m_autonomousCommand;// Speaker auto
-    // return m_leaveHomeAuto;
-    // return m_speakerCommand;
     return m_autoChooser;
   }
 }
