@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DigitalSource;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -26,25 +25,25 @@ public final class Constants {
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; 
    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
-   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(89.46 - 3.7 + 180+6-14-81+90); //3.01
+   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1); //3.01
 
    // FRONT RIGHT
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 2;
    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 4;
-   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(199.17+2.5+180+38-21-79+90); // 3.0775
+   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90); // 3.0775
 
    // BACK LEFT
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 9; 
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0;
    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 10; 
-   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-117.06-128-1.7-82+180-45-2+82+90); //2.9835
+   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6); //2.9835
  
    // BACK RIGHT
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 8;
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 1;
    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 7; 
-   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(52.93-0.6-1.2+2-100+90); //3.0346
+   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3); //3.0346
 
    // hat constants 
    public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -68,11 +67,10 @@ public final class Constants {
    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
    public static final int kEncoderCPR = 42; // neo encoder ticks per revolution
-   public static final double kWheelDiameterMeters = 4.11 / 39.37;
+   public static final double kWheelDiameterMeters = 4.0 / 39.37;
    public static final double kDriveEncoderDistancePerPulse =
        // Assumes the encoders are directly mounted on the wheel shafts
-       (kWheelDiameterMeters * Math.PI) * (1.0 / (60.0 / 15.0) / (20.0 / 24.0) / (40.0 / 16.0));
-
+       (kWheelDiameterMeters * Math.PI) * (1.0 / (45.0 / 15.0) / (17.0 / 27.0) / (50.0 / 14.0));  //Mark 4i L2 Gear Ratio 
    // put into manual mode, manually read position and rotate wheel
 
    public static final double kTurningEncoderDistancePerPulse =
@@ -90,13 +88,17 @@ public final class Constants {
    public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
    
    // CLIMBER CONSTANTS
-   public static final int CLIMBER_MOTOR_1 = 11;
+   public static final int CLIMBER_MOTOR_1 = 6;
    public static final int CLIMBER_MOTOR_2 = 5;
 
-   public static final double CLIMBER_1_START_SPEED = 0.24;
-   public static final double CLIMBER_2_START_SPEED = 0.20;
+   public static final double CLIMBER_1_START_SPEED = 0.4;
+   public static final double CLIMBER_2_START_SPEED = 0.4;
 
    public static final int CLIMBER_STOP_SPEED = 0;
+
+   // AUTO CONSTANTS
+   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
+   public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6); //45
 
    // CLIMBER RELEASE/SERVO CONSTANTS
    public static final int SERVO_MOTOR_1 = 0;
@@ -119,16 +121,16 @@ public final class Constants {
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
   
-   public static final int ARM_ENCODER_OFFSET = 1188;
-
-
-   public static final int ARM_PICKUP_ANGLE = 103;
+   public static final int ARM_ENCODER_OFFSET = 2822; 
+   public static final int ARM_PICKUP_ANGLE = 104;
    public static final int ARM_AMP_ANGLE = -19;
-   public static final int ARM_SHOOTER_ANGLE = 55;
+   public static final int ARM_SHOOTER_ANGLE = 53;
+   public static final int ARM_SHOOTER_ANGLE_AUTO = 34;
+   public static final int ARM_TRAP_SHOOT_ANGLE = 72;
 
 
    // INTAKE CONSTANTS
-   public static final int INTAKE_MOTOR_ID = 16;
+   public static final int INTAKE_MOTOR_ID = 13;
 
    public static final int INTAKE_STOP_SPEED = 0;
    public static final double INTAKE_IN_SPEED = -0.9;
@@ -140,9 +142,10 @@ public final class Constants {
 
    public static final double OUTTAKE_STOP_SPEED =0;
    public static final double OUTTAKE_SPEED = -0.9;
+   public static final double AMP_OUTTAKE_SPEED = -0.2;
 
    // TELESCOPE CONSTANTS
-   public static final int TELESCOPE_MOTOR_ID = 13;
+   public static final int TELESCOPE_MOTOR_ID = 11;
 
    public static final double TELESCOPE_EXTEND_SPEED = -0.4;
    public static final double TELESCOPE_RETRACT_SPEED = 0.4;
@@ -167,20 +170,23 @@ public final class Constants {
    public static final int INTAKE_BUTTON = 1;
    public static final int GROUND_PICKUP_BUTTON = 3;
    public static final int AMP_POSE_BUTTON = 4;
-   
    public static final int INTAKE_OUT_BUTTON = 5;   
    public static final int SPEAKER_BUTTON = 6;
-
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int TRAP_SHOOT_BUTTON = 12;
    // public static final int SPEAKER_POSE_BUTTON = 6;
 
    // left buttons
    public static final int OUTTAKE_BUTTON = 1;
-   public static final int CLIMBER_BUTTON = 6;
-   public static final int TELESCOPE_EXTEND_BUTTON = 8;
-   public static final int TELESCOPE_RETRACT_BUTTON = 10;
-   public static final int CLIMBER1_BUTTON = 11;
-   public static final int CLIMBER2_BUTTON = 12;
+   public static final int AMP_BUTTON = 3;
+   public static final int TELESCOPE_RETRACT_BUTTON = 4;
+   public static final int TELESCOPE_EXTEND_BUTTON = 6;
+   public static final int CLIMBER_UP_BUTTON = 7;
+   public static final int CLIMBER_DOWN_BUTTON = 8;
+   public static final int CLIMBER1_UP_BUTTON = 9;
+   public static final int CLIMBER2_UP_BUTTON = 10;
+   public static final int CLIMBER1_DOWN_BUTTON = 11;
+   public static final int CLIMBER2_DOWN_BUTTON = 12;
 
 
 //    public static final int ARM_START_BUTTON = 5;

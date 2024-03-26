@@ -30,6 +30,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -92,8 +93,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
     public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
-    public boolean isBlueAliance;
-  
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
       m_frontLeftLocation,
       m_frontRightLocation, 
@@ -105,7 +104,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
-            m_gyro.getRotation2d(),
+            m_gyro.getRotation2d().unaryMinus(),
             new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
@@ -245,26 +244,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
+    // boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-      isBlueAliance = false;
-    }
-    else{
-      isBlueAliance = true;
-    }
-
-    if (!isBlueAliance) {
-      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
-      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
-      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
-    }
+    // if (isRedAliance) {
+    //   startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+    //   middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
+    //   endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+    // }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       3,  // TODO: this should be 7 during competetion
       2)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
-    edu.wpi.first.math.trajectory.Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
       List.of(
         middlePose
@@ -273,31 +266,49 @@ public class DrivetrainSubsystem extends SubsystemBase {
       trajectoryConfig
       );
 
-      TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+    // double[] x1 = {0.0, 0.0, 0.0};
+    // double[] y1 = {0.0, -1.0, 0.0};
 
-      PIDController xController = new PIDController(0.1, 0, 0);
-      PIDController yController = new PIDController(0, 0, 0);
-      ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
-      thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    // double[] x2 = {0.0, 0.0, 0.0};
+    // double[] y2 = {-1.0, -1.0, 0.0};
 
-      SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        trajectory,
-        this::getPose,
-        m_kinematics,
-        xController,
-        yController,
-        thetaController,
-        this::setModuleStates,
-        this
-      );
 
-      return swerveControllerCommand;
+    // ControlVector cV1 = new ControlVector(x1, y1);
+    // ControlVector cV2 = new ControlVector(x2, y2);
+
+    // ControlVectorList cvl = new ControlVectorList();
+
+    // cvl.add(cV1);
+    // cvl.add(cV2);
+    
+    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
+
+    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+
+    PIDController xController = new PIDController(0.4, 0, 0);
+    PIDController yController = new PIDController(0.4, 0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+      trajectory,
+      this::getPose,
+      m_kinematics,
+      xController,
+      yController,
+      thetaController,
+      this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
+      this
+    );
+
+    return swerveControllerCommand;
   }
 
   public void resetAngle(){
     m_gyro.reset();
     m_gyro.setAngleAdjustment(180);
   }
+
 
   private static double xPowerCommanded = 0;
   private static double yPowerCommanded = 0;
@@ -320,6 +331,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
       // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
+      System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
       if (followJoystics) {
         if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
           yPowerCommanded = Constants.HAT_POWER_MOVE;
@@ -402,7 +414,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void recalibrateGyro() {
     System.out.println(m_gyro.getRotation2d());
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(0);
+    m_gyro.setAngleAdjustment(180);
     System.out.println(m_gyro.getRotation2d());
   }
 
@@ -430,7 +442,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
-        m_gyro.getRotation2d(),
+        m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -462,7 +474,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_gyro.getRotation2d(),
+        m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -561,9 +573,9 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
 
-    SmartDashboard.putNumber("Robot X", getPose().getX());
-    SmartDashboard.putNumber("Robot Y", getPose().getY());
-    SmartDashboard.putNumber("Robot Angle", m_gyro.getAngle());
-
+    SmartDashboard.putNumber("Robot pos_X", getPose().getX());
+    SmartDashboard.putNumber("Robot pos_Y", getPose().getY());
+    SmartDashboard.putNumber("Robot gyro_Angle", m_gyro.getAngle());
+    SmartDashboard.putNumber("Robot pos_rot", getPose().getRotation().getDegrees());
   }
 }

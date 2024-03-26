@@ -31,6 +31,8 @@ public class AmpAuto extends SequentialCommandGroup {
   }
 
   public Command goToAmp(){
+    // TODO: get the reference angle to start and then apply your rotation with respect to that 
+    //       baseline rotation angle.
     return m_dts.createPath(
       new Pose2d(0,0, Rotation2d.fromDegrees(0)), 
       new Translation2d(0, 0.63), 

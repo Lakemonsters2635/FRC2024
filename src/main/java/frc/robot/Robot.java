@@ -21,26 +21,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  // private DoubleSubscriber xSub;
-  // private DoubleSubscriber ySub;
-  // private DoubleSubscriber zSub;
-  // private GenericSubscriber objectSub;
-
-  // private DoubleSubscriber xSubBack;
-  // private DoubleSubscriber ySubBack;
-  // private DoubleSubscriber zSubBack;
-  // private GenericSubscriber objectSubBack;
-
-  // public static double x;
-  // public double y;
-  // public static double z;
-  // public String object;
-
-  // public double xBack;
-  // public double yBack;
-  // public double zBack;
-  // public String objectBack;
-
   // for motion compensate (vision)
   public static int circularBufferSize = 50;
   public static int bufferSlotNumber = 0;
@@ -63,6 +43,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    m_autoChooser = m_robotContainer.getAutonomousCommand();
+
     
     // m_autoChooser = m_robotContainer.getAutonomousCommand();
     // m_autoChooser = m_robotContainer.getAutonomousCommand();
@@ -103,7 +86,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RobotContainer.m_drivetrainSubsystem.followJoystics = false;
     // m_autonomousCommand = m_autoChooser.getSelected();
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_autoChooser.getSelected();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

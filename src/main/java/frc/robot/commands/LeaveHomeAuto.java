@@ -5,7 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
@@ -18,10 +20,52 @@ public class LeaveHomeAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new InstantCommand(()->dts.resetOdometry(new Pose2d(0,0, new Rotation2d(0)))),
+      new InstantCommand(()->dts.resetAngle()),
+      // dts.createPath(
+      //   new Pose2d(0,0,new Rotation2d(0)),
+      //   new Translation2d(0,-0.1), 
+      //   new Pose2d(0,-2.1, new Rotation2d(0))
+      // ) //was short at y =-1.8     1 unit=44in  1ft= 0.2732 units
+
+      // good start
+      // dts.createPath(
+      //   new Pose2d(0,0,new Rotation2d(Math.toRadians(-90))),
+      //   new Translation2d(0,-0.5), 
+      //   new Pose2d(0,-1.0, new Rotation2d(Math.toRadians(-90)))
+      // ), 
+
+      // dts.createPath(
+      //   new Pose2d(0,-1,new Rotation2d(Math.toRadians(90))),
+      //   new Translation2d(0,-0.5), 
+      //   new Pose2d(0,0, new Rotation2d(Math.toRadians(90)))
+      // ),
+
+      // dts.createPath(
+      //   new Pose2d(0,0,new Rotation2d(Math.toRadians(-45))),
+      //   new Translation2d(0.5,-0.5), 
+      //   new Pose2d(1,-1, new Rotation2d(Math.toRadians(-45)))
+      // )  
+
+      //good end
+
+       dts.createPath(
+        new Pose2d(0,0,new Rotation2d(Math.toRadians(-90))),
+        new Translation2d(0,-0.5), 
+        new Pose2d(0,-1.0, new Rotation2d(Math.toRadians(-90)))
+      ), 
+
       dts.createPath(
-        dts.getPose(),
-        new Translation2d(0,0.9), 
-        new Pose2d(0,2.1, dts.getPose().getRotation())) //was short at y =-1.8     1 unit=44in  1ft= 0.2732 units
+        new Pose2d(0,-1,new Rotation2d(Math.toRadians(90))),
+        new Translation2d(0,-0.5), 
+        new Pose2d(0,0, new Rotation2d(Math.toRadians(90)))
+      ),
+
+      dts.createPath(
+        new Pose2d(0,0,new Rotation2d(Math.toRadians(-45))),
+        new Translation2d(0.5,-0.5), 
+        new Pose2d(1,-1, new Rotation2d(Math.toRadians(-45)))
+      )  
     );
   }
 }

@@ -5,24 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.OutakeSubsystem;
 
-public class ClimberCommand extends Command {
-  /** Creates a new ClimberCommand. */
-  ClimberSubsystem m_climberSubsystem;
+public class AmpOutakeCommand extends Command {
+  /** Creates a new IntakeOutCommand. */
+  private OutakeSubsystem m_outakeSubsystem;
+  public AmpOutakeCommand(OutakeSubsystem outakeSubsystem) {
 
-
-  public ClimberCommand(ClimberSubsystem climberSubsystem) {
+    m_outakeSubsystem = outakeSubsystem;
+    addRequirements(m_outakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-  m_climberSubsystem = climberSubsystem;
-  addRequirements(m_climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climberSubsystem.runClimber();
-   }
+    m_outakeSubsystem.setAmpOutakePower();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -31,7 +30,7 @@ public class ClimberCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   m_climberSubsystem.stopClimber();
+    m_outakeSubsystem.zeroOutakePower();
   }
 
   // Returns true when the command should end.
