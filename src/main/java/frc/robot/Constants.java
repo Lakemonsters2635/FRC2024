@@ -115,7 +115,7 @@ public final class Constants {
    public static final double ARM_MOTOR_START_SPEED = 0.3;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
 
-   public static final double ARM_LOWER_LIMIT = -44; //TODO: figure out these
+   public static final double ARM_LOWER_LIMIT = -44;
    public static final double ARM_UPPER_LIMIT = 107;
 
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V

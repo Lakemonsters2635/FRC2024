@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -87,6 +89,13 @@ public class Robot extends TimedRobot {
     RobotContainer.m_drivetrainSubsystem.followJoystics = false;
     // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_autoChooser.getSelected();
+    // m_robotContainer.m_drivetrainSubsystem.zeroOdometry();
+    System.out.println("Angle Adjustment: "+m_robotContainer.m_drivetrainSubsystem.m_gyro.getAngleAdjustment());
+    System.out.println("Angle: "+m_robotContainer.m_drivetrainSubsystem.m_gyro.getAngle());
+    // m_robotContainer.m_drivetrainSubsystem.resetAngle(180); // What is happening??
+    System.out.println("After Angle Adjustment: "+m_robotContainer.m_drivetrainSubsystem.m_gyro.getAngleAdjustment());
+    System.out.println("After Angle: "+m_robotContainer.m_drivetrainSubsystem.m_gyro.getAngle());
+
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

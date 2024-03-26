@@ -13,7 +13,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -151,7 +150,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     getPose();
     zeroOdometry();
-    resetAngle();
+    // Continue debugging here, try to make auto move instead of rotating
+    // resetAngle();
+    // m_gyro.reset();
+    // m_gyro.setAngleAdjustment(180);
   }
 
   public Command pathPlannerAuto(Pose2d targetPose){
@@ -319,6 +321,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_gyro.reset();
     m_gyro.setAngleAdjustment(180);
   }
+  public void resetAngle(double angle){
+    // m_gyro.reset();
+    m_gyro.setAngleAdjustment(angle);
+  }
 
 
   private static double xPowerCommanded = 0;
@@ -342,7 +348,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
       // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
-      System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
+      // System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
       if (followJoystics) {
         if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
           yPowerCommanded = Constants.HAT_POWER_MOVE;

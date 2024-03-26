@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,12 +17,12 @@ import frc.robot.commands.AmpCommand;
 import frc.robot.commands.AmpOutakeCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutonomousCommands;
-import frc.robot.commands.Climber1UpCommand;
 import frc.robot.commands.Climber1DownCommand;
-import frc.robot.commands.Climber2UpCommand;
+import frc.robot.commands.Climber1UpCommand;
 import frc.robot.commands.Climber2DownCommand;
-import frc.robot.commands.ClimberUpCommand;
+import frc.robot.commands.Climber2UpCommand;
 import frc.robot.commands.ClimberDownCommand;
+import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
@@ -175,6 +173,7 @@ public class RobotContainer {
     // Test autos:
     m_autoChooser.addOption("OldPathPlanner", m_autonomousCommands.testCommand());
     m_autoChooser.addOption("NewPathPlanner", m_autonomousCommands.pathPlannerTestCommand());
+    m_autoChooser.addOption("OutAuto", m_drivetrainSubsystem.pathChooser("OutAuto"));
     // m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
     m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
     m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
