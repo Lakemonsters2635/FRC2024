@@ -107,25 +107,25 @@ public final class Constants {
     public static final double FULL_EXTENDED_SERVO = 1.0;
     public static final double FULL_RETRACTED_SERVO = 0.0;
 
-   //ARM CONSTATNT
-   public static final int ARM_MOTOR1_ID = 15;
-   public static final int ARM_MOTOR2_ID = 21;
-   public static final int ARM_ENCODER_ID = 4;
+   //ARM CONSTANT: 15 is right, 21 is left
+   public static final int ARM_MOTOR1_ID = 21; // note to self: next time say left and right
+   public static final int ARM_MOTOR2_ID = 15;
+   public static final int ARM_ENCODER_ID = 0;
 
    public static final double ARM_MOTOR_START_SPEED = 0.3;
    public static final int ARM_MOTOR_STOP_SPEED = 0;
 
-   public static final double ARM_LOWER_LIMIT = -44; //TODO: figure out these
-   public static final double ARM_UPPER_LIMIT = 107;
+   public static final double ARM_LOWER_LIMIT = -30; //TODO: figure out these
+   public static final double ARM_UPPER_LIMIT = 93.3;
 
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
   
-   public static final int ARM_ENCODER_OFFSET = 2822; 
-   public static final int ARM_PICKUP_ANGLE = 104;
+   public static final double ARM_ENCODER_OFFSET = 0.406; 
+   public static final int ARM_PICKUP_ANGLE = 94; // 104
    public static final int ARM_AMP_ANGLE = -19;
-   public static final int ARM_SHOOTER_ANGLE = 53;
-   public static final int ARM_SHOOTER_ANGLE_AUTO = 34;
+   public static final int ARM_SHOOTER_ANGLE = 50; // 53
+   public static final int ARM_SHOOTER_ANGLE_AUTO = 32; // 34
    public static final int ARM_TRAP_SHOOT_ANGLE = 72;
 
 

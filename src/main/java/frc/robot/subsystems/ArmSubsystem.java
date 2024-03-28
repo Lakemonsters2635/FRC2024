@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +21,8 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
     public TalonFX m_armMotor1;
     public TalonFX m_armMotor2;
-    public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
+    // public static final AnalogInput m_encoder = new AnalogInput(Constants.ARM_ENCODER_ID); 
+    public static final DutyCycleEncoder m_encoder = new DutyCycleEncoder(Constants.ARM_ENCODER_ID);
     // private PIDController pid = new PIDController(0.108, 0.0, 0.024); 
     private PIDController pid = new PIDController(0.009, 0.0, 0.002); 
     private double theta;
@@ -57,11 +59,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getArmDegrees(){
-    return ((m_encoder.getValue()/4096.0))*(360);
+    return m_encoder.getAbsolutePosition()*(360);
   }
 
   public double getTheta(){
-    theta = 360.0 * (m_encoder.getValue() - Constants.ARM_ENCODER_OFFSET) / 4096.0;
+    theta = 360.0 * (m_encoder.getAbsolutePosition() - Constants.ARM_ENCODER_OFFSET);
     theta %= 360.0;
     if (theta < 0){
       theta += 360.0;
@@ -83,7 +85,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void putToBoard(){
     // SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
-    SmartDashboard.putNumber("Raw encoder value",m_encoder.getValue());
+    SmartDashboard.putNumber("Raw encoder value",m_encoder.getAbsolutePosition());
     SmartDashboard.putNumber("Theta",theta);
     // SmartDashboard.putNumber("Pose Target", m_poseTarget);
     // SmartDashboard.putNumber("FB Power", fbMotorPower);
@@ -139,13 +141,17 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 10;
 
     motorPower = ffMotorPower + fbMotorPower;
-    if(m_poseTarget>102 && theta > 98){
+    if(m_poseTarget>93 && theta > 93){
       motorPower = 0;
     }
-    if(m_poseTarget < -30 && theta < -30){
+    if(m_poseTarget < -29 && theta < -29){
       motorPower = 0;
     }
+    double clampVal = 2.;
+    motorPower = MathUtil.clamp(motorPower, -clampVal, clampVal);
     setArmPower(motorPower);
+    SmartDashboard.putNumber("motorPower", motorPower);
+    SmartDashboard.putNumber("m_poseTarget", m_poseTarget);
 
   }    
 }
