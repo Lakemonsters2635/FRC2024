@@ -41,7 +41,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor1.setNeutralMode(NeutralModeValue.Brake);
     m_armMotor2.setNeutralMode(NeutralModeValue.Brake);
 
-    m_poseTarget = Constants.ARM_AMP_ANGLE;
+    // m_poseTarget = Constants.ARM_AMP_ANGLE; //TODO: Uncomment this
+    m_poseTarget = 94;
   }
 
   public void controlArmThrottle(){
@@ -141,13 +142,13 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 10;
 
     motorPower = ffMotorPower + fbMotorPower;
-    if(m_poseTarget>93 && theta > 93){
+    if(m_poseTarget>93 && theta > 84){
       motorPower = 0;
     }
-    if(m_poseTarget < -29 && theta < -29){
+    if(m_poseTarget < -28 && theta < -26){
       motorPower = 0;
     }
-    double clampVal = 2.;
+    double clampVal = 3.;
     motorPower = MathUtil.clamp(motorPower, -clampVal, clampVal);
     setArmPower(motorPower);
     SmartDashboard.putNumber("motorPower", motorPower);

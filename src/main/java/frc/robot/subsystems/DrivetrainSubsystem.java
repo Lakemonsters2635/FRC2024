@@ -287,7 +287,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(0, 0, 0, kThetaControllerConstraints);
+    ProfiledPIDController thetaController = new ProfiledPIDController(0.4, 0, 0, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
@@ -297,11 +297,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
       xController,
       yController,
       thetaController,
+      this::desiredRotation,
       this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
       this
     );
 
     return swerveControllerCommand;
+  }
+
+  public Rotation2d desiredRotation(){
+    return Rotation2d.fromDegrees(0);
   }
 
   public void resetAngle(){
@@ -330,8 +335,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
       //Hat Power Overides for Trimming Position and Rotation
-      // System.out.println("Current pos: "+"x:"+getPose().getX()+" y:"+getPose().getY()+" degrees:"+getPose().getRotation().getDegrees());
-      System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
+      // System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
       if (followJoystics) {
         if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
           yPowerCommanded = Constants.HAT_POWER_MOVE;

@@ -29,6 +29,7 @@ import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.LeaveHomeAuto;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
+import frc.robot.commands.OuttakeInCommand;
 import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -77,6 +78,7 @@ public class RobotContainer {
   public static final Climber2DownCommand m_climber2DownCommand = new Climber2DownCommand(m_climberSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final AmpSequenceCommand m_ampSequenceCommand = new AmpSequenceCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
 
 
   public RobotContainer() {
@@ -104,6 +106,7 @@ public class RobotContainer {
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
     Trigger trapShootButton = new JoystickButton(rightJoystick, Constants.TRAP_SHOOT_BUTTON);
+    Trigger outtakeInButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_IN_BUTTON);
 
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
@@ -123,6 +126,7 @@ public class RobotContainer {
     intakeOutButton.onTrue(m_intakeOutCommand);
     speakerButton.onTrue(m_speakerCommand);
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
+    outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
 
     outakeButton.whileTrue(m_ampOutakeCommand);
@@ -153,6 +157,7 @@ public class RobotContainer {
     m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
     m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
     m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
+    m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 

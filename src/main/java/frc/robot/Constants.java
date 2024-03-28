@@ -91,6 +91,9 @@ public final class Constants {
    public static final int CLIMBER_MOTOR_1 = 6;
    public static final int CLIMBER_MOTOR_2 = 5;
 
+   public static final int CLIMBER_ENCODER_1 = 6;
+   public static final int CLIMBER_ENCODER_2 = 5;
+
    public static final double CLIMBER_1_START_SPEED = 0.4;
    public static final double CLIMBER_2_START_SPEED = 0.4;
 
@@ -100,7 +103,7 @@ public final class Constants {
    public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
    public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6); //45
 
-   // CLIMBER RELEASE/SERVO CONSTANTS
+   // CLIMBER RELEASE/SERVO CONSTANTS // TODO: Delete these
    public static final int SERVO_MOTOR_1 = 0;
    public static final int SERVO_MOTOR_2 = 1;
 
@@ -123,10 +126,10 @@ public final class Constants {
   
    public static final double ARM_ENCODER_OFFSET = 0.406; 
    public static final int ARM_PICKUP_ANGLE = 94; // 104
-   public static final int ARM_AMP_ANGLE = -19;
-   public static final int ARM_SHOOTER_ANGLE = 50; // 53
-   public static final int ARM_SHOOTER_ANGLE_AUTO = 32; // 34
-   public static final int ARM_TRAP_SHOOT_ANGLE = 72;
+   public static final int ARM_AMP_ANGLE = -10; // -19
+   public static final int ARM_SHOOTER_ANGLE = 55; // 53
+   public static final int ARM_SHOOTER_ANGLE_AUTO = 39; // 34
+   public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
 
 
    // INTAKE CONSTANTS
@@ -143,6 +146,8 @@ public final class Constants {
    public static final double OUTTAKE_STOP_SPEED =0;
    public static final double OUTTAKE_SPEED = -0.9;
    public static final double AMP_OUTTAKE_SPEED = -0.2;
+   public static final double OUTTAKE_TRAP_SPEED = -0.15;
+   public static final double OUTTAKE_IN_SPEED = 0.35;
 
    // TELESCOPE CONSTANTS
    public static final int TELESCOPE_MOTOR_ID = 11;
@@ -173,6 +178,7 @@ public final class Constants {
    public static final int INTAKE_OUT_BUTTON = 5;   
    public static final int SPEAKER_BUTTON = 6;
    public static final int SWERVE_RESET_BUTTON = 7;
+   public static final int OUTTAKE_IN_BUTTON = 8;
    public static final int TRAP_SHOOT_BUTTON = 12;
    // public static final int SPEAKER_POSE_BUTTON = 6;
 
@@ -189,5 +195,5 @@ public final class Constants {
    public static final int CLIMBER2_DOWN_BUTTON = 12;
 
 
-//    public static final int ARM_START_BUTTON = 5;
+    //public static final int ARM_START_BUTTON = 5;
 }

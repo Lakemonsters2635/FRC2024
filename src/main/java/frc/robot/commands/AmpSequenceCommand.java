@@ -35,7 +35,7 @@ public class AmpSequenceCommand extends SequentialCommandGroup {
                                         ), 
                 new WaitCommand(0.6),
                 new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.1),
-                new WaitCommand(0.75),
+                new WaitCommand(1),
                 new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.1),
                 new InstantCommand(()->m_outakeSubsystem.zeroOutakePower()),
                 new MoveArmToPoseCommand(m_armSubsystem, -31).withTimeout(0.3));
