@@ -100,7 +100,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void setPosTarget(double poseTarget){
     SmartDashboard.putNumber("poseTarget parameter", poseTarget);
     m_poseTarget = poseTarget;
-    System.out.println("MOVE ARM POS SEt");
+    // System.out.println("MOVE ARM POS SEt");
   }
 
   @Override
@@ -132,8 +132,9 @@ public class ArmSubsystem extends SubsystemBase {
     // controlArmThrottle();
 
     gain = Constants.ARM_MOTOR_FF_GAIN;
-    //gain =rightJoystick.getThrottle()*0.3;
+    // gain =rightJoystick.getThrottle()*2;
     ffMotorPower = gain * Math.sin(Math.toRadians(theta));
+    SmartDashboard.putNumber("FFGain", gain);
 
     double lowerLimitFB = -0.3; // TODO: fix these
     double upperLimitFB = 0.3;
@@ -142,7 +143,7 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 10;
 
     motorPower = ffMotorPower + fbMotorPower;
-    if(m_poseTarget>93 && theta > 84){
+    if(m_poseTarget>93 && theta > 75){
       motorPower = 0;
     }
     if(m_poseTarget < -28 && theta < -26){
@@ -150,9 +151,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
     double clampVal = 3.;
     motorPower = MathUtil.clamp(motorPower, -clampVal, clampVal);
-    // setArmPower(motorPower);
+    // setArmPower(ffMotorPower);
+    setArmPower(motorPower);
     SmartDashboard.putNumber("motorPower", motorPower);
     SmartDashboard.putNumber("m_poseTarget", m_poseTarget);
+    SmartDashboard.putNumber("ffMotorPower", ffMotorPower);
 
   }    
 }

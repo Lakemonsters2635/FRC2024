@@ -25,25 +25,25 @@ public final class Constants {
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; 
    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; 
    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; 
-   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1); //3.01
+   public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0); //3.01
 
    // FRONT RIGHT
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 3; 
    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 2;
    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 4;
-   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90); // 3.0775
+   public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8); // 3.0775
 
    // BACK LEFT
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 9; 
    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0;
    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 10; 
-   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6); //2.9835
+   public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5); //2.9835
  
    // BACK RIGHT
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 8;
    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 1;
    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 7; 
-   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3); //3.0346
+   public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5); //3.0346
 
    // hat constants 
    public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -100,10 +100,11 @@ public final class Constants {
    public static final int CLIMBER_STOP_SPEED = 0;
 
    // AUTO CONSTANTS
-   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
+   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54)-0.15; // 57
    public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6); //45
 
-   public static final double ENDING_POSE = 45;
+   public static final double RIGHT_ENDING_POSE = 45+13+5;
+   public static final double LEFT_ENDING_POSE = -45;
 
    // CLIMBER RELEASE/SERVO CONSTANTS // TODO: Delete these
    public static final int SERVO_MOTOR_1 = 0;
@@ -124,13 +125,15 @@ public final class Constants {
    public static final double ARM_UPPER_LIMIT = 93.3;
 
 //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
-   public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V
+//    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V // For Neo 500
+   public static final double ARM_MOTOR_FF_GAIN = -0.59; // 11V // For Krakens
   
    public static final double ARM_ENCODER_OFFSET = 0.406; 
    public static final int ARM_PICKUP_ANGLE = 94; // 104
    public static final int ARM_AMP_ANGLE = -10; // -19
-   public static final int ARM_SHOOTER_ANGLE = 55; // 53
-   public static final int ARM_SHOOTER_ANGLE_AUTO = 39; // 34
+   public static final int ARM_SHOOTER_ANGLE = 54; // 54
+   public static final int ARM_SHOOTER_ANGLE_MID_AUTO = 33; // 34
+   public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 34; // 34
    public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
 
 

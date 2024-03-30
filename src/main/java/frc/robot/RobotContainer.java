@@ -79,6 +79,7 @@ public class RobotContainer {
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final AmpSequenceCommand m_ampSequenceCommand = new AmpSequenceCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
+  public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
 
 
   public RobotContainer() {
@@ -108,6 +109,8 @@ public class RobotContainer {
     Trigger trapShootButton = new JoystickButton(rightJoystick, Constants.TRAP_SHOOT_BUTTON);
     Trigger outtakeInButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_IN_BUTTON);
 
+    Trigger testButton = new JoystickButton(rightJoystick, 10);
+
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger ampSequenceButton = new JoystickButton(leftJoystick, Constants.AMP_SEQUENCE_BUTTON);
@@ -128,6 +131,7 @@ public class RobotContainer {
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
+    testButton.onTrue(m_moveArmToPoseSpeaker);
 
     outakeButton.whileTrue(m_ampOutakeCommand);
     ampSequenceButton.onTrue(m_ampSequenceCommand);

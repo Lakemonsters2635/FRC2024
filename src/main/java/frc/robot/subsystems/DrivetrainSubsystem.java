@@ -376,10 +376,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return swerveControllerCommand;
   }
 
-  public Rotation2d desiredRotation(){
-    return Rotation2d.fromDegrees(desiredRot);
-  }
-
   public void resetAngle(){
     m_gyro.reset();
     m_gyro.setAngleAdjustment(180);

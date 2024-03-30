@@ -13,7 +13,7 @@ public class IntakeCommand extends Command {
   public IntakeCommand(IntakeSubsystem intakeSubsystem) {
 
     m_intakeSubsystem = intakeSubsystem;
-    addRequirements(m_intakeSubsystem);
+    // addRequirements(m_intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
