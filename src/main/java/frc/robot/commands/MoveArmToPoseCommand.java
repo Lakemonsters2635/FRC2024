@@ -23,13 +23,13 @@ public class MoveArmToPoseCommand extends Command {
   @Override
   public void initialize() {
     m_armSubsystem.setPosTarget(m_angle);
-    System.out.println("MOVE ARM COMMANDED");
+    // System.out.println("MOVE ARM COMMANDED");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(m_armSubsystem.getArmDegrees());
+    // System.out.println(m_armSubsystem.getArmDegrees());
   }
 
   // Called once the command ends or is interrupted.

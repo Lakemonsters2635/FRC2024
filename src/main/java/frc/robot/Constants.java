@@ -103,6 +103,8 @@ public final class Constants {
    public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
    public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6); //45
 
+   public static final double ENDING_POSE = 45;
+
    // CLIMBER RELEASE/SERVO CONSTANTS // TODO: Delete these
    public static final int SERVO_MOTOR_1 = 0;
    public static final int SERVO_MOTOR_2 = 1;

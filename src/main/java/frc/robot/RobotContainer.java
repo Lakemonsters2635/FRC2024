@@ -155,6 +155,8 @@ public class RobotContainer {
     m_autoChooser.addOption("shootLeftCommand", m_autonomousCommands.shootLeftCommand());
     m_autoChooser.addOption("shootMidLeftCommand", m_autonomousCommands.shootMidLeftCommand());
     m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
+    m_autoChooser.addOption("shootMidToRightCommand", m_autonomousCommands.midToRightCommand());
+    m_autoChooser.addOption("shootMidToRightToLeftCommand", m_autonomousCommands.midToRightToLeftCommand());
     m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
     m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
     m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());

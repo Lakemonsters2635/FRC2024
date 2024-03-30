@@ -219,6 +219,50 @@ public class AutonomousCommands {
             ));
     }
 
+    public Command midToRightCommand(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            new SpeakerCommand(m_as, m_is, m_os),
+            midNotePath(),
+            shootFromMidCommand(),
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(-180)),
+                    new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE)+0.2),
+                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(150)),
+                    Constants.ENDING_POSE
+                ),
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
+            ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
+            
+            shootFromMidCommand()
+        );
+    }
+
+    public Command midToRightToLeftCommand(){
+        return new SequentialCommandGroup(
+            midToRightCommand(),
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(0)),
+                    new Translation2d(0, -(Constants.DISTANCE_TO_NOTE)+0.4),
+                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -Constants.DISTANCE_TO_NOTE, new Rotation2d(-30)),
+                    -Constants.ENDING_POSE
+                ),
+                new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.1)
+            ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
+            shootFromMidCommand()
+
+        );
+    }
+
     public Command justShoot(){
         return new SpeakerCommand(m_as, m_is, m_os);
     }

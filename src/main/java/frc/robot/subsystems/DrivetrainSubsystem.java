@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -55,6 +56,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
     public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
+
+    public double desiredRot;
 
     private Field2d field = new Field2d();
 
@@ -244,13 +247,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
-    // boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    desiredRot =0;
+    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
-    // if (isRedAliance) {
-    //   startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
-    //   middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
-    //   endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
-    // }
+    if (isRedAliance) {
+      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
+      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+    }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       3,  // TODO: this should be 7 during competetion
@@ -289,6 +293,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     PIDController yController = new PIDController(0.4, 0, 0);
     ProfiledPIDController thetaController = new ProfiledPIDController(0.4, 0, 0, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
+
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
       trajectory,
@@ -297,7 +303,72 @@ public class DrivetrainSubsystem extends SubsystemBase {
       xController,
       yController,
       thetaController,
-      this::desiredRotation,
+      angleSupplier,
+      this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
+      this
+    );
+
+    return swerveControllerCommand;
+  }
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
+    desiredRot = endRot;
+    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+
+    if (isRedAliance) {
+      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
+      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+    }
+
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+      3,  // TODO: this should be 7 during competetion
+      2)// TODO figure out these numbers
+      .setKinematics(m_kinematics);
+
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+      startPose,
+      List.of(
+        middlePose
+      ),
+      endPose,
+      trajectoryConfig
+      );
+
+    // double[] x1 = {0.0, 0.0, 0.0};
+    // double[] y1 = {0.0, -1.0, 0.0};
+
+    // double[] x2 = {0.0, 0.0, 0.0};
+    // double[] y2 = {-1.0, -1.0, 0.0};
+
+
+    // ControlVector cV1 = new ControlVector(x1, y1);
+    // ControlVector cV2 = new ControlVector(x2, y2);
+
+    // ControlVectorList cvl = new ControlVectorList();
+
+    // cvl.add(cV1);
+    // cvl.add(cV2);
+    
+    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
+
+    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+
+    PIDController xController = new PIDController(0.4, 0, 0);
+    PIDController yController = new PIDController(0.4, 0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(0.4, 0, 0, kThetaControllerConstraints); // Find a value for the PID
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(endRot));
+
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+      trajectory,
+      this::getPose,
+      m_kinematics,
+      xController,
+      yController,
+      thetaController,
+      angleSupplier,
+      // this::desiredRotation,
       this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
       this
     );
@@ -306,7 +377,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Rotation2d desiredRotation(){
-    return Rotation2d.fromDegrees(0);
+    return Rotation2d.fromDegrees(desiredRot);
   }
 
   public void resetAngle(){
@@ -416,10 +487,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void recalibrateGyro() {
-    System.out.println(m_gyro.getRotation2d());
+    // System.out.println(m_gyro.getRotation2d());
     m_gyro.reset();
     m_gyro.setAngleAdjustment(180);
-    System.out.println(m_gyro.getRotation2d());
+    // System.out.println(m_gyro.getRotation2d());
   }
 
   /**
