@@ -277,9 +277,20 @@ public class AutonomousCommands {
     }
 
     // shoot from an angle on the side pos, go picup note on one side and shoot
-    public Command sideAuto(){
+    public Command sideAutoRight(){
         return new SequentialCommandGroup(
-
+            // Our initial pose is at 60 degrees
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle(240)),
+            // Shoot
+            new SpeakerCommand(m_as, m_is, m_os),
+            // Translate x +1m, keeping our 60 degrees heading
+            m_dts.createPath(
+                new Pose2d(0,0,Rotation2d.fromDegrees(180)),
+                new Translation2d(0.5,0),
+                new Pose2d(1,0, Rotation2d.fromDegrees(0)),
+                0
+            )
         );
     }
     // shoot then mobility escape to the side
