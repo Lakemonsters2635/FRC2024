@@ -30,15 +30,18 @@ public class AmpSequenceCommand extends SequentialCommandGroup {
     addCommands(new ParallelCommandGroup( new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE),
                                           new SequentialCommandGroup( new IntakeOutCommand(m_intakeSubsystem),
                                                                       new WaitCommand(0.2),
-                                                                      new InstantCommand(()->m_outakeSubsystem.setAmpOutakePower()).withTimeout(0.1)
+                                                                      new InstantCommand(()->m_outakeSubsystem.setAmpOutakePower()).withTimeout(0.01)
                                                                     )
                                         ), 
-                new WaitCommand(0.6),
-                new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.1),
+                // new IntakeOutCommand(m_intakeSubsystem),
+                // new WaitCommand(0.2),
+                // new InstantCommand(()->m_outakeSubsystem.setAmpOutakePower()).withTimeout(0.01),
+                new WaitCommand(0.8),
+                new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.01),
                 new WaitCommand(1),
-                new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.1),
+                new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.01),
                 new InstantCommand(()->m_outakeSubsystem.zeroOutakePower()),
-                new MoveArmToPoseCommand(m_armSubsystem, -31).withTimeout(0.3));
+                new MoveArmToPoseCommand(m_armSubsystem, -34).withTimeout(0.3));
                 // new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE).withTimeout(0.3));
   }
 }

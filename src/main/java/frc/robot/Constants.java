@@ -100,11 +100,11 @@ public final class Constants {
    public static final int CLIMBER_STOP_SPEED = 0;
 
    // AUTO CONSTANTS
-   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54)-0.15; // 57
-   public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6); //45
+   public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
+   public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6)+0.1; //45
 
-   public static final double RIGHT_ENDING_POSE = 45+13+5;
-   public static final double LEFT_ENDING_POSE = -45;
+   public static final double RIGHT_ENDING_POSE = 45+10;
+   public static final double LEFT_ENDING_POSE = -45-8;
 
    // CLIMBER RELEASE/SERVO CONSTANTS // TODO: Delete these
    public static final int SERVO_MOTOR_1 = 0;
@@ -130,10 +130,10 @@ public final class Constants {
   
    public static final double ARM_ENCODER_OFFSET = 0.406; 
    public static final int ARM_PICKUP_ANGLE = 94; // 104
-   public static final int ARM_AMP_ANGLE = -10; // -19
+   public static final int ARM_AMP_ANGLE = -29; // -19
    public static final int ARM_SHOOTER_ANGLE = 54; // 54
    public static final int ARM_SHOOTER_ANGLE_MID_AUTO = 33; // 34
-   public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 34; // 34
+   public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 31; // 34
    public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
 
 
@@ -150,7 +150,7 @@ public final class Constants {
 
    public static final double OUTTAKE_STOP_SPEED =0;
    public static final double OUTTAKE_SPEED = -0.9;
-   public static final double AMP_OUTTAKE_SPEED = -0.2;
+   public static final double AMP_OUTTAKE_SPEED = -0.25;
    public static final double OUTTAKE_TRAP_SPEED = -0.15;
    public static final double OUTTAKE_IN_SPEED = 0.35;
 
@@ -180,6 +180,7 @@ public final class Constants {
    public static final int INTAKE_BUTTON = 1;
    public static final int GROUND_PICKUP_BUTTON = 3;
    public static final int AMP_POSE_BUTTON = 4;
+
    public static final int INTAKE_OUT_BUTTON = 5;   
    public static final int SPEAKER_BUTTON = 6;
    public static final int SWERVE_RESET_BUTTON = 7;

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -227,14 +228,18 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, 94)
+            ),
             new SpeakerCommand(m_as, m_is, m_os),
             midNotePath(),
             shootFromAwayCommand(Constants.ARM_SHOOTER_ANGLE_MID_AUTO),
             new ParallelCommandGroup(
                 m_dts.createPath(
                     new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(-180)),
-                    new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE)+0.2),
-                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(150)),
+                    new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE)+0.5),
+                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES-0.1, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(60)),
                     Constants.RIGHT_ENDING_POSE
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -253,8 +258,8 @@ public class AutonomousCommands {
             new ParallelCommandGroup(
                 m_dts.createPath(
                     new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(0)),
-                    new Translation2d(0, -(Constants.DISTANCE_TO_NOTE)+0.4),
-                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, -Constants.DISTANCE_TO_NOTE, new Rotation2d(-30)),
+                    new Translation2d(-0.2, -(Constants.DISTANCE_TO_NOTE)+0.8),
+                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.5, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-70)),
                     Constants.LEFT_ENDING_POSE
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
