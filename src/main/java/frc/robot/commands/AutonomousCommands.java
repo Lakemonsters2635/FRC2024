@@ -239,7 +239,7 @@ public class AutonomousCommands {
                 m_dts.createPath(
                     new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(-180)),
                     new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, -(Constants.DISTANCE_TO_NOTE)+0.5),
-                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES-0.1, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(60)),
+                    new Pose2d(Constants.DISTANCE_BETWEEN_NOTES-0.2, -(Constants.DISTANCE_TO_NOTE-0.1), new Rotation2d(150)),
                     Constants.RIGHT_ENDING_POSE
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -258,8 +258,8 @@ public class AutonomousCommands {
             new ParallelCommandGroup(
                 m_dts.createPath(
                     new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(0)),
-                    new Translation2d(-0.2, -(Constants.DISTANCE_TO_NOTE)+0.8),
-                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.5, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-70)),
+                    new Translation2d(0, -(Constants.DISTANCE_TO_NOTE)+0.6),
+                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.3, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-40)),
                     Constants.LEFT_ENDING_POSE
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),

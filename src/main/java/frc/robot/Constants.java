@@ -104,7 +104,7 @@ public final class Constants {
    public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6)+0.1; //45
 
    public static final double RIGHT_ENDING_POSE = 45+10;
-   public static final double LEFT_ENDING_POSE = -45-8;
+   public static final double LEFT_ENDING_POSE = -53-8;
 
    // CLIMBER RELEASE/SERVO CONSTANTS // TODO: Delete these
    public static final int SERVO_MOTOR_1 = 0;
