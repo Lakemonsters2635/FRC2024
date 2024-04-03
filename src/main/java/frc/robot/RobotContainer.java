@@ -165,6 +165,7 @@ public class RobotContainer {
     m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
     m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
     m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
+    m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 

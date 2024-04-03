@@ -305,9 +305,33 @@ public class AutonomousCommands {
             m_dts.createPath(
                     new Pose2d(0,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(-180))),
                     new Translation2d(0.6,(-Constants.DISTANCE_TO_NOTE-0.2)),
+                    // Add negative y to move downfield a little bit more
                     new Pose2d(1.3,-Constants.DISTANCE_TO_NOTE-1, new Rotation2d(Math.toRadians(-180))),
                     0
             )
+        );
+    }
+    // NOTE: WE may want to increase the end y pose from -2 to -3 so we can get mobility
+    public Command escapeRight(){
+        return new SequentialCommandGroup(
+            // Our initial pose is at 60 degrees
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle(240)),//240
+            // Shoot
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, 94)
+            ),
+            new SpeakerCommand(m_as, m_is, m_os),
+            // Translate x +1m, keeping our 60 degrees heading
+            m_dts.createPath(
+                new Pose2d(0,0,new Rotation2d(Math.toRadians(-120))),
+                new Translation2d(2,-0.75),
+                // Change this -2 to -3 if needed for the escape
+                new Pose2d(3,-2, new Rotation2d(Math.toRadians(-90))),
+                22
+            )
+        
         );
     }
     // shoot then mobility escape to the side
