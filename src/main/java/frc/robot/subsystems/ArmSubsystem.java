@@ -143,7 +143,7 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 10;
 
     motorPower = ffMotorPower + fbMotorPower;
-    if(m_poseTarget>93 && theta > 75){
+    if(m_poseTarget>90 && theta > 75){
       motorPower = 0;
     }
     if(m_poseTarget < -28 && theta < -26){

@@ -281,15 +281,32 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             // Our initial pose is at 60 degrees
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-            new InstantCommand(() -> m_dts.resetAngle(240)),
+            new InstantCommand(() -> m_dts.resetAngle(240)),//240
             // Shoot
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, 94)
+            ),
             new SpeakerCommand(m_as, m_is, m_os),
             // Translate x +1m, keeping our 60 degrees heading
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0,0,new Rotation2d(Math.toRadians(-130))),
+                    new Translation2d(0.5,(-Constants.DISTANCE_TO_NOTE-0.4)/3),
+                    new Pose2d(0.25,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(-70))),
+                    -8
+                ),
+                // new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.01)
+            ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
+            shootFromAwayCommand(Constants.ARM_SHOOTER_ANGLE_SIDE_AUTO),
             m_dts.createPath(
-                new Pose2d(0,0,Rotation2d.fromDegrees(180)),
-                new Translation2d(0.5,0),
-                new Pose2d(1,0, Rotation2d.fromDegrees(0)),
-                0
+                    new Pose2d(0,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(-180))),
+                    new Translation2d(0.6,(-Constants.DISTANCE_TO_NOTE-0.2)),
+                    new Pose2d(1.3,-Constants.DISTANCE_TO_NOTE-1, new Rotation2d(Math.toRadians(-180))),
+                    0
             )
         );
     }
