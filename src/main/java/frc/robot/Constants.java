@@ -190,9 +190,9 @@ public final class Constants {
 
    // left buttons
    public static final int OUTTAKE_BUTTON = 1;
-   public static final int AMP_SEQUENCE_BUTTON = 3;
-   public static final int TELESCOPE_RETRACT_BUTTON = 4;
-   public static final int TELESCOPE_EXTEND_BUTTON = 6;
+   public static final int AMP_SEQUENCE_BUTTON = 4  ;
+   //public static final int TELESCOPE_RETRACT_BUTTON = 4;
+   //public static final int TELESCOPE_EXTEND_BUTTON = 6;
    public static final int CLIMBER_UP_BUTTON = 7;
    public static final int CLIMBER_DOWN_BUTTON = 8;
    public static final int CLIMBER1_UP_BUTTON = 9;
