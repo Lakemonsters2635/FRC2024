@@ -171,6 +171,8 @@ public class RobotContainer {
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 
+    m_autoChooser.addOption("redSideAutoLeft", m_autonomousCommands.redSideAutoLeft());
+
     SmartDashboard.putData("AutoChooser", m_autoChooser);
 
     return m_autoChooser;

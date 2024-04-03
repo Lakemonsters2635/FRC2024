@@ -335,11 +335,17 @@ public class AutonomousCommands {
         );
     }
 
+    //==============
+    // CURRENT ESCAPE LEFT IS WRONG!!!!!
+    // start over and mirror escape right... bu use the 120 for the resetAngle(120) at the beginning
+    // instead of the 240 used for escape right
+    //==============
+
     // public Command escapeLeft(){
     //     return new SequentialCommandGroup(
     //         // Our initial pose is at 60 degrees
     //         new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-    //         new InstantCommand(() -> m_dts.resetAngle(60)),//60
+    //         new InstantCommand(() -> m_dts.resetAngle(120)),// 120 should work for escape left 
     //         // Shoot
     //         new ParallelRaceGroup(
     //             new WaitCommand(0.4),
@@ -358,6 +364,58 @@ public class AutonomousCommands {
         
     //     );
     // }
+
+    //=============
+    // converts heading from blue to red
+    //=============
+    public double toRedHead(double blueHeadingDegrees) {
+        return -1.*(blueHeadingDegrees + 180.);
+    }
+    public int toRedHead(int blueHeadingDegrees) {
+        return -1*(blueHeadingDegrees + 180);
+    }
+
+    // shoot from an angle on the side pos, go picup note on one side and shoot
+    // public Command sideAutoRight(){ // this is for blue
+    public Command redSideAutoLeft(){
+        return new SequentialCommandGroup(
+            // Our initial pose is at 60 degrees
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle(120)),//240 is for blue, 120 is for red / "left side of speaker" starting position
+            // Shoot
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, toRedHead(94))
+            ),
+            new SpeakerCommand(m_as, m_is, m_os),
+            // Translate x +1m, keeping our 60 degrees heading
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0,0,new Rotation2d(Math.toRadians(toRedHead(-130)))),
+                    new Translation2d(0.5,(-Constants.DISTANCE_TO_NOTE-0.4)/3),
+                    new Pose2d(0.25,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(toRedHead(-70)))),
+                    // TODO FOR RED
+                    // TODO FOR RED
+                    // TODO FOR RED tune this -8 to something
+                    // TODO FOR RED
+                    // TODO FOR RED
+                    -8
+                ),
+                // new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.01)
+            ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
+            shootFromAwayCommand(Constants.ARM_SHOOTER_ANGLE_SIDE_AUTO),
+            m_dts.createPath(
+                    new Pose2d(0,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(toRedHead(-180)))),
+                    new Translation2d(0.6,(-Constants.DISTANCE_TO_NOTE-0.2)),
+                    // Add negative y to move downfield a little bit more
+                    new Pose2d(1.3,-Constants.DISTANCE_TO_NOTE-1, new Rotation2d(Math.toRadians(toRedHead(-180)))),
+                    0
+            )
+        );
+    }
 
    
     // shoot then mobility escape to the side
