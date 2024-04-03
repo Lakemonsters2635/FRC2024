@@ -31,6 +31,7 @@ import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.OuttakeInCommand;
 import frc.robot.commands.SpeakerCommand;
+import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -127,7 +128,7 @@ public class RobotContainer {
     armPickupPoseButton.onTrue(m_pickUpPoseCommand);
     armAmpPoseButton.onTrue(m_ampPoseCommand);
     intakeOutButton.onTrue(m_intakeOutCommand);
-    speakerButton.onTrue(m_speakerCommand);
+    speakerButton.onTrue(new SpeakerDriverCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
@@ -166,6 +167,7 @@ public class RobotContainer {
     m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
     m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
     m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
+    //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 

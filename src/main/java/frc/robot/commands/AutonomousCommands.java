@@ -334,6 +334,32 @@ public class AutonomousCommands {
         
         );
     }
+
+    // public Command escapeLeft(){
+    //     return new SequentialCommandGroup(
+    //         // Our initial pose is at 60 degrees
+    //         new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+    //         new InstantCommand(() -> m_dts.resetAngle(60)),//60
+    //         // Shoot
+    //         new ParallelRaceGroup(
+    //             new WaitCommand(0.4),
+    //             new MoveArmToPoseCommand(m_as, 94)
+    //         ),
+    //         new SpeakerCommand(m_as, m_is, m_os),
+    //         new WaitCommand(2),
+    //         // Translate x +1m, keeping our 60 degrees heading
+    //         m_dts.createPath(
+    //             new Pose2d(0,0,new Rotation2d(Math.toRadians(-70))),
+    //             new Translation2d(0,-1), //X IS WRONG SIGN
+    //             // Change this -2 to -3 if needed for the escape
+    //             new Pose2d(0,-2, new Rotation2d(Math.toRadians(-90))),
+    //             0
+    //         )
+        
+    //     );
+    // }
+
+   
     // shoot then mobility escape to the side
 
     // shoot then wait then mobility
