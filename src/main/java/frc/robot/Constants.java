@@ -36,6 +36,11 @@ public final class Constants {
     // Add 90 to all encoder offsets
     // Switch robot's lenght to width
 
+    // ROBOT WIDTH AND LENGHT
+    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  26.625/ Constants.INCHES_PER_METER; //26.625
+    public static final double DRIVETRAIN_WHEELBASE_LENGTH = 19.625 / Constants.INCHES_PER_METER; //19.625
+
+
     // FRONT LEFT
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; //1
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 1; //3
