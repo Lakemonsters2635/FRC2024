@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -44,6 +45,16 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_autoChooser = m_robotContainer.getAutonomousCommand();
+
+    // Works
+    SmartDashboard.putNumber("intakeMotorVoltage", m_robotContainer.m_intakeSubsystem.intakeMotor.getBusVoltage());
+    SmartDashboard.putNumber("climber1MotorVoltage", m_robotContainer.m_climberSubsystem.m_climberMotor1.getBusVoltage());
+    SmartDashboard.putNumber("climber2MotorVoltage", m_robotContainer.m_climberSubsystem.m_climberMotor2.getBusVoltage());
+
+    // Not sure
+    SmartDashboard.putNumber("outtakeMotorVoltage", m_robotContainer.m_outakeSubsystem.m_outakeMotor.getSupplyVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("armMotor1Voltage", m_robotContainer.m_armSubsystem.m_armMotor1.getSupplyVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("armMotor2Voltage", m_robotContainer.m_armSubsystem.m_armMotor2.getSupplyVoltage().getValueAsDouble());
 
     
     // m_autoChooser = m_robotContainer.getAutonomousCommand();

@@ -57,6 +57,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
     public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
 
+    public String selectedAliance = "blueAlliance";
+
     public double desiredRot;
 
     private Field2d field = new Field2d();
@@ -233,6 +235,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return followPathcCommand;
   }
 
+  public void selectAliance(String aliance){
+    selectedAliance = aliance;
+  }
+
   public void stopMotors(){
     m_backLeft.stop();
     m_frontLeft.stop();
@@ -248,7 +254,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
     desiredRot =0;
-    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    boolean isRedAliance  =false;
+    if (selectedAliance == "FMS") {
+      isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    }
+    else if(selectedAliance =="blue"){
+      isRedAliance = false;
+    }
+    else if(selectedAliance =="red"){
+      isRedAliance = true;
+    }
+    else{
+      isRedAliance = false;
+    }
 
     if (isRedAliance) {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
@@ -311,8 +329,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return swerveControllerCommand;
   }
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
-    desiredRot = endRot;
-    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    desiredRot =0;
+    boolean isRedAliance  =false;
+    if (selectedAliance == "FMS") {
+      isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    }
+    else if(selectedAliance =="blue"){
+      isRedAliance = false;
+    }
+    else if(selectedAliance =="red"){
+      isRedAliance = true;
+    }
+    else{
+      isRedAliance = false;
+    }
 
     if (isRedAliance) {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
@@ -376,7 +406,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return swerveControllerCommand;
   }
 
-  public void resetAngle(){
+  public void  resetAngle(){
     m_gyro.reset();
     m_gyro.setAngleAdjustment(180);
   }

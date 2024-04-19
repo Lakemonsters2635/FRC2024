@@ -259,7 +259,7 @@ public class AutonomousCommands {
                 m_dts.createPath(
                     new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(0)),
                     new Translation2d(0, -(Constants.DISTANCE_TO_NOTE)+0.6),
-                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.3, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-40)),
+                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.33, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-40)),
                     Constants.LEFT_ENDING_POSE
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -273,7 +273,12 @@ public class AutonomousCommands {
     }
 
     public Command justShoot(){
-        return new SpeakerCommand(m_as, m_is, m_os);
+        return new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, 94)
+            ),
+            new SpeakerCommand(m_as, m_is, m_os));
     }
 
     // shoot from an angle on the side pos, go picup note on one side and shoot
@@ -293,7 +298,7 @@ public class AutonomousCommands {
                 m_dts.createPath(
                     new Pose2d(0,0,new Rotation2d(Math.toRadians(-130))),
                     new Translation2d(0.5,(-Constants.DISTANCE_TO_NOTE-0.4)/3),
-                    new Pose2d(0.25,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(-70))),
+                    new Pose2d(0.35,-Constants.DISTANCE_TO_NOTE-0.6, new Rotation2d(Math.toRadians(-70))),
                     -8
                 ),
                 // new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -385,7 +390,7 @@ public class AutonomousCommands {
             // Shoot
             new ParallelRaceGroup(
                 new WaitCommand(0.4),
-                new MoveArmToPoseCommand(m_as, toRedHead(94))
+                new MoveArmToPoseCommand(m_as, 94)
             ),
             new SpeakerCommand(m_as, m_is, m_os),
             // Translate x +1m, keeping our 60 degrees heading
@@ -399,7 +404,8 @@ public class AutonomousCommands {
                     // TODO FOR RED tune this -8 to something
                     // TODO FOR RED
                     // TODO FOR RED
-                    -8
+                    8
+                    // -8
                 ),
                 // new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
                 new InstantCommand(()->m_is.inIntake()).withTimeout(0.01)
