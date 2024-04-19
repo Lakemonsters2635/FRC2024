@@ -179,6 +179,9 @@ public class RobotContainer {
     m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
     m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
     m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
+    m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
+    m_autoChooser.addOption("postSeasonAutoDiagonalBlueLeft", m_autonomousCommands.postSeasonAutoDiagonalBlueLeft());
+    m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
     //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
