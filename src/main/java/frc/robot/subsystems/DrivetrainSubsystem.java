@@ -518,12 +518,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // System.out.println("FR: " + m_frontRight.printVoltage());
   }
 
-  public void recalibrateGyro() {
-    // System.out.println(m_gyro.getRotation2d());
-    m_gyro.reset();
-    m_gyro.setAngleAdjustment(180);
-    // System.out.println(m_gyro.getRotation2d());
-  }
+  // public void recalibrateGyro() {
+  //   // System.out.println(m_gyro.getRotation2d());
+  //   m_gyro.reset();
+  //   m_gyro.setAngleAdjustment(180);
+  //   // System.out.println(m_gyro.getRotation2d());
+  // }
 
   /**
    * Method to drive the robot using joystick info.
