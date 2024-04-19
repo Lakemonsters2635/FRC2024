@@ -408,7 +408,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void  resetAngle(){
     m_gyro.reset();
-    m_gyro.setAngleAdjustment(180);
+    // Setting the angle adjustment changes where forward is when you push the controls forward
+    // However it doesn't rotate the definition of the odometry x and y
+    m_gyro.setAngleAdjustment(0);
   }
   public void resetAngle(int degree){
     m_gyro.reset();
@@ -466,16 +468,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
           xPowerCommanded = rightJoystick.getX();
         }
 
+        // TODO: look at the deadband below
         if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
           rotCommanded = rightJoystick.getTwist() * -1;
         }
 
-        
+      
         this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                   MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
                   true);
-        
       }
       
       SmartDashboard.putNumber("rotCommanded", rotCommanded);
@@ -546,6 +548,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[0]);
     m_backLeft.setDesiredState(swerveModuleStates[3]);
     m_backRight.setDesiredState(swerveModuleStates[2]);
+    SmartDashboard.putNumber("xSpeed", xSpeed);
+    SmartDashboard.putNumber("ySpeed", ySpeed);
+    SmartDashboard.putNumber("rot", rot);
   }
 
   /** Updates the field relative position of the robot. */
@@ -682,9 +687,9 @@ public ChassisSpeeds getChassisSpeeds() {
     // SmartDashboard.putNumber("Gyro Speed X",m_gyro.getVelocityX());
     // SmartDashboard.putNumber("Gyro Speed Y",m_gyro.getVelocityY());
 
-    SmartDashboard.putNumber("Robot pos_X", getPose().getX());
-    SmartDashboard.putNumber("Robot pos_Y", getPose().getY());
-    SmartDashboard.putNumber("Robot gyro_Angle", m_gyro.getAngle());
-    SmartDashboard.putNumber("Robot pos_rot", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("getPose.getX", getPose().getX());
+    SmartDashboard.putNumber("getPose.getY", getPose().getY());
+    SmartDashboard.putNumber("gyro.getAngle", m_gyro.getAngle());
+    SmartDashboard.putNumber("getPose.getRotation", getPose().getRotation().getDegrees());
   }
 }
