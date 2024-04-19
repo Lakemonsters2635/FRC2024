@@ -54,8 +54,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public static Joystick rightJoystick = RobotContainer.rightJoystick;
     public static Joystick leftJoystick = RobotContainer.leftJoystick;
 
-    public final double m_drivetrainWheelbaseWidth = 26.625 / Constants.INCHES_PER_METER;
-    public final double m_drivetrainWheelbaseLength = 19.625 / Constants.INCHES_PER_METER;
+    public final double m_drivetrainWheelbaseWidth = 19.625 / Constants.INCHES_PER_METER; //26.625
+    public final double m_drivetrainWheelbaseLength = 26.625 / Constants.INCHES_PER_METER; //19.625
 
     public String selectedAliance = "blueAlliance";
 
