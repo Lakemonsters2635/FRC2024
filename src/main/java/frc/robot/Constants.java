@@ -99,7 +99,7 @@ public final class Constants {
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; 
     //We set it to 9pi rad/s^2 so that we get to the maximum speed within 1/3 of a second
     //We may want to back off on this if autos start lagging
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 9 * Math.PI;
+    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 12 * Math.PI;
 
     public static final int kEncoderCPR = 42; // neo encoder ticks per revolution
     public static final double kWheelDiameterMeters = 4.0 / 39.37;

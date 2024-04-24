@@ -59,8 +59,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public String selectedAliance = "blueAlliance";
 
-    public double desiredRot;
-
     private Field2d field = new Field2d();
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
@@ -260,12 +258,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
-    desiredRot =0;
+    int desiredRot =0;
     return createPath(startPose, middlePose, endPose, desiredRot);
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
-    desiredRot =0;
     boolean isRedAliance  =false;
     
     isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
@@ -291,11 +288,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees()))));
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));
+      endRot*=-1;
     }
+    // angleSupplier expects a final variable so we create desiredRot and give the value of endRot
+    final double desiredRot =endRot;
+
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       3,  // TODO: this should be 7 during competetion
-      2)// TODO figure out these numbers
+      6)// TODO figure out these numbers
       .setKinematics(m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -328,9 +329,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(0.4, 0, 0, kThetaControllerConstraints); // Find a value for the PID
+    ProfiledPIDController thetaController = new ProfiledPIDController(3.2, 0, 0, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
-    Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(endRot));
+    Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
