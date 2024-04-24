@@ -90,9 +90,16 @@ public final class Constants {
     public static final int HAT_POV_ARM_DOWN = 180;
     public static final int HAT_POV_ROTATE_LEFT = 270;
     public static final int HAT_POV_ROTATE_RIGHT = 90;
-
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+    /*Changed max speed from 2pi rad/s since max no load speed is 15 ft/s and with our robot
+    the radius from the center of our robot to the center of the module is 16.5 inches therefore
+    with a max commanded angular speed of 2pi radians our max commanded speed is 8.6 ft/s which
+    is about half the theoretical maximum. We don't want to go to the absolute maximum which would
+    approximately be 4pi rad/s so we choose 3pi rad/s as the maximum.
+    Note: if we run into problems during autos with it lagging, we may want to revert it back to 2pi rad/s. */
+    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; 
+    //We set it to 9pi rad/s^2 so that we get to the maximum speed within 1/3 of a second
+    //We may want to back off on this if autos start lagging
+    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 9 * Math.PI;
 
     public static final int kEncoderCPR = 42; // neo encoder ticks per revolution
     public static final double kWheelDiameterMeters = 4.0 / 39.37;

@@ -162,9 +162,9 @@ public class RobotContainer {
     SendableChooser<Command> m_autoChooser = new SendableChooser<>();
     SendableChooser<Command> m_alianceChooser = new SendableChooser<>();
 
-    m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
-    m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
-    m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
+    // m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
+    // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
+    // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
 
     // An example command will be run in autonomous
     m_autoChooser.addOption("shootMidCommand", m_autonomousCommands.shootMidCommand());
@@ -182,6 +182,8 @@ public class RobotContainer {
     m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
     m_autoChooser.addOption("postSeasonAutoDiagonalBlueLeft", m_autonomousCommands.postSeasonAutoDiagonalBlueLeft());
     m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
+    m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
+    m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
     //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);

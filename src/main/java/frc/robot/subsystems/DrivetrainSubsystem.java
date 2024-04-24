@@ -235,9 +235,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return followPathcCommand;
   }
 
-  public void selectAliance(String aliance){
-    selectedAliance = aliance;
-  }
+  // public void selectAliance(String aliance){
+  //   selectedAliance = aliance;
+  // }
 
   public void stopMotors(){
     m_backLeft.stop();
@@ -252,102 +252,45 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return c;
   }
 
+  public double toRedHead(double blueHeadingDegrees) {
+    return -1.*(blueHeadingDegrees + 180.);
+  }
+  public int toRedHead(int blueHeadingDegrees) {
+      return -1*(blueHeadingDegrees + 180);
+  }
+
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
     desiredRot =0;
-    boolean isRedAliance  =false;
-    if (selectedAliance == "FMS") {
-      isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
-    }
-    else if(selectedAliance =="blue"){
-      isRedAliance = false;
-    }
-    else if(selectedAliance =="red"){
-      isRedAliance = true;
-    }
-    else{
-      isRedAliance = false;
-    }
-
-    if (isRedAliance) {
-      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
-      middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
-      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
-    }
-
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      3,  // TODO: this should be 7 during competetion
-      2)// TODO figure out these numbers
-      .setKinematics(m_kinematics);
-
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      startPose,
-      List.of(
-        middlePose
-      ),
-      endPose,
-      trajectoryConfig
-      );
-
-    // double[] x1 = {0.0, 0.0, 0.0};
-    // double[] y1 = {0.0, -1.0, 0.0};
-
-    // double[] x2 = {0.0, 0.0, 0.0};
-    // double[] y2 = {-1.0, -1.0, 0.0};
-
-
-    // ControlVector cV1 = new ControlVector(x1, y1);
-    // ControlVector cV2 = new ControlVector(x2, y2);
-
-    // ControlVectorList cvl = new ControlVectorList();
-
-    // cvl.add(cV1);
-    // cvl.add(cV2);
-    
-    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
-
-    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
-
-    PIDController xController = new PIDController(0.4, 0, 0);
-    PIDController yController = new PIDController(0.4, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(0.4, 0, 0, kThetaControllerConstraints); // Find a value for the PID
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-    Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
-
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-      trajectory,
-      this::getPose,
-      m_kinematics,
-      xController,
-      yController,
-      thetaController,
-      angleSupplier,
-      this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
-      this
-    );
-
-    return swerveControllerCommand;
+    return createPath(startPose, middlePose, endPose, desiredRot);
   }
+
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
     desiredRot =0;
     boolean isRedAliance  =false;
-    if (selectedAliance == "FMS") {
-      isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
-    }
-    else if(selectedAliance =="blue"){
-      isRedAliance = false;
-    }
-    else if(selectedAliance =="red"){
-      isRedAliance = true;
-    }
-    else{
-      isRedAliance = false;
-    }
+    
+    isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+
+    // if (selectedAliance.equalsIgnoreCase("FMS")) {
+    // }
+    // else if(selectedAliance.equalsIgnoreCase("blue")){
+    //   isRedAliance = false;
+    // }
+    // else if(selectedAliance.equalsIgnoreCase("red")){
+    //   isRedAliance = true;
+    // }
+    // else{
+    //   isRedAliance = false;
+    // }
+
+    // SmartDashboard.putString("selectedAlliance",selectedAliance);
+    SmartDashboard.putBoolean("isRedAlliance",isRedAliance);
+    SmartDashboard.putString("DriverStation.getAlliance().get()",DriverStation.getAlliance().get().name());
+    SmartDashboard.putString("DriverStation.Alliance.Red",DriverStation.Alliance.Red.name());
 
     if (isRedAliance) {
-      startPose = new Pose2d(-startPose.getX(), startPose.getY(), startPose.getRotation());
+      startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees()))));
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
-      endPose = new Pose2d(-endPose.getX(), endPose.getY(), endPose.getRotation());
+      endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));
     }
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
