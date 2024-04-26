@@ -277,16 +277,29 @@ public class AutonomousCommands {
     }
     public Command postSeasonAutoDiagonalSourceRotation(){
         return new SequentialCommandGroup(
-            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
-                        new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
-                        new Translation2d(-0.5, 0.5),
-                        new Pose2d(-1, 1, new Rotation2d(Math.toRadians(135))),
-                        90
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(150))),
+                        new Translation2d(-0.5, 0.2),
+                        new Pose2d(-1, 1, new Rotation2d(Math.toRadians(110))),
+                        0
             ),
             new InstantCommand(()->m_dts.stopMotors()));
     }
+
+    // public Command postSeasonAutoDiagonalSourceRotation(){
+    //     return new SequentialCommandGroup(
+    //         new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+    //         new InstantCommand(() -> m_dts.resetAngle()),
+    //         m_dts.createPath(
+    //                     new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
+    //                     new Translation2d(-0.5, 0.5),
+    //                     new Pose2d(-1, 1, new Rotation2d(Math.toRadians(135))),
+    //                     45
+    //         ),
+    //         new InstantCommand(()->m_dts.stopMotors()));
+    // }
 
     public Command midToRightCommand(){
         return new SequentialCommandGroup(

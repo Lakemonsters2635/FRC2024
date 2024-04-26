@@ -295,8 +295,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      3,  // TODO: this should be 7 during competetion
-      6)// TODO figure out these numbers
+      3.5,  // 3.5
+      16)// 4
       .setKinematics(m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -329,7 +329,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(3.2, 0, 0, kThetaControllerConstraints); // Find a value for the PID
+    ProfiledPIDController thetaController = new ProfiledPIDController(4, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
@@ -342,7 +342,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       yController,
       thetaController,
       angleSupplier,
-      // this::desiredRotation,
       this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
       this
     );
@@ -551,10 +550,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, 4);
 
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_backLeft.setDesiredState(desiredStates[2]);
-    m_backRight.setDesiredState(desiredStates[3]);
+    m_frontLeft.setDesiredState(desiredStates[1]);
+    m_frontRight.setDesiredState(desiredStates[0]);
+    m_backLeft.setDesiredState(desiredStates[3]);
+    m_backRight.setDesiredState(desiredStates[2]);
   } 
 
   /** Sets the swerve ModuleStates. Accept a center of rotation for when you DON'T want to rotate
@@ -568,10 +567,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 4);
 
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_backLeft.setDesiredState(desiredStates[2]);
-    m_backRight.setDesiredState(desiredStates[3]);
+    m_frontLeft.setDesiredState(desiredStates[1]);
+    m_frontRight.setDesiredState(desiredStates[0]);
+    m_backLeft.setDesiredState(desiredStates[3]);
+    m_backRight.setDesiredState(desiredStates[2]);
   } 
 
 public ChassisSpeeds getChassisSpeeds() {
@@ -589,10 +588,10 @@ public ChassisSpeeds getChassisSpeeds() {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DrivetrainSubsystem.kMaxSpeed);
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_backLeft.setDesiredState(desiredStates[2]);
-    m_backRight.setDesiredState(desiredStates[3]);
+    m_frontLeft.setDesiredState(desiredStates[1]);
+    m_frontRight.setDesiredState(desiredStates[0]);
+    m_backLeft.setDesiredState(desiredStates[3]);
+    m_backRight.setDesiredState(desiredStates[2]);
   }
 
   /** Displays all 4 module positions + robot pose (forward/back) in SmartDashboard. 
