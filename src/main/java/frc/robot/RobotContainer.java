@@ -184,7 +184,8 @@ public class RobotContainer {
     m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
     m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
     m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
-    m_autoChooser.setDefaultOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
+    m_autoChooser.addOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
+    m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
     m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotation", m_autonomousCommands.postSeasonAutoDiagonalSourceRotation());
     m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotationCurve", m_autonomousCommands.postSeasonAutoDiagonalSourceRotationCurve());
     //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz

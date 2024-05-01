@@ -331,7 +331,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     PIDController yController = new PIDController(0.4, 0, 0);
     // Note: We reduced Kp to 2 so that rottion control loop doesn't saturate the module motor speed during autos
     // This however makes it so that robot cannot turn quickly, which is not good however it enables more acurate and consistent auto paths
-    ProfiledPIDController thetaController = new ProfiledPIDController(2, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
+    ProfiledPIDController thetaController = new ProfiledPIDController(3, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
     // ProfiledPIDController thetaController = new ProfiledPIDController(4, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));

@@ -333,6 +333,37 @@ public class AutonomousCommands {
             new InstantCommand(()->m_dts.stopMotors()));
     }
 
+    public Command postSeasonAutoTriangleSpeakerTrapezoid(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle(-60)),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(70))),
+                        new Translation2d(0.125, 0.75),
+                        new Pose2d(0.25, 1.5, new Rotation2d(Math.toRadians(70))),
+                        0
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(0.25,1.5, new Rotation2d(Math.toRadians(180))),
+                        new Translation2d(-1, 1.5),
+                        new Pose2d(-2.25, 1.5, new Rotation2d(Math.toRadians(180))),
+                        0
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(-2.5,1.5, new Rotation2d(Math.toRadians(290))),
+                        new Translation2d(-2.375, 0.75),
+                        new Pose2d(-2.25, 0, new Rotation2d(Math.toRadians(290))),
+                        60
+            ),
+            new InstantCommand(()->m_dts.stopMotors()));
+    }
+
 
 
     public Command midToRightCommand(){
