@@ -302,6 +302,39 @@ public class AutonomousCommands {
             new InstantCommand(()->m_dts.stopMotors()));
     }
 
+    public Command postSeasonAutoTriangle(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(45))),
+                        new Translation2d(0.75, 0.75),
+                        new Pose2d(1.5, 1.5, new Rotation2d(Math.toRadians(45))),
+                        90
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(1.5,1.5, new Rotation2d(Math.toRadians(180))),
+                        new Translation2d(0, 1.5),
+                        new Pose2d(-1.5, 1.5, new Rotation2d(Math.toRadians(180))),
+                        269
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(-1.5,1.5, new Rotation2d(Math.toRadians(315))),
+                        new Translation2d(-0.75, 0.75),
+                        new Pose2d(0, 0, new Rotation2d(Math.toRadians(315))),
+                        360            
+                        ),
+            new InstantCommand(()->m_dts.stopMotors()));
+    }
+
+
+
     public Command midToRightCommand(){
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),

@@ -295,8 +295,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      3.5,  // 3.5
-      16)// 4
+      Constants.maxModuleLinearSpeed,  // 3.5
+      Constants.maxModuleLinearAccelaration)// 4
       .setKinematics(m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -329,7 +329,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(4, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
+    // Note: We reduced Kp to 2 so that rottion control loop doesn't saturate the module motor speed during autos
+    // This however makes it so that robot cannot turn quickly, which is not good however it enables more acurate and consistent auto paths
+    ProfiledPIDController thetaController = new ProfiledPIDController(2, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
+    // ProfiledPIDController thetaController = new ProfiledPIDController(4, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
@@ -452,9 +455,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
       
 
-    
+    Pose2d lastPose2d = m_odometry.getPoseMeters();
     updateOdometry();
+    Pose2d currentPose2d = m_odometry.getPoseMeters();
 
+    SmartDashboard.putNumber("deltaX", currentPose2d.getX()-lastPose2d.getX());
+    SmartDashboard.putNumber("deltaY", currentPose2d.getY()-lastPose2d.getY());
+    SmartDashboard.putNumber("deltaRotation", currentPose2d.getRotation().getDegrees()-lastPose2d.getRotation().getDegrees());
     putDTSToSmartDashboard();
     tuneAngleOffsetPutToDTS();
     // System.out.println("FL: " + m_frontLeft.printVoltage());

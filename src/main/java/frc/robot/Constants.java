@@ -101,6 +101,11 @@ public final class Constants {
     //We may want to back off on this if autos start lagging
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 12 * Math.PI;
 
+    public static final double maxModuleLinearSpeed = 1.75;
+    public static final double maxModuleLinearAccelaration = 8;
+    // public static final double maxModuleLinearSpeed = 3.5;
+    // public static final double maxModuleLinearAccelaration = 16;
+
     public static final int kEncoderCPR = 42; // neo encoder ticks per revolution
     public static final double kWheelDiameterMeters = 4.0 / 39.37;
     public static final double kDriveEncoderDistancePerPulse =
