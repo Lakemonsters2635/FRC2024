@@ -27,17 +27,33 @@ public class TrapShootCommand extends SequentialCommandGroup {
     m_outakeSubsystem = outakeSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ParallelCommandGroup( new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_TRAP_SHOOT_ANGLE),
-                                          new SequentialCommandGroup( new IntakeOutCommand(m_intakeSubsystem),
-                                                                      new WaitCommand(0.2),
-                                                                      new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1)
-                                                                    )
-                                        ), 
-                new WaitCommand(0.6),
-                new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.1),
-                new WaitCommand(0.3),
-                new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.1),
-                new InstantCommand(()->m_outakeSubsystem.zeroOutakePower()),
-                new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE).withTimeout(0.3));
+    double d = 148;
+    double a = Constants.ARM_THETA_FOR_TRAP_A;
+    double b = Constants.ARM_THETA_FOR_TRAP_B;
+    double c = Constants.ARM_THETA_FOR_TRAP_C;
+    double theta = a*d*d + b*d + c;
+    // calibrated pose target that gets to calculated theta
+    // double theta_cal= 0.00987*theta*theta + 0.0712*theta + 17.3;
+    double theta_cal = theta-3;
+    addCommands(
+      new ParallelCommandGroup( 
+        new MoveArmToPoseCommand(m_armSubsystem, (int)theta_cal),
+        new SequentialCommandGroup( 
+          new IntakeOutCommand(m_intakeSubsystem),
+          new WaitCommand(0.2),
+          new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1)
+          )
+      ), 
+      // new SequentialCommandGroup( 
+      //   new IntakeOutCommand(m_intakeSubsystem),
+      //   new WaitCommand(0.2),
+      //   new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1)
+      // ),
+      new WaitCommand(0.6),
+      new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.1),
+      new WaitCommand(0.3),
+      new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.1),
+      new InstantCommand(()->m_outakeSubsystem.zeroOutakePower()),
+      new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE).withTimeout(0.3));
   }
 }

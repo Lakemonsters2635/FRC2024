@@ -23,7 +23,7 @@ import frc.robot.commands.Climber2DownCommand;
 import frc.robot.commands.Climber2UpCommand;
 import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.ClimberUpCommand;
-import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.LeaveHomeAuto;
@@ -32,6 +32,7 @@ import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.OuttakeInCommand;
 import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
+import frc.robot.commands.TrapShootCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -58,7 +59,7 @@ public class RobotContainer {
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
 
   //Command 
-  public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
+  public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
   public static final ArmThrottleCommand m_armThrottleCommand = new ArmThrottleCommand(m_armSubsystem);
   public static final ClimberUpCommand m_climberUpCommand = new ClimberUpCommand(m_climberSubsystem);
   public static final ClimberDownCommand m_climberDownCommand = new ClimberDownCommand(m_climberSubsystem);
@@ -70,6 +71,7 @@ public class RobotContainer {
   public static final MoveArmToPoseCommand m_ampPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
   public static final MoveArmToPoseCommand m_speakerPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE);
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final TrapShootCommand m_TrapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final TrapShootCommand m_trapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);

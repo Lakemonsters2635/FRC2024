@@ -136,6 +136,9 @@ public final class Constants {
    public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 31; // 34
    public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
 
+   public static final double ARM_THETA_FOR_TRAP_A = 0.00169;
+   public static final double ARM_THETA_FOR_TRAP_B = -0.433;
+   public static final double ARM_THETA_FOR_TRAP_C = 57;
 
    // INTAKE CONSTANTS
    public static final int INTAKE_MOTOR_ID = 13;
