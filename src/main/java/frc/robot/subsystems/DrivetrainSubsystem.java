@@ -102,7 +102,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_backLeftLocation, 
       m_backRightLocation);
     
-    public boolean followJoystics = true;
+    private boolean followJoystics = true;
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
@@ -383,6 +383,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void resetAngle(int degree){
     m_gyro.reset();
     m_gyro.setAngleAdjustment(degree);
+  }
+
+  public void setFollowJoystick(boolean followJoystics){
+    this.followJoystics =followJoystics;
   }
 
 

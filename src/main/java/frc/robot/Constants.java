@@ -193,6 +193,7 @@ public final class Constants {
 
    // left buttons
    public static final int OUTTAKE_BUTTON = 1;
+   public static final int SET_ROBOT_ROTATION_BUTTON =3;
    public static final int AMP_SEQUENCE_BUTTON = 4  ;
    //public static final int TELESCOPE_RETRACT_BUTTON = 4;
    //public static final int TELESCOPE_EXTEND_BUTTON = 6;
