@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,6 +25,7 @@ import frc.robot.commands.Climber2UpCommand;
 import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.FarSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.LeaveHomeAuto;
@@ -85,6 +87,8 @@ public class RobotContainer {
   public static final AmpSequenceCommand m_ampSequenceCommand = new AmpSequenceCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
   public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
+  public static final MoveArmToPoseCommand m_moveArmBalance = new MoveArmToPoseCommand(m_armSubsystem, (int)Constants.ARM_ENCODER_OFFSET*360);// TODO
+  public static final ParallelCommandGroup m_armAmpPoseCommand = new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand);
   public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
   public static final SetRobotRotArm m_setRobotArm = new SetRobotRotArm(m_drivetrainSubsystem);
 
@@ -115,12 +119,13 @@ public class RobotContainer {
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
     Trigger trapShootButton = new JoystickButton(rightJoystick, Constants.TRAP_SHOOT_BUTTON);
     Trigger outtakeInButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_IN_BUTTON);
+    Trigger armBalanceButton = new JoystickButton(rightJoystick, Constants.BALANCE_BUTTON);
 
-    Trigger testButton = new JoystickButton(rightJoystick, 10);
+    // Trigger testButton = new JoystickButton(rightJoystick, 10);
 
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
-    Trigger ampSequenceButton = new JoystickButton(leftJoystick, Constants.AMP_SEQUENCE_BUTTON);
+    Trigger farSpeakerButton = new JoystickButton(leftJoystick, Constants.FAR_SHOOTER_BUTTON);
     Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
     Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
     Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
@@ -134,16 +139,18 @@ public class RobotContainer {
 
     intakeButton.whileTrue(m_intakeCommand);
     armPickupPoseButton.onTrue(m_pickUpPoseCommand);
-    armAmpPoseButton.onTrue(m_ampPoseCommand);
-    intakeOutButton.onTrue(m_intakeOutCommand);
+    // armAmpPoseButton.onTrue(new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand));
+    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
+    // intakeOutButton.onTrue(m_intakeOutCommand);
     speakerButton.onTrue(new SpeakerDriverCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
-    testButton.onTrue(m_moveArmToPoseSpeaker);
+    armBalanceButton.onTrue(m_armAmpPoseCommand);
+    // testButton.onTrue(m_moveArmToPoseSpeaker);
 
     outakeButton.whileTrue(m_ampOutakeCommand);
-    ampSequenceButton.onTrue(m_ampSequenceCommand);
+    farSpeakerButton.onTrue(new FarSpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     climberUpButton.whileTrue(m_climberUpCommand);
     climber1UpButton.whileTrue(m_climber1UpCommand);
     climber2UpButton.whileTrue(m_climber2UpCommand);
@@ -163,6 +170,11 @@ public class RobotContainer {
    */
   public SendableChooser<Command> getAutonomousCommand() {
     SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+    SendableChooser<Command> m_alianceChooser = new SendableChooser<>();
+
+    // m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
+    // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
+    // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
 
     // An example command will be run in autonomous
     m_autoChooser.addOption("shootMidCommand", m_autonomousCommands.shootMidCommand());
@@ -177,11 +189,23 @@ public class RobotContainer {
     m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
     m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
     m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
+    m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
+    m_autoChooser.addOption("postSeasonAutoDiagonalBlueLeft", m_autonomousCommands.postSeasonAutoDiagonalBlueLeft());
+    m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
+    m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
+    m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
+    m_autoChooser.addOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
+    m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
+    m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotation", m_autonomousCommands.postSeasonAutoDiagonalSourceRotation());
+    m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotationCurve", m_autonomousCommands.postSeasonAutoDiagonalSourceRotationCurve());
     //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 
+    m_autoChooser.addOption("redSideAutoLeft", m_autonomousCommands.redSideAutoLeft());
+
     SmartDashboard.putData("AutoChooser", m_autoChooser);
+    SmartDashboard.putData("AlianceChooser", m_alianceChooser);
 
     return m_autoChooser;
   }

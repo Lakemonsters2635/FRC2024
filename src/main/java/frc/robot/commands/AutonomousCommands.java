@@ -224,6 +224,148 @@ public class AutonomousCommands {
             ));
     }
 
+    public Command postSeasonAutoStraight(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(90))),
+                        new Translation2d(0, 0.5),
+                        new Pose2d(0, 1, new Rotation2d(Math.toRadians(90)))
+            ));
+    }
+    public Command postSeasonAutoDiagonalBlueLeft(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(45))),
+                        new Translation2d(0.5, 0.5),
+                        new Pose2d(1, 1, new Rotation2d(Math.toRadians(45)))
+            ));
+    }
+    public Command postSeasonAutoDiagonalRedLeft(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
+                        new Translation2d(-0.5, 0.5),
+                        new Pose2d(-1, 1, new Rotation2d(Math.toRadians(135)))
+            ));
+    }
+
+     public Command postSeasonAutoDiagonalAmp(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(45))),
+                        new Translation2d(0.5, 0.5),
+                        new Pose2d(1, 1, new Rotation2d(Math.toRadians(45)))
+            ));
+    }
+    public Command postSeasonAutoDiagonalSource(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
+                        new Translation2d(-0.5, 0.5),
+                        new Pose2d(-1, 1, new Rotation2d(Math.toRadians(135)))
+            ));
+    }
+    // Caution: This is 2 meter path
+    public Command postSeasonAutoDiagonalSourceRotationCurve(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(160))),
+                        new Translation2d(-1.4, 0.6),
+                        new Pose2d(-2, 2, new Rotation2d(Math.toRadians(110))),
+                        90
+            ),
+            new InstantCommand(()->m_dts.stopMotors()));
+    }
+    // Caution: This is 2 meter path
+    public Command postSeasonAutoDiagonalSourceRotation(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
+                        new Translation2d(-1, 1),
+                        new Pose2d(-2, 2, new Rotation2d(Math.toRadians(135))),
+                        90
+            ),
+            new InstantCommand(()->m_dts.stopMotors()));
+    }
+
+    public Command postSeasonAutoTriangle(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(45))),
+                        new Translation2d(0.75, 0.75),
+                        new Pose2d(1.5, 1.5, new Rotation2d(Math.toRadians(45))),
+                        90
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(1.5,1.5, new Rotation2d(Math.toRadians(180))),
+                        new Translation2d(0, 1.5),
+                        new Pose2d(-1.5, 1.5, new Rotation2d(Math.toRadians(180))),
+                        269
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(-1.5,1.5, new Rotation2d(Math.toRadians(315))),
+                        new Translation2d(-0.75, 0.75),
+                        new Pose2d(0, 0, new Rotation2d(Math.toRadians(315))),
+                        360            
+                        ),
+            new InstantCommand(()->m_dts.stopMotors()));
+    }
+
+    public Command postSeasonAutoTriangleSpeakerTrapezoid(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle(-60)),
+            m_dts.createPath(
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(70))),
+                        new Translation2d(0.125, 0.75),
+                        new Pose2d(0.25, 1.5, new Rotation2d(Math.toRadians(70))),
+                        0
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(0.25,1.5, new Rotation2d(Math.toRadians(180))),
+                        new Translation2d(-1, 1.5),
+                        new Pose2d(-2.25, 1.5, new Rotation2d(Math.toRadians(180))),
+                        0
+            ),
+            new InstantCommand(()->m_dts.stopMotors()),
+
+            new WaitCommand(2),
+            m_dts.createPath(
+                        new Pose2d(-2.5,1.5, new Rotation2d(Math.toRadians(290))),
+                        new Translation2d(-2.375, 0.75),
+                        new Pose2d(-2.25, 0, new Rotation2d(Math.toRadians(290))),
+                        60
+            ),
+            new InstantCommand(()->m_dts.stopMotors()));
+    }
+
+
+
     public Command midToRightCommand(){
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
@@ -259,7 +401,7 @@ public class AutonomousCommands {
                 m_dts.createPath(
                     new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(0)),
                     new Translation2d(0, -(Constants.DISTANCE_TO_NOTE)+0.6),
-                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.3, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-40)),
+                    new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES+0.33, -Constants.DISTANCE_TO_NOTE-0.1, new Rotation2d(-40)),
                     Constants.LEFT_ENDING_POSE
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -273,7 +415,12 @@ public class AutonomousCommands {
     }
 
     public Command justShoot(){
-        return new SpeakerCommand(m_as, m_is, m_os);
+        return new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, 94)
+            ),
+            new SpeakerCommand(m_as, m_is, m_os));
     }
 
     // shoot from an angle on the side pos, go picup note on one side and shoot
@@ -293,7 +440,7 @@ public class AutonomousCommands {
                 m_dts.createPath(
                     new Pose2d(0,0,new Rotation2d(Math.toRadians(-130))),
                     new Translation2d(0.5,(-Constants.DISTANCE_TO_NOTE-0.4)/3),
-                    new Pose2d(0.25,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(-70))),
+                    new Pose2d(0.35,-Constants.DISTANCE_TO_NOTE-0.6, new Rotation2d(Math.toRadians(-70))),
                     -8
                 ),
                 // new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -335,11 +482,17 @@ public class AutonomousCommands {
         );
     }
 
+    //==============
+    // CURRENT ESCAPE LEFT IS WRONG!!!!!
+    // start over and mirror escape right... bu use the 120 for the resetAngle(120) at the beginning
+    // instead of the 240 used for escape right
+    //==============
+
     // public Command escapeLeft(){
     //     return new SequentialCommandGroup(
     //         // Our initial pose is at 60 degrees
     //         new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-    //         new InstantCommand(() -> m_dts.resetAngle(60)),//60
+    //         new InstantCommand(() -> m_dts.resetAngle(120)),// 120 should work for escape left 
     //         // Shoot
     //         new ParallelRaceGroup(
     //             new WaitCommand(0.4),
@@ -358,6 +511,59 @@ public class AutonomousCommands {
         
     //     );
     // }
+
+    //=============
+    // converts heading from blue to red
+    //=============
+    public double toRedHead(double blueHeadingDegrees) {
+        return -1.*(blueHeadingDegrees + 180.);
+    }
+    public int toRedHead(int blueHeadingDegrees) {
+        return -1*(blueHeadingDegrees + 180);
+    }
+
+    // shoot from an angle on the side pos, go picup note on one side and shoot
+    // public Command sideAutoRight(){ // this is for blue
+    public Command redSideAutoLeft(){
+        return new SequentialCommandGroup(
+            // Our initial pose is at 60 degrees
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle(120)),//240 is for blue, 120 is for red / "left side of speaker" starting position
+            // Shoot
+            new ParallelRaceGroup(
+                new WaitCommand(0.4),
+                new MoveArmToPoseCommand(m_as, 94)
+            ),
+            new SpeakerCommand(m_as, m_is, m_os),
+            // Translate x +1m, keeping our 60 degrees heading
+            new ParallelCommandGroup(
+                m_dts.createPath(
+                    new Pose2d(0,0,new Rotation2d(Math.toRadians(toRedHead(-130)))),
+                    new Translation2d(0.5,(-Constants.DISTANCE_TO_NOTE-0.4)/3),
+                    new Pose2d(0.25,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(toRedHead(-70)))),
+                    // TODO FOR RED
+                    // TODO FOR RED
+                    // TODO FOR RED tune this -8 to something
+                    // TODO FOR RED
+                    // TODO FOR RED
+                    8
+                    // -8
+                ),
+                // new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
+                new InstantCommand(()->m_is.inIntake()).withTimeout(0.01)
+            ),
+            new WaitCommand(0.1),
+            new InstantCommand(()->m_is.stopIntake()).withTimeout(0.2),
+            shootFromAwayCommand(Constants.ARM_SHOOTER_ANGLE_SIDE_AUTO),
+            m_dts.createPath(
+                    new Pose2d(0,-Constants.DISTANCE_TO_NOTE-0.4, new Rotation2d(Math.toRadians(toRedHead(-180)))),
+                    new Translation2d(0.6,(-Constants.DISTANCE_TO_NOTE-0.2)),
+                    // Add negative y to move downfield a little bit more
+                    new Pose2d(1.3,-Constants.DISTANCE_TO_NOTE-1, new Rotation2d(Math.toRadians(toRedHead(-180)))),
+                    0
+            )
+        );
+    }
 
    
     // shoot then mobility escape to the side
