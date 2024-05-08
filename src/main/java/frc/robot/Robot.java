@@ -109,6 +109,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // RobotContainer.m_armSubsystem.setPosTarget(RobotContainer.m_armSubsystem.getTheta());
     // System.out.println("Theta value: "+RobotContainer.m_armSubsystem.getTheta());
+    // TODO: It turns odometry by 180 fist time then resets it in the second deploy
     RobotContainer.m_drivetrainSubsystem.zeroOdometry();
     RobotContainer.m_drivetrainSubsystem.resetAngle();
     // RobotContainer.m_armSubsystem.m_poseTarget2=80;

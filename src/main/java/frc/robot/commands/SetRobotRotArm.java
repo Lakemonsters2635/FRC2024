@@ -28,17 +28,6 @@ public class SetRobotRotArm extends Command {
   public SetRobotRotArm(DrivetrainSubsystem drivetrainSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrainSubsystem =drivetrainSubsystem;
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    // TODO: This is wrong fix this
-    m_drivetrainSubsystem.zeroOdometry();
     // pid = new PIDController(0.09504, 0, 0.00528);// original PD
     // Higher kp makes it oscillate more as you drive because our robot naturally turns as it drives
     pid = new PIDController(0.05, 0, 0.005);// working PD
