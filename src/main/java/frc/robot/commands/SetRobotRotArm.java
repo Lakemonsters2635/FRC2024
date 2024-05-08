@@ -55,15 +55,15 @@ public class SetRobotRotArm extends Command {
 
   public double getArmDistanceFromTheTarget(){
     double d;
-    double x = m_drivetrainSubsystem.getPose().getX();
-    double y = m_drivetrainSubsystem.getPose().getY()+ yOffset;
+    double x = m_drivetrainSubsystem.getPose().getX()*0.95;
+    double y = m_drivetrainSubsystem.getPose().getY()*0.95 +yOffset;
     d= Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
     return d;
   }
 
   public double getTargetBotPosAngleRadians(){
-    double x = m_drivetrainSubsystem.getPose().getX();
-    double y = m_drivetrainSubsystem.getPose().getY()+yOffset;
+    double x = m_drivetrainSubsystem.getPose().getX()*0.95;
+    double y = m_drivetrainSubsystem.getPose().getY()*0.95 +yOffset;
     // Theta here is different than the theta in autonomous commands
     double theta = -Math.atan(x/y);
     return theta;
