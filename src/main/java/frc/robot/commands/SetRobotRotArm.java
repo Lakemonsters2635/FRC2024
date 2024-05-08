@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SetRobotRot extends Command {
+public class SetRobotRotArm extends Command {
   /** Creates a new SetRobotRot. */
   DrivetrainSubsystem m_drivetrainSubsystem;
   PIDController pid;
@@ -25,20 +25,48 @@ public class SetRobotRot extends Command {
   Joystick rightJoystick;
   Joystick leftJoystick;
   private double fbMotorPower;
-  public SetRobotRot(DrivetrainSubsystem drivetrainSubsystem, double targetRot) {
+  public SetRobotRotArm(DrivetrainSubsystem drivetrainSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrainSubsystem =drivetrainSubsystem;
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    // TODO: This is wrong fix this
+    m_drivetrainSubsystem.zeroOdometry();
     // pid = new PIDController(0.09504, 0, 0.00528);// original PD
     // Higher kp makes it oscillate more as you drive because our robot naturally turns as it drives
     pid = new PIDController(0.05, 0, 0.005);// working PD
     // pid = new PIDController(0.079, 0.396, 0.00396);// Classic PID
     // pid = new PIDController(0.0264, 0.132, 0.00348);// No overshoot
-    this.targetRotation = targetRot;
     rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_CHANNEL);
     leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
     pid.enableContinuousInput(-180, 180);
     pid.setTolerance(0.5);
 
+  }
+  // Initial position of the robot is 100 inches away from the trap
+  private static double yOffset= 100/12/3.28; // Converting 100 inches to meters
+
+  public double getArmDistanceFromTheTarget(){
+    double d;
+    double x = m_drivetrainSubsystem.getPose().getX();
+    double y = m_drivetrainSubsystem.getPose().getY()+ yOffset;
+    d= Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
+    return d;
+  }
+
+  public double getTargetBotPosAngleRadians(){
+    double x = m_drivetrainSubsystem.getPose().getX();
+    double y = m_drivetrainSubsystem.getPose().getY()+yOffset;
+    // Theta here is different than the theta in autonomous commands
+    double theta = -Math.atan(x/y);
+    return theta;
   }
 
   // Called when the command is initially scheduled.
@@ -50,6 +78,8 @@ public class SetRobotRot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    targetRotation = Math.toDegrees(getTargetBotPosAngleRadians());
+    SmartDashboard.putNumber("targetRotation", targetRotation);
 
     if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
       yPowerCommanded = rightJoystick.getY() * -1;

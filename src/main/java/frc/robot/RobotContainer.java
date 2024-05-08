@@ -31,6 +31,7 @@ import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.OuttakeInCommand;
 import frc.robot.commands.SetRobotRot;
+import frc.robot.commands.SetRobotRotArm;
 import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
@@ -85,7 +86,7 @@ public class RobotContainer {
   public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
   public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
   public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
-  public static final SetRobotRot m_setRobotRotNegative90 = new SetRobotRot(m_drivetrainSubsystem, -90);
+  public static final SetRobotRotArm m_setRobotArm = new SetRobotRotArm(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
@@ -150,7 +151,7 @@ public class RobotContainer {
     climber1DownButton.whileTrue(m_climber1DownCommand);
     climber2DownButton.whileTrue(m_climber2DownCommand);
     setRobotRotationButton.whileTrue(m_setRobotRot90);
-    setRobotRotationButton2.whileTrue(m_setRobotRotNegative90);
+    setRobotRotationButton2.whileTrue(m_setRobotArm);
 
     // armStartButton.whileTrue(m_armThrottleCommand);
   }
