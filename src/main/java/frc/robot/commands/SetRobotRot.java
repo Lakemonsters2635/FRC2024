@@ -29,27 +29,29 @@ public class SetRobotRot extends Command {
   public SetRobotRot(DrivetrainSubsystem drivetrainSubsystem, double targetRot) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drivetrainSubsystem =drivetrainSubsystem;
-    pid = new PIDController(0.09504, 0, 0.00528);// PD
+    // pid = new PIDController(0.09504, 0, 0.00528);// original PD
+    // Higher kp makes it oscillate more as you drive because our robot naturally turns as it drives
+    pid = new PIDController(0.05, 0, 0.005);// working PD
     // pid = new PIDController(0.079, 0.396, 0.00396);// Classic PID
     // pid = new PIDController(0.0264, 0.132, 0.00348);// No overshoot
     this.targetRotation = targetRot;
-    timer = new Timer();
     rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_CHANNEL);
     leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
-    // pid.enableContinuousInput(-180, 180);
-    // pid.setTolerance(0.5);
+    pid.enableContinuousInput(-180, 180);
+    pid.setTolerance(0.5);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_drivetrainSubsystem.setFollowJoystick(false);
-    initialRotation = m_drivetrainSubsystem.getPose().getRotation().getDegrees();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
       yPowerCommanded = rightJoystick.getY() * -1;
     }
@@ -57,15 +59,20 @@ public class SetRobotRot extends Command {
     if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
       xPowerCommanded = rightJoystick.getX();
     }
+    // yPowerCommanded=0;
+    // xPowerCommanded=0;
     fbMotorPower = MathUtil.clamp(pid.calculate(m_drivetrainSubsystem.getPose().getRotation().getDegrees(), targetRotation),-1,1)*Math.PI;
+    // if (pid.atSetpoint()) {
+    //   fbMotorPower=0;
+    // }
     SmartDashboard.putNumber("rotationSpeed", fbMotorPower);
     rotaionSpeed =fbMotorPower;
     m_drivetrainSubsystem.drive(
-      xPowerCommanded, 
-      yPowerCommanded, 
+      -xPowerCommanded * m_drivetrainSubsystem.kMaxSpeed, 
+      yPowerCommanded * m_drivetrainSubsystem.kMaxSpeed, 
       rotaionSpeed, 
       true);
-      SmartDashboard.putNumber("Error rate in rotation", MathUtil.clamp(targetRotation-m_drivetrainSubsystem.getPose().getRotation().getDegrees(),-25,25));
+      SmartDashboard.putNumber("Rotation error", MathUtil.clamp(targetRotation-m_drivetrainSubsystem.getPose().getRotation().getDegrees(),-25,25));
   }
 
   // Called once the command ends or is interrupted.

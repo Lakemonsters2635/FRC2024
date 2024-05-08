@@ -506,6 +506,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    // TODO: Move kMaxSpeed and kMaxRotation into this method for ySpeed and xSpeed, and rot
+    // TODO: Add another parameter for kMaxSpeed so you have an option to set it
     swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative

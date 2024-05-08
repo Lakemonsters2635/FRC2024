@@ -85,6 +85,7 @@ public class RobotContainer {
   public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
   public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
   public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
+  public static final SetRobotRot m_setRobotRotNegative90 = new SetRobotRot(m_drivetrainSubsystem, -90);
 
 
   public RobotContainer() {
@@ -126,6 +127,7 @@ public class RobotContainer {
     Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
     Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
     Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
+    Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -148,6 +150,7 @@ public class RobotContainer {
     climber1DownButton.whileTrue(m_climber1DownCommand);
     climber2DownButton.whileTrue(m_climber2DownCommand);
     setRobotRotationButton.whileTrue(m_setRobotRot90);
+    setRobotRotationButton2.whileTrue(m_setRobotRotNegative90);
 
     // armStartButton.whileTrue(m_armThrottleCommand);
   }
