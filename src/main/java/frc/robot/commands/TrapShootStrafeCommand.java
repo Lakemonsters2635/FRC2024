@@ -16,12 +16,12 @@ import frc.robot.subsystems.OutakeSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TrapShootCommand extends SequentialCommandGroup {
+public class TrapShootStrafeCommand extends SequentialCommandGroup {
   ArmSubsystem m_armSubsystem;
   IntakeSubsystem m_intakeSubsystem;
   OutakeSubsystem m_outakeSubsystem;
-  /** Creates a new TrapShootCommand. */
-  public TrapShootCommand(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem, OutakeSubsystem outakeSubsystem) {
+  /** Creates a new TrapShootStrafeCommand. */
+  public TrapShootStrafeCommand(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem, OutakeSubsystem outakeSubsystem) {
     m_armSubsystem = armSubsystem;
     m_intakeSubsystem = intakeSubsystem;
     m_outakeSubsystem = outakeSubsystem;

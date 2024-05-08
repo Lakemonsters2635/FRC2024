@@ -24,7 +24,7 @@ import frc.robot.commands.Climber2DownCommand;
 import frc.robot.commands.Climber2UpCommand;
 import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.ClimberUpCommand;
-import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.FarSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
@@ -32,8 +32,11 @@ import frc.robot.commands.LeaveHomeAuto;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.OuttakeInCommand;
+import frc.robot.commands.SetRobotRot;
+import frc.robot.commands.SetRobotRotArm;
 import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
+import frc.robot.commands.TrapShootCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -60,7 +63,7 @@ public class RobotContainer {
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
 
   //Command 
-  public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
+  public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
   public static final ArmThrottleCommand m_armThrottleCommand = new ArmThrottleCommand(m_armSubsystem);
   public static final ClimberUpCommand m_climberUpCommand = new ClimberUpCommand(m_climberSubsystem);
   public static final ClimberDownCommand m_climberDownCommand = new ClimberDownCommand(m_climberSubsystem);
@@ -72,6 +75,7 @@ public class RobotContainer {
   public static final MoveArmToPoseCommand m_ampPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_AMP_ANGLE);
   public static final MoveArmToPoseCommand m_speakerPoseCommand = new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE);
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
+  public static final TrapShootCommand m_TrapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final TrapShootCommand m_trapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
@@ -85,6 +89,8 @@ public class RobotContainer {
   public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
   public static final MoveArmToPoseCommand m_moveArmBalance = new MoveArmToPoseCommand(m_armSubsystem, (int)Constants.ARM_ENCODER_OFFSET*360);// TODO
   public static final ParallelCommandGroup m_armAmpPoseCommand = new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand);
+  public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
+  public static final SetRobotRotArm m_setRobotArm = new SetRobotRotArm(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
@@ -126,6 +132,8 @@ public class RobotContainer {
     Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
     Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
     Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
+    Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
+    Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -149,6 +157,8 @@ public class RobotContainer {
     climberDownButton.whileTrue(m_climberDownCommand);
     climber1DownButton.whileTrue(m_climber1DownCommand);
     climber2DownButton.whileTrue(m_climber2DownCommand);
+    setRobotRotationButton.whileTrue(m_setRobotRot90);
+    setRobotRotationButton2.whileTrue(m_setRobotArm);
 
     // armStartButton.whileTrue(m_armThrottleCommand);
   }

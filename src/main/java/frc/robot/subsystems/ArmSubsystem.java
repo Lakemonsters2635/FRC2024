@@ -41,8 +41,8 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor1.setNeutralMode(NeutralModeValue.Brake);
     m_armMotor2.setNeutralMode(NeutralModeValue.Brake);
 
-    m_poseTarget = Constants.ARM_AMP_ANGLE; //TODO: Uncomment this
-    // m_poseTarget = 94;
+    // m_poseTarget = Constants.ARM_AMP_ANGLE; //TODO: Uncomment this
+    m_poseTarget=Constants.ARM_PICKUP_ANGLE;
   }
 
   public void controlArmThrottle(){

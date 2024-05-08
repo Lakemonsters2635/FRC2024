@@ -176,6 +176,9 @@ public final class Constants {
     public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 33; // 34
     public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
 
+    public static final double ARM_THETA_FOR_TRAP_A = 0.00169;
+    public static final double ARM_THETA_FOR_TRAP_B = -0.433;
+    public static final double ARM_THETA_FOR_TRAP_C = 57;
 
     // INTAKE CONSTANTS
     public static final int INTAKE_MOTOR_ID = 13;
@@ -221,6 +224,10 @@ public final class Constants {
     public static final int GROUND_PICKUP_BUTTON = 3;
     public static final int AMP_POSE_BUTTON = 4;
 
+    // left buttons
+    public static final int SET_ROBOT_ROTATION_BUTTON =3;
+    public static final int AMP_SEQUENCE_BUTTON = 4  ;
+
     public static final int INTAKE_OUT_BUTTON = 5;   
     public static final int SPEAKER_BUTTON = 6;
     public static final int SWERVE_RESET_BUTTON = 7;
@@ -232,14 +239,14 @@ public final class Constants {
     // left buttons
     public static final int OUTTAKE_BUTTON = 1;
     public static final int FAR_SHOOTER_BUTTON = 4;
-    //public static final int TELESCOPE_RETRACT_BUTTON = 4;
-    //public static final int TELESCOPE_EXTEND_BUTTON = 6;
-    public static final int CLIMBER_UP_BUTTON = 7;
-    public static final int CLIMBER_DOWN_BUTTON = 8;
-    public static final int CLIMBER1_UP_BUTTON = 9;
-    public static final int CLIMBER2_UP_BUTTON = 10;
-    public static final int CLIMBER1_DOWN_BUTTON = 11;
-    public static final int CLIMBER2_DOWN_BUTTON = 12;
+   //public static final int TELESCOPE_RETRACT_BUTTON = 4;
+   //public static final int TELESCOPE_EXTEND_BUTTON = 6;
+   public static final int CLIMBER_UP_BUTTON = 7;
+   public static final int CLIMBER_DOWN_BUTTON = 8;
+   public static final int CLIMBER1_UP_BUTTON = 9;
+   public static final int CLIMBER2_UP_BUTTON = 10;
+   public static final int CLIMBER1_DOWN_BUTTON = 11;
+   public static final int CLIMBER2_DOWN_BUTTON = 12;
 
 
     //public static final int ARM_START_BUTTON = 5;

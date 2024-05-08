@@ -102,7 +102,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_backLeftLocation, 
       m_backRightLocation);
     
-    public boolean followJoystics = true;
+    private boolean followJoystics = true;
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
@@ -363,6 +363,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_gyro.setAngleAdjustment(degree);
   }
 
+  public void setFollowJoystick(boolean followJoystics){
+    this.followJoystics =followJoystics;
+  }
+
 
   private static double xPowerCommanded = 0;
   private static double yPowerCommanded = 0;
@@ -484,6 +488,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    // TODO: Move kMaxSpeed and kMaxRotation into this method for ySpeed and xSpeed, and rot
+    // TODO: Add another parameter for kMaxSpeed so you have an option to set it
     swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
@@ -619,6 +625,7 @@ public ChassisSpeeds getChassisSpeeds() {
     SmartDashboard.putNumber("FR encoder pos", Math.toDegrees(m_frontRight.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BL encoder pos", Math.toDegrees(m_backLeft.getTurningEncoderRadians()));
     SmartDashboard.putNumber("BR encoder pos", Math.toDegrees(m_backRight.getTurningEncoderRadians())); 
+
 
     // SmartDashboard.putNumber("FL SMS Speed", swerveModuleStates[0].speedMetersPerSecond);
     // SmartDashboard.putNumber("FL SMS Angle", swerveModuleStates[0].angle.getDegrees());

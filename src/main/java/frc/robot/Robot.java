@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    RobotContainer.m_drivetrainSubsystem.followJoystics = false;
+    RobotContainer.m_drivetrainSubsystem.setFollowJoystick(false);
     // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_autoChooser.getSelected();
 
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
     RobotContainer.m_drivetrainSubsystem.resetAngle();
     // RobotContainer.m_armSubsystem.m_poseTarget2=80;
 
-    RobotContainer.m_drivetrainSubsystem.followJoystics = true;
+    RobotContainer.m_drivetrainSubsystem.setFollowJoystick(true);
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
