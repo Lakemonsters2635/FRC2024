@@ -21,13 +21,12 @@ public class TrapShootStrafeCommand extends SequentialCommandGroup {
   IntakeSubsystem m_intakeSubsystem;
   OutakeSubsystem m_outakeSubsystem;
   /** Creates a new TrapShootStrafeCommand. */
-  public TrapShootStrafeCommand(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem, OutakeSubsystem outakeSubsystem) {
+  public TrapShootStrafeCommand(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem, OutakeSubsystem outakeSubsystem, double d) {
     m_armSubsystem = armSubsystem;
     m_intakeSubsystem = intakeSubsystem;
     m_outakeSubsystem = outakeSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    double d = 148;
     double a = Constants.ARM_THETA_FOR_TRAP_A;
     double b = Constants.ARM_THETA_FOR_TRAP_B;
     double c = Constants.ARM_THETA_FOR_TRAP_C;

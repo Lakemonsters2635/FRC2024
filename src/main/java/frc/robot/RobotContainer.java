@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,6 +38,7 @@ import frc.robot.commands.SetRobotRotArm;
 import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
+import frc.robot.commands.TrapShootStrafeCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -120,6 +122,9 @@ public class RobotContainer {
     Trigger trapShootButton = new JoystickButton(rightJoystick, Constants.TRAP_SHOOT_BUTTON);
     Trigger outtakeInButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_IN_BUTTON);
     Trigger armBalanceButton = new JoystickButton(rightJoystick, Constants.BALANCE_BUTTON);
+    Trigger shootAprilTagButton = new JoystickButton(rightJoystick, Constants.SHOOT_APRIL_TAG);
+
+    Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
     // Trigger testButton = new JoystickButton(rightJoystick, 10);
 
@@ -147,6 +152,13 @@ public class RobotContainer {
     outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
     armBalanceButton.onTrue(m_armAmpPoseCommand);
+    resetOdometryButton.onTrue(
+      new SequentialCommandGroup(
+        new InstantCommand(()->m_drivetrainSubsystem.resetAngle()),
+        new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
+      )
+    );
+    shootAprilTagButton.onTrue(new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_setRobotArm.getArmDistanceFromTheTarget()));
     // testButton.onTrue(m_moveArmToPoseSpeaker);
 
     outakeButton.whileTrue(m_ampOutakeCommand);

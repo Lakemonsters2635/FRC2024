@@ -10,8 +10,8 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.util.Units;
 
 public class SetRobotRotArm extends Command {
   /** Creates a new SetRobotRot. */
@@ -43,11 +43,11 @@ public class SetRobotRotArm extends Command {
   private static double yOffset= 100/12/3.28; // Converting 100 inches to meters
 
   public double getArmDistanceFromTheTarget(){
-    double d;
+    double d=0;
     double x = m_drivetrainSubsystem.getPose().getX()*0.95;
     double y = m_drivetrainSubsystem.getPose().getY()*0.95 +yOffset;
     d= Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
-    return d;
+    return Units.metersToInches(d);
   }
 
   public double getTargetBotPosAngleRadians(){
@@ -77,12 +77,10 @@ public class SetRobotRotArm extends Command {
     if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
       xPowerCommanded = rightJoystick.getX();
     }
-    // yPowerCommanded=0;
-    // xPowerCommanded=0;
     fbMotorPower = MathUtil.clamp(pid.calculate(m_drivetrainSubsystem.getPose().getRotation().getDegrees(), targetRotation),-1,1)*Math.PI;
-    // if (pid.atSetpoint()) {
-    //   fbMotorPower=0;
-    // }
+    if (pid.atSetpoint()) {
+      fbMotorPower=0;
+    }
     SmartDashboard.putNumber("rotationSpeed", fbMotorPower);
     rotaionSpeed =fbMotorPower;
     m_drivetrainSubsystem.drive(
@@ -98,8 +96,6 @@ public class SetRobotRotArm extends Command {
   public void end(boolean interrupted) {
     m_drivetrainSubsystem.setFollowJoystick(true);
     m_drivetrainSubsystem.setRotCommanded(0);
-    // timer.stop();
-    // timer.reset();
   }
 
   // Returns true when the command should end.

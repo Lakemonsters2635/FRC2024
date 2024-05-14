@@ -151,8 +151,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putData("field" ,field);
 
     getPose();
-    zeroOdometry();
     resetAngle();
+    zeroOdometry();
   }
 
   /**

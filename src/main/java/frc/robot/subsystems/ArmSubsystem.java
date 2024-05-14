@@ -152,7 +152,7 @@ public class ArmSubsystem extends SubsystemBase {
     double clampVal = 3.;
     motorPower = MathUtil.clamp(motorPower, -clampVal, clampVal);
     // setArmPower(ffMotorPower);
-    // setArmPower(motorPower);
+    setArmPower(motorPower);
     SmartDashboard.putNumber("motorPower", motorPower);
     SmartDashboard.putNumber("m_poseTarget", m_poseTarget);
     SmartDashboard.putNumber("ffMotorPower", ffMotorPower);
