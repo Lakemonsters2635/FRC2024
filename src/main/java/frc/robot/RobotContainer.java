@@ -44,6 +44,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
 
 /**
@@ -63,6 +64,7 @@ public class RobotContainer {
   public static final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
+  public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("AprilTagPro");
 
   //Command 
   public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
@@ -126,6 +128,8 @@ public class RobotContainer {
 
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
+    Trigger viewAprilTagButton = new JoystickButton(rightJoystick, 9);
+
     // Trigger testButton = new JoystickButton(rightJoystick, 10);
 
     // left buttons
@@ -159,6 +163,10 @@ public class RobotContainer {
       )
     );
     shootAprilTagButton.onTrue(new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_setRobotArm.getArmDistanceFromTheTarget()));
+    // viewAprilTagButton.onTrue(new SequentialCommandGroup(
+    //   new InstantCommand(()->m_objectTrackerSubsystem.data()),
+    //   new InstantCommand(()->SmartDashboard.putString("ClosestObjectVision", m_objectTrackerSubsystem.getClosestAprilTag().toString()))
+    // ));
     // testButton.onTrue(m_moveArmToPoseSpeaker);
 
     outakeButton.whileTrue(m_ampOutakeCommand);

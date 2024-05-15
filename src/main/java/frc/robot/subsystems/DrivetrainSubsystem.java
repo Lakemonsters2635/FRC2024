@@ -151,6 +151,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putData("field" ,field);
 
     getPose();
+
+    // resetAngle() should be called before zeroOdometry() because reseting odometry uses gyro values to do the reset
     resetAngle();
     zeroOdometry();
   }

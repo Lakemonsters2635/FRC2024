@@ -212,7 +212,7 @@ public final class Constants {
     public static final double CHANGE_IN_Y_PER_SECOND= 0.717;
 
     // VISION CONSTANTS
-    public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(54);
+    public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
     public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
 
     public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;
