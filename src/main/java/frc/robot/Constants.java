@@ -181,11 +181,14 @@ public final class Constants {
     public static final double ARM_THETA_FOR_TRAP_C = 57;
 
     // INTAKE CONSTANTS
-    public static final int INTAKE_MOTOR_ID = 13;
+    // Create a final variable constant and initialize it for the intake motor id
 
-    public static final int INTAKE_STOP_SPEED = 0;
-    public static final double INTAKE_IN_SPEED = -0.9;
-    public static final double INTAKE_OUT_SPEED = 0.2;
+
+    // Create a final variable constant and initialize it for intake stop speed
+
+    // Create a final variable constant and initialize it for intake in speed
+
+    // Create a final variable constant and initialize it for intake out speed
 
 
     // OUTTAKE CONSTANTS

@@ -113,9 +113,12 @@ public class RobotContainer {
     //creating buttons
 
     // right buttons
-    Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
+    // Create and initialize the intake button to a JoystickButton with the id of the joystick and the button id
+
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
     Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
+    // Create and initialize the intake out button to a JoystickButton with the id of the joystick and the button id
+    
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
@@ -142,11 +145,13 @@ public class RobotContainer {
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
-    intakeButton.whileTrue(m_intakeCommand);
+    // Set the button to run intake command while keeping pressed
+
     armPickupPoseButton.onTrue(m_pickUpPoseCommand);
     // armAmpPoseButton.onTrue(new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand));
     armAmpPoseButton.onTrue(m_armAmpPoseCommand);
-    // intakeOutButton.onTrue(m_intakeOutCommand);
+    // Set the button to run intake out command when pressed
+
     speakerButton.onTrue(new SpeakerDriverCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     outtakeInButton.whileTrue(m_outtakeInCommand);

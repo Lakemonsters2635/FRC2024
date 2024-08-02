@@ -13,22 +13,33 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   public CANSparkMax intakeMotor;
+
+  /* 
+   * IntakeSubsystem is a constructor for IntakeSubsystem class.
+   * All initialiation that applies to every single instance of this class goes here.
+  */
   public IntakeSubsystem() {
-    intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
-    intakeMotor.setSmartCurrentLimit(20,1);
-    intakeMotor.setInverted(true);    
+    // Initialize the intake motor member variable as a CANSparkMax object with its motor id and the motor type. 
+
+    // Set the current limit for this intake motor
+
+    // Set whether or not the motor should be inverted
+
   }
 
   public void inIntake() {
-    intakeMotor.setVoltage(Constants.INTAKE_IN_SPEED * -10);
+    // Set the voltage for the intake in
+
   }
 
   public void outIntake() {
-    intakeMotor.setVoltage(Constants.INTAKE_OUT_SPEED * -10);
+    // Set the voltage for the intake out
+
   }
 
   public void stopIntake() {
-    intakeMotor.set(Constants.INTAKE_STOP_SPEED);
+    // Set the voltage to stop the intake motor
+    
   }
 
   @Override

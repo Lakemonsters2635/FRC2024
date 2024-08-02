@@ -13,18 +13,22 @@ public class IntakeOutCommand extends Command {
   private IntakeSubsystem m_intakeSubsystem;
   private Timer m_timer;
   public IntakeOutCommand(IntakeSubsystem intakeSubsystem) {
-    m_intakeSubsystem = intakeSubsystem;
-    m_timer = new Timer();
+    // Set the member variable to parameter
+
+    // Initialize the timer
+
     // addRequirements(m_intakeSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_timer.reset();
-    m_timer.start();
-    m_intakeSubsystem.outIntake();
+    // Reset the timer
+
+    // Start the timer
+
+    // Run intake out
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,16 +39,16 @@ public class IntakeOutCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intakeSubsystem.stopIntake();
-    m_timer.stop();
+    // Stop running intake motor
+
+    // Stop the timer
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_timer.get()>0.2){
-      return true;
-    }
+    // Replace with a condition where if the timer's value is higher than 0.2 return true, else return false
     return false;
   }
 }
