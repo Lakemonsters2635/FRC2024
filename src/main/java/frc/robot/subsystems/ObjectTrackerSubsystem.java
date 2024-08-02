@@ -36,11 +36,11 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     */
 
     // rotation matrix
-    private double cameraTilt; //= 0.0 * Math.PI / 180.0;
-    private double[] cameraOffset = {-14.0, 0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
+    private double cameraTilt= 0.0 * Math.PI / 180.0;
+    private double[] cameraOffset = {0.0, 0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
 
-    private double sinTheta; //= Math.sin(cameraTilt);
-    private double cosTheta; //= Math.cos(cameraTilt);
+    private double sinTheta= Math.sin(cameraTilt);
+    private double cosTheta= Math.cos(cameraTilt);
 
 	// Put methods for controlling this subsystem
     // here. Call these from Commands.

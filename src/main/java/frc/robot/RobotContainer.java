@@ -163,10 +163,11 @@ public class RobotContainer {
       )
     );
     shootAprilTagButton.onTrue(new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_setRobotArm.getArmDistanceFromTheTarget()));
-    // viewAprilTagButton.onTrue(new SequentialCommandGroup(
-    //   new InstantCommand(()->m_objectTrackerSubsystem.data()),
-    //   new InstantCommand(()->SmartDashboard.putString("ClosestObjectVision", m_objectTrackerSubsystem.getClosestAprilTag().toString()))
-    // ));
+    viewAprilTagButton.onTrue(new SequentialCommandGroup(
+      new InstantCommand(()->m_objectTrackerSubsystem.data()),
+      new InstantCommand(()->SmartDashboard.putString("ClosestObjectVision", m_objectTrackerSubsystem.getClosestAprilTag().toString())),
+      new InstantCommand(()->SmartDashboard.putString("VisionObjectsJson",m_objectTrackerSubsystem.getObjectsJson()))
+    ));
     // testButton.onTrue(m_moveArmToPoseSpeaker);
 
     outakeButton.whileTrue(m_ampOutakeCommand);
