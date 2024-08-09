@@ -153,22 +153,19 @@ public final class Constants {
     public static final double FULL_EXTENDED_SERVO = 1.0;
     public static final double FULL_RETRACTED_SERVO = 0.0;
 
-    //ARM CONSTANT: 15 is right, 21 is left
-    public static final int ARM_MOTOR1_ID = 21; // note to self: next time say left and right
-    public static final int ARM_MOTOR2_ID = 15;
-    public static final int ARM_ENCODER_ID = 0;
+    //ARM CONSTANTS
 
-    public static final double ARM_MOTOR_START_SPEED = 0.3;
-    public static final int ARM_MOTOR_STOP_SPEED = 0;
+    //Declare any other arm constants such as motor IDs, encoder IDs, and more
 
     public static final double ARM_LOWER_LIMIT = -30; //TODO: figure out these
     public static final double ARM_UPPER_LIMIT = 93.3;
+   
+    public static final double ARM_MOTOR_FF_GAIN = -0.59; 
 
-    //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
-    //    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V // For Neo 500
-    public static final double ARM_MOTOR_FF_GAIN = -0.59; // 11V // For Krakens
-
+    //This offset may have to be changed before running the robot
     public static final double ARM_ENCODER_OFFSET = 0.406; 
+    
+    //Some sample angles you can use to test your command
     public static final int ARM_PICKUP_ANGLE = 94; // 104
     public static final int ARM_AMP_ANGLE = -18; // -19
     public static final int ARM_SHOOTER_ANGLE = 52; // 54
@@ -176,9 +173,7 @@ public final class Constants {
     public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 33; // 34
     public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
 
-    public static final double ARM_THETA_FOR_TRAP_A = 0.00169;
-    public static final double ARM_THETA_FOR_TRAP_B = -0.433;
-    public static final double ARM_THETA_FOR_TRAP_C = 57;
+  
 
     // INTAKE CONSTANTS
     public static final int INTAKE_MOTOR_ID = 13;
@@ -218,12 +213,13 @@ public final class Constants {
     public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;
 
     //BUTTON BINDINGS
+    //Create a constant for buttons at different arm positions
 
     // right buttons
     public static final int INTAKE_BUTTON = 1;
     public static final int SHOOT_APRIL_TAG = 2;
     public static final int GROUND_PICKUP_BUTTON = 3;
-    public static final int AMP_POSE_BUTTON = 4;
+    //public static final int AMP_POSE_BUTTON = 4;
     public static final int INTAKE_OUT_BUTTON = 5;   
     public static final int SPEAKER_BUTTON = 6;
     public static final int SWERVE_RESET_BUTTON = 7;
@@ -236,7 +232,7 @@ public final class Constants {
     public static final int SET_ROBOT_ROTATION_BUTTON =3;
     public static final int AMP_SEQUENCE_BUTTON = 4 ;
     public static final int OUTTAKE_BUTTON = 1;
-    public static final int FAR_SHOOTER_BUTTON = 4;
+    /public static final int FAR_SHOOTER_BUTTON = 4;
     //public static final int TELESCOPE_RETRACT_BUTTON = 4;
     //public static final int TELESCOPE_EXTEND_BUTTON = 6;
     public static final int CLIMBER_UP_BUTTON = 7;
