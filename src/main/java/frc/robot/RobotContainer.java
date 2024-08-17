@@ -18,7 +18,7 @@ import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.Climber1Command;
 import frc.robot.commands.Climber2Command;
 import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
 import frc.robot.commands.LeaveHomeAuto;
@@ -60,7 +60,7 @@ public class RobotContainer {
   // public final ObjectTrackerSubsystem m_objectTrackerSubsystemAprilTagPro = new ObjectTrackerSubsystem("AprilTagPro");
 
   //Command 
-  public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
+  public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
   public static final ArmCommand m_armCommand = new ArmCommand(m_armSubsystem);
   public static final ClimberCommand m_climberCommand = new ClimberCommand(m_climberSubsystem);
   public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
