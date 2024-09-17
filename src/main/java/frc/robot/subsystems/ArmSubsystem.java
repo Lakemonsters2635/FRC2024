@@ -143,6 +143,8 @@ public class ArmSubsystem extends SubsystemBase {
     fbMotorPower = MathUtil.clamp(pid.calculate(theta, m_poseTarget), lowerLimitFB, upperLimitFB) * 10;
 
     motorPower = ffMotorPower + fbMotorPower;
+    motorPower = ffMotorPower;
+
     if(m_poseTarget>90 && theta > 75){
       motorPower = 0;
     }
@@ -151,6 +153,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
     double clampVal = 3.;
     motorPower = MathUtil.clamp(motorPower, -clampVal, clampVal);
+    //motorPower = 0;
     // setArmPower(ffMotorPower);
     setArmPower(motorPower);
     SmartDashboard.putNumber("motorPower", motorPower);

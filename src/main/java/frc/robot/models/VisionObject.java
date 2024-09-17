@@ -9,7 +9,12 @@ import frc.robot.Robot;
 // import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj.Timer;
-
+class Rotation
+{
+    public double x;
+    public double y; 
+    public double z;
+}
 public class VisionObject {
     public String objectLabel;
     /**
@@ -22,12 +27,16 @@ public class VisionObject {
     public double y;
     public double z;
     public double r;
+    public Rotation rotation;
     public double xa;
     public double ya;
     public double confidence;
 
-    public DrivetrainSubsystem m_drivetrainSubsystem;
-    
+    //public DrivetrainSubsystem m_drivetrainSubsystem;
+    public VisionObject()
+    {
+
+    }
 
     public VisionObject(String objectType, double x, double y, double z, double r, double xa, double ya) {
         this.objectLabel = objectType;
@@ -35,51 +44,54 @@ public class VisionObject {
         this.y = y;
         this.z = z;
         this.r = r;
+        this.rotation.x = 0;
+        this.rotation.y = 0;
+        this.rotation.z = 0;
         this.xa = xa;
         this.ya = ya;
         confidence = -1;
 
-        m_drivetrainSubsystem = new DrivetrainSubsystem();
+        //m_drivetrainSubsystem = new DrivetrainSubsystem();
     }
 
-    public void motionCompensate(DrivetrainSubsystem drivetrainSubsystem, boolean compensateTranslation) {
-        Constants.OBJECT_DETECTION_LATENCY = SmartDashboard.getNumber("Object detection latency", 0.217);
-        /*
-        if (compensateTranslation) {
-        // Normally, we'd subtract the distance travelled.  However, the camera points off the back
-        // of the robot.  Therefore, motion in the direction the camera is aiming is returned by
-        // getVelocityX() as negative.
-            z += drivetrainSubsystem.getKinematicVelocity().x * RobotMap.OBJECT_DETECTION_LATENCY;
-            x -= drivetrainSubsystem.getKinematicVelocity().y * RobotMap.OBJECT_DETECTION_LATENCY;
-            SmartDashboard.putNumber("X Velocity", drivetrainSubsystem.getKinematicVelocity().x);
-            SmartDashboard.putNumber("Z Velocity", drivetrainSubsystem.getKinematicPosition().y);
-        }
-        */
+    // public void motionCompensate(DrivetrainSubsystem drivetrainSubsystem, boolean compensateTranslation) {
+    //     Constants.OBJECT_DETECTION_LATENCY = SmartDashboard.getNumber("Object detection latency", 0.217);
+    //     /*
+    //     if (compensateTranslation) {
+    //     // Normally, we'd subtract the distance travelled.  However, the camera points off the back
+    //     // of the robot.  Therefore, motion in the direction the camera is aiming is returned by
+    //     // getVelocityX() as negative.
+    //         z += drivetrainSubsystem.getKinematicVelocity().x * RobotMap.OBJECT_DETECTION_LATENCY;
+    //         x -= drivetrainSubsystem.getKinematicVelocity().y * RobotMap.OBJECT_DETECTION_LATENCY;
+    //         SmartDashboard.putNumber("X Velocity", drivetrainSubsystem.getKinematicVelocity().x);
+    //         SmartDashboard.putNumber("Z Velocity", drivetrainSubsystem.getKinematicPosition().y);
+    //     }
+    //     */
         
-        // double omega = drivetrainSubsystem.getGyroscope().getRate();
-        // double theta = omega * RobotMap.OBJECT_DETECTION_LATENCY;
+    //     // double omega = drivetrainSubsystem.getGyroscope().getRate();
+    //     // double theta = omega * RobotMap.OBJECT_DETECTION_LATENCY;
 
-        double theta = 0;
-        double targetTime = Timer.getFPGATimestamp() - Constants.OBJECT_DETECTION_LATENCY; // seconds
+    //     double theta = 0;
+    //     double targetTime = Timer.getFPGATimestamp() - Constants.OBJECT_DETECTION_LATENCY; // seconds
 
-        for (int i = 0; i < Robot.circularBufferSize; i++) {
-            int indexOfInterest = (Robot.bufferSlotNumber + Robot.circularBufferSize - i) % Robot.circularBufferSize; 
+    //     for (int i = 0; i < Robot.circularBufferSize; i++) {
+    //         int indexOfInterest = (Robot.bufferSlotNumber + Robot.circularBufferSize - i) % Robot.circularBufferSize; 
 
-            if (Robot.time[indexOfInterest] < targetTime) {
-                theta = Units.degreesToRadians(m_drivetrainSubsystem.getGyroscope().getAngle()) - Robot.angle[Robot.bufferSlotNumber] ;// TODO: Turn angle to radiance
-                break;
-            }
-        }
+    //         if (Robot.time[indexOfInterest] < targetTime) {
+    //             theta = Units.degreesToRadians(m_drivetrainSubsystem.getGyroscope().getAngle()) - Robot.angle[Robot.bufferSlotNumber] ;// TODO: Turn angle to radiance
+    //             break;
+    //         }
+    //     }
         
-        double cosTheta = Math.cos(theta);
-        double sinTheta = Math.sin(theta);
+    //     double cosTheta = Math.cos(theta);
+    //     double sinTheta = Math.sin(theta);
 
-        double newZ = z * cosTheta - x * sinTheta;
-        double newX = z * sinTheta + x * cosTheta;
+    //     double newZ = z * cosTheta - x * sinTheta;
+    //     double newX = z * sinTheta + x * cosTheta;
 
-        z = newZ;
-        x = newX;
-    }
+    //     z = newZ;
+    //     x = newX;
+    // }
 
     /** Return ID of AprilTag on field */
     public int getAprilTagID() {
