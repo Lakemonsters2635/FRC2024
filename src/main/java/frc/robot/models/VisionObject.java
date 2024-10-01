@@ -9,6 +9,11 @@ import frc.robot.Robot;
 // import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj.Timer;
+
+//networktables
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 class Rotation
 {
     public double x;
@@ -35,7 +40,7 @@ public class VisionObject {
     //public DrivetrainSubsystem m_drivetrainSubsystem;
     public VisionObject()
     {
-
+        NetworkTable monsterVision = NetworkTableInstance.getDefault().getTable("MonsterVision");
     }
 
     public VisionObject(String objectType, double x, double y, double z, double r, double xa, double ya) {
