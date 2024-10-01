@@ -34,6 +34,23 @@ public class AutonomousCommands {
         m_os = os;
     }
 
+    // Create a method that returns a command called "straightAuto":
+    public Command straightAuto(){
+        return m_dts.createPath(
+            // set the initial point to (0,0) with 90 degrees in heading
+            
+            // set the middle point to (0, 0.5)
+
+            // set the final point to (0, 1) with 90 degrees in heading
+
+            // set the final rotation to 0
+            
+        )
+    }
+
+    // Create a auto that moves the robot horizontally 1 meters to right:
+    
+
     private Command rightNotePath(){
         return new SequentialCommandGroup(
             new ParallelCommandGroup(

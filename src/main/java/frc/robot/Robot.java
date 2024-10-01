@@ -44,7 +44,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    m_autoChooser = m_robotContainer.getAutonomousCommand();
+    // set m_autoChooser to the autoChooser from RobotContainer
+    m_autoChooser = 
 
     // Works
     SmartDashboard.putNumber("intakeMotorVoltage", m_robotContainer.m_intakeSubsystem.intakeMotor.getBusVoltage());
@@ -90,9 +91,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     RobotContainer.m_drivetrainSubsystem.setFollowJoystick(false);
-    // m_autonomousCommand = m_autoChooser.getSelected();
-    m_autonomousCommand = m_autoChooser.getSelected();
 
+    // set the m_autonomousCommand to the selected autonomous
+
+    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

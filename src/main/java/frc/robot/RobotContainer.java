@@ -181,42 +181,40 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public SendableChooser<Command> getAutonomousCommand() {
-    SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+    // Create a SendableChooser for auto chooser
+
     SendableChooser<Command> m_alianceChooser = new SendableChooser<>();
 
-    // m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
-    // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
-    // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
+    // Add straightAuto to m_autoChooser
 
-    // An example command will be run in autonomous
-    m_autoChooser.addOption("shootMidCommand", m_autonomousCommands.shootMidCommand());
-    m_autoChooser.addOption("shootRightCommand", m_autonomousCommands.shootRightCommand());
-    m_autoChooser.addOption("shootLeftCommand", m_autonomousCommands.shootLeftCommand());
-    m_autoChooser.addOption("shootMidLeftCommand", m_autonomousCommands.shootMidLeftCommand());
-    m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
-    m_autoChooser.addOption("shootMidToRightCommand", m_autonomousCommands.midToRightCommand());
-    m_autoChooser.addOption("shootMidToRightToLeftCommand", m_autonomousCommands.midToRightToLeftCommand());
-    m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
-    m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
-    m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
-    m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
-    m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
-    m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
-    m_autoChooser.addOption("postSeasonAutoDiagonalBlueLeft", m_autonomousCommands.postSeasonAutoDiagonalBlueLeft());
-    m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
-    m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
-    m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
-    m_autoChooser.addOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
-    m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
-    m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotation", m_autonomousCommands.postSeasonAutoDiagonalSourceRotation());
-    m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotationCurve", m_autonomousCommands.postSeasonAutoDiagonalSourceRotationCurve());
-    //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
-    // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
-    // m_autoChooser.addOption("AmpAuto", m_ampAuto);
+    // Add your auto to m_autoChooser
+    
 
-    m_autoChooser.addOption("redSideAutoLeft", m_autonomousCommands.redSideAutoLeft());
+    // m_autoChooser.addOption("shootMidCommand", m_autonomousCommands.shootMidCommand());
+    // m_autoChooser.addOption("shootRightCommand", m_autonomousCommands.shootRightCommand());
+    // m_autoChooser.addOption("shootLeftCommand", m_autonomousCommands.shootLeftCommand());
+    // m_autoChooser.addOption("shootMidLeftCommand", m_autonomousCommands.shootMidLeftCommand());
+    // m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
+    // m_autoChooser.addOption("shootMidToRightCommand", m_autonomousCommands.midToRightCommand());
+    // m_autoChooser.addOption("shootMidToRightToLeftCommand", m_autonomousCommands.midToRightToLeftCommand());
+    // m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
+    // m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
+    // m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
+    // m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
+    // m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
+    // m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
+    // m_autoChooser.addOption("postSeasonAutoDiagonalBlueLeft", m_autonomousCommands.postSeasonAutoDiagonalBlueLeft());
+    // m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
+    // m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
+    // m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
+    // m_autoChooser.addOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
+    // m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
+    // m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotation", m_autonomousCommands.postSeasonAutoDiagonalSourceRotation());
+    // m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotationCurve", m_autonomousCommands.postSeasonAutoDiagonalSourceRotationCurve());
+    // m_autoChooser.addOption("redSideAutoLeft", m_autonomousCommands.redSideAutoLeft());
 
-    SmartDashboard.putData("AutoChooser", m_autoChooser);
+    // Put the m_autoChooser data to SmartDashboard
+
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);
 
     return m_autoChooser;
