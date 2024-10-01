@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("armMotor1Voltage", m_robotContainer.m_armSubsystem.m_armMotor1.getSupplyVoltage().getValueAsDouble());
     SmartDashboard.putNumber("armMotor2Voltage", m_robotContainer.m_armSubsystem.m_armMotor2.getSupplyVoltage().getValueAsDouble());
 
-    
+    SmartDashboard.putNumber("AprilTag", kDefaultPeriod);
     // m_autoChooser = m_robotContainer.getAutonomousCommand();
     // m_autoChooser = m_robotContainer.getAutonomousCommand();
 
