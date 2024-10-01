@@ -126,127 +126,23 @@ public final class Constants {
 
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
-
-    // CLIMBER CONSTANTS
-    public static final int CLIMBER_MOTOR_1 = 6;
-    public static final int CLIMBER_MOTOR_2 = 5;
-
-    public static final int CLIMBER_ENCODER_1 = 6;
-    public static final int CLIMBER_ENCODER_2 = 5;
-
-    public static final double CLIMBER_1_START_SPEED = 0.4;
-    public static final double CLIMBER_2_START_SPEED = 0.4;
-
-    public static final int CLIMBER_STOP_SPEED = 0;
-
-    // AUTO CONSTANTS
-    public static final double DISTANCE_BETWEEN_NOTES = Units.inchesToMeters(54); // 57
-    public static final double DISTANCE_TO_NOTE = Units.inchesToMeters(35+6)+0.1; //45
-
-    public static final double RIGHT_ENDING_POSE = 45+10;
-    public static final double LEFT_ENDING_POSE = -53-8;
-
-    // CLIMBER RELEASE/SERVO CONSTANTS // TODO: Delete these
-    public static final int SERVO_MOTOR_1 = 0;
-    public static final int SERVO_MOTOR_2 = 1;
-
-    public static final double FULL_EXTENDED_SERVO = 1.0;
-    public static final double FULL_RETRACTED_SERVO = 0.0;
-
-    //ARM CONSTANT: 15 is right, 21 is left
-    public static final int ARM_MOTOR1_ID = 21; // note to self: next time say left and right
-    public static final int ARM_MOTOR2_ID = 15;
-    public static final int ARM_ENCODER_ID = 0;
-
-    public static final double ARM_MOTOR_START_SPEED = 0.3;
-    public static final int ARM_MOTOR_STOP_SPEED = 0;
-
-    public static final double ARM_LOWER_LIMIT = -30; //TODO: figure out these
-    public static final double ARM_UPPER_LIMIT = 93.3;
-
-    //    public static final double ARM_MOTOR_FF_GAIN = -1.4; // 12V
-    //    public static final double ARM_MOTOR_FF_GAIN = -1.16; // 11V // For Neo 500
-    public static final double ARM_MOTOR_FF_GAIN = -0.59; // 11V // For Krakens
-
-    public static final double ARM_ENCODER_OFFSET = 0.406; 
-    public static final int ARM_PICKUP_ANGLE = 94; // 104
-    public static final int ARM_AMP_ANGLE = -18; // -19
-    public static final int ARM_SHOOTER_ANGLE = 52; // 54
-    public static final int ARM_SHOOTER_ANGLE_MID_AUTO = 34; // 34
-    public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 33; // 34
-    public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
-
-    public static final double ARM_THETA_FOR_TRAP_A = 0.00169;
-    public static final double ARM_THETA_FOR_TRAP_B = -0.433;
-    public static final double ARM_THETA_FOR_TRAP_C = 57;
-
-    // INTAKE CONSTANTS
-    public static final int INTAKE_MOTOR_ID = 13;
-
-    public static final int INTAKE_STOP_SPEED = 0;
-    public static final double INTAKE_IN_SPEED = -0.9;
-    public static final double INTAKE_OUT_SPEED = 0.2;
-
-
-    // OUTTAKE CONSTANTS
-    public static final int OUTAKE_MOTOR_ID = 14;
-
-    public static final double OUTTAKE_STOP_SPEED =0;
-    public static final double OUTTAKE_SPEED = -0.45;
-    public static final double AMP_OUTTAKE_SPEED = -0.4;
-    public static final double OUTTAKE_TRAP_SPEED = -0.15;
-    public static final double OUTTAKE_IN_SPEED = 0.35;
-
-    
-    // TELESCOPE CONSTANTS
-    public static final int TELESCOPE_MOTOR_ID = 11;
-
-    public static final double TELESCOPE_EXTEND_SPEED = -0.4;
-    public static final double TELESCOPE_RETRACT_SPEED = 0.4;
-    public static final int TELESCOPE_STOP_SPEED = 0;
-
-    public static final int TELESCOPE_ENCODER_ID1 = 0;
-    public static final int TELESCOPE_ENCODER_ID2 = 1;
-
-    // AUTOMOVESWERVE CONSTANTS
-    public static final double CHANGE_IN_X_PER_SECOND= 0.714;
-    public static final double CHANGE_IN_Y_PER_SECOND= 0.717;
-
-    // VISION CONSTANTS
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
     public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
 
     public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;
 
+    // AUTO CONSTANTS
+    
+    // AUTOMOVESWERVE CONSTANTS
+    public static final double CHANGE_IN_X_PER_SECOND= 0.714;
+    public static final double CHANGE_IN_Y_PER_SECOND= 0.717;
+
     //BUTTON BINDINGS
 
     // right buttons
-    public static final int INTAKE_BUTTON = 1;
-    public static final int SHOOT_APRIL_TAG = 2;
-    public static final int GROUND_PICKUP_BUTTON = 3;
-    public static final int AMP_POSE_BUTTON = 4;
-    public static final int INTAKE_OUT_BUTTON = 5;   
-    public static final int SPEAKER_BUTTON = 6;
     public static final int SWERVE_RESET_BUTTON = 7;
-    public static final int OUTTAKE_IN_BUTTON = 8;
-    public static final int TRAP_SHOOT_BUTTON = 12;
-    // public static final int SPEAKER_POSE_BUTTON = 6;
     public static final int BALANCE_BUTTON = 10;
 
     // left buttons
-    public static final int SET_ROBOT_ROTATION_BUTTON =3;
-    public static final int AMP_SEQUENCE_BUTTON = 4 ;
-    public static final int OUTTAKE_BUTTON = 1;
-    public static final int FAR_SHOOTER_BUTTON = 4;
-    //public static final int TELESCOPE_RETRACT_BUTTON = 4;
-    //public static final int TELESCOPE_EXTEND_BUTTON = 6;
-    public static final int CLIMBER_UP_BUTTON = 7;
-    public static final int CLIMBER_DOWN_BUTTON = 8;
-    public static final int CLIMBER1_UP_BUTTON = 9;
-    public static final int CLIMBER2_UP_BUTTON = 10;
-    public static final int CLIMBER1_DOWN_BUTTON = 11;
-    public static final int CLIMBER2_DOWN_BUTTON = 12;
-
-
-    //public static final int ARM_START_BUTTON = 5;
+    
 }

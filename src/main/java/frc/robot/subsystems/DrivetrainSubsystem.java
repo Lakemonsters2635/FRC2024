@@ -8,18 +8,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathHolonomic;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.PathPlannerLogging;
-import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -38,7 +26,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -58,8 +45,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH;
 
     public String selectedAliance = "blueAlliance";
-
-    private Field2d field = new Field2d();
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -117,39 +102,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
-    
-
-    // TODO: Delete this if don't needed
-    AutoBuilder.configureHolonomic(
-              this::getPose, // Robot pose supplier
-              this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-              this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-              this::setDesiredStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-              new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                      new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                      4.5, // Max module speed, in m/s
-                      0.42, // Drive base radius in meters. Distance from robot center to furthest module.
-                      new ReplanningConfig() // Default path replanning config. See the API for the options here
-              ),
-              () -> {
-                  // Boolean supplier that controls when the path will be mirrored for the red alliance
-                  // This will flip the path being followed to the red side of the field.
-                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                  var alliance = DriverStation.getAlliance();
-                  if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                  }
-                  return false;
-              },
-              this // Reference to this subsystem to set requirements
-    );
-
-    PathPlannerLogging.setLogCurrentPoseCallback((poses) -> field.getObject("path").getPose());
-
-    SmartDashboard.putData("field" ,field);
-
     getPose();
 
     // resetAngle() should be called before zeroOdometry() because reseting odometry uses gyro values to do the reset
@@ -157,99 +109,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     zeroOdometry();
   }
 
-  /**
-   * Go to targetPose using pathplanner
-   * @param targetPose
-   * @return command to make robot go to targetPose
-   */
-  public Command goToTargetPos(Pose2d targetPose){
-    // System.out.println("Target pos: "+"x:"+targetPose.getX()+" y:"+targetPose.getY()+" degrees:"+targetPose.getRotation().getDegrees());
-
-    // Since we are using a holonomic drivetrain, the rotation component of this pose
-    // represents the goal holonomic rotation
-
-    // Create the constraints to use while pathfinding
-    // PathConstraints constraints = new PathConstraints(
-    //         0.1, 0.1,
-    //         Units.degreesToRadians(10), Units.degreesToRadians(10));
-
-    // // See the "Follow a single path" example for more info on what gets passed here
-    // Command pathfindingCommand = new PathfindHolonomic(
-    //         targetPose,
-    //         constraints,
-    //         0.0, // Goal end velocity in m/s. Optional
-    //         this::getPose,
-    //         this::getChassisSpeeds,
-    //         this::setDesiredStates,
-    //         new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()), // TODO: Figure out these numbers
-    //         0.0, // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate. Optional
-    //         this // Reference to drive subsystem to set requirements
-    // );
-
-    // return pathfindingCommand;
-    
-    // Create a list of bezier points from poses. Each pose represents one waypoint.
-    // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
-    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-            getPose(),
-            targetPose
-    );
-
-
-    // Create the path using the bezier points created above
-    PathPlannerPath path = new PathPlannerPath(
-            bezierPoints,
-            new PathConstraints(1, 1, 2 * Math.PI, 4 * Math.PI), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
-            new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
-    );
-
-    PathPlannerTrajectory traj = new PathPlannerTrajectory(
-            path,
-            getChassisSpeeds(),
-            getPose().getRotation()
-    );
-
-    // Prevent the path from being flipped if the coordinates are already correct
-    path.preventFlipping =true;
-
-    Command followPathcCommand = new FollowPathHolonomic(
-            path, 
-            this::getPose, 
-            this::getChassisSpeeds, 
-            this::setDesiredStates, 
-            new HolonomicPathFollowerConfig(4.5,0.42,new ReplanningConfig()),
-            () -> {
-                  // Boolean supplier that controls when the path will be mirrored for the red alliance
-                  // This will flip the path being followed to the red side of the field.
-                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                  var alliance = DriverStation.getAlliance();
-                  if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                  }
-                  return false;
-            },
-            this
-    );
-    
-    return followPathcCommand;
-  }
-
-  // public void selectAliance(String aliance){
-  //   selectedAliance = aliance;
-  // }
-
   public void stopMotors(){
     m_backLeft.stop();
     m_frontLeft.stop();
     m_backRight.stop();
     m_frontRight.stop();
-  }
-
-  public Command pathChooser(String autoName){
-    PathPlannerAuto c = new PathPlannerAuto(autoName);
-
-    return c;
   }
 
   public double toRedHead(double blueHeadingDegrees) {
