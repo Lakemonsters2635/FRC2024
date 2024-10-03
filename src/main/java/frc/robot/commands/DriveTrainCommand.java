@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class DriveTrainCommand extends Command {
+public class DrivetrainCommand extends Command {
   private DrivetrainSubsystem m_dts;
   /** Creates a new DriveTrainCommand. */
-  public DriveTrainCommand(DrivetrainSubsystem dts) {
+  public DrivetrainCommand(DrivetrainSubsystem dts) {
     m_dts = dts;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_dts);
