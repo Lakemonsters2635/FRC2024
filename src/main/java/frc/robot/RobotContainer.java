@@ -156,9 +156,12 @@ public class RobotContainer {
     outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
     armBalanceButton.onTrue(m_armAmpPoseCommand);
+
     resetOdometryButton.onTrue(
+      
       new SequentialCommandGroup(
         new InstantCommand(()->m_drivetrainSubsystem.resetAngle()),
+
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
