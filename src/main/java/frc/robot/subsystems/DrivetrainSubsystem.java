@@ -34,17 +34,17 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    public static final double kMaxSpeed = 3.63; // 3.63 meters per second
-    public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+    public static final double kMaxSpeed = 3.63; // 3.63 meters per second  Max Speed for Front, Back, Left, Right
+    public final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second   Max Speed for Rotation
     private SwerveModuleState[] swerveModuleStates;
 
     public static Joystick rightJoystick = RobotContainer.rightJoystick;
     public static Joystick leftJoystick = RobotContainer.leftJoystick;
 
-    public final double m_drivetrainWheelbaseWidth =  Constants.DRIVETRAIN_WHEELBASE_WIDTH;
-    public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH;
+    public final double m_drivetrainWheelbaseWidth =  Constants.DRIVETRAIN_WHEELBASE_WIDTH;  //Calibrated for 2024 BunnyBots
+    public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH; //Calibrated for 2024 BunnyBots
 
-    public String selectedAliance = "blueAlliance";
+    public String selectedAliance = "blueAlliance"; //Sets Alliance as Blue
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
@@ -109,14 +109,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
     zeroOdometry();
   }
 
-  public void stopMotors(){
+  public void stopMotors(){   //Zero motorPower
     m_backLeft.stop();
     m_frontLeft.stop();
     m_backRight.stop();
     m_frontRight.stop();
   }
 
-  public double toRedHead(double blueHeadingDegrees) {
+  public double toRedHead(double blueHeadingDegrees) {  //Turn Angle from Blue to Red Alliance
     return -1.*(blueHeadingDegrees + 180.);
   }
   public int toRedHead(int blueHeadingDegrees) {
@@ -150,7 +150,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putString("DriverStation.getAlliance().get()",DriverStation.getAlliance().get().name());
     SmartDashboard.putString("DriverStation.Alliance.Red",DriverStation.Alliance.Red.name());
 
-    if (isRedAliance) {
+    if (isRedAliance) { 
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees()))));
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));

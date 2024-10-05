@@ -10,7 +10,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class DrivetrainCommand extends Command {
   private DrivetrainSubsystem m_dts;
-  /** Creates a new DriveTrainCommand. */
+  /** Creates a new DrivetrainCommand. */
   public DrivetrainCommand(DrivetrainSubsystem dts) {
     m_dts = dts;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,12 +24,12 @@ public class DrivetrainCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double x = RobotContainer.rightJoystick.getX();
+    double x = RobotContainer.rightJoystick.getX();    //Getting Values between [-1,1] using joystick
     double y = RobotContainer.rightJoystick.getY();
-    double rot = RobotContainer.rightJoystick.getTwist();
+    double rot = RobotContainer.rightJoystick.getTwist();  
 
 
-    m_dts.setXPowerCommanded(Math.copySign(Math.pow(x, 3), x));
+    m_dts.setXPowerCommanded(Math.copySign(Math.pow(x, 3), x)); //Sets Powers to Motors Based of Joystick Values
     m_dts.setYPowerCommanded(Math.copySign(Math.pow(y, 3), y));
     m_dts.setRotCommanded(Math.copySign(Math.pow(rot, 3), rot));
   }
