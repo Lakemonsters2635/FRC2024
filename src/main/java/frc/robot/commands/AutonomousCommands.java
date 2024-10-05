@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.sun.org.apache.xalan.internal.templates.Constants;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -230,8 +232,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(90))),
-                        new Translation2d(0, 0.5),
-                        new Pose2d(0, 1, new Rotation2d(Math.toRadians(90)))
+                        new Translation2d(0, Constants.DISTANCE_TO_NOTE/2),
+                        new Pose2d(0, Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(90)))
             ));
     }
     public Command postSeasonAutoDiagonalBlueLeft(){
@@ -240,8 +242,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(45))),
-                        new Translation2d(0.5, 0.5),
-                        new Pose2d(1, 1, new Rotation2d(Math.toRadians(45)))
+                        new Translation2d(Constants.DISTANCE_BETWEEN_NOTES/2, Constants.DISTANCE_TO_NOTE/2),
+                        new Pose2d(Constants.DISTANCE_BETWEEN_NOTES, Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(45)))
             ));
     }
     public Command postSeasonAutoDiagonalRedLeft(){
@@ -250,8 +252,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
-                        new Translation2d(-0.5, 0.5),
-                        new Pose2d(-1, 1, new Rotation2d(Math.toRadians(135)))
+                        new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES/2, Constants.DISTANCE_TO_NOTE/2),
+                        new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(135)))
             ));
     }
 
@@ -271,8 +273,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(135))),
-                        new Translation2d(-0.5, 0.5),
-                        new Pose2d(-1, 1, new Rotation2d(Math.toRadians(135)))
+                        new Translation2d(-Constants.DISTANCE_BETWEEN_NOTES/2, Constants.DISTANCE_TO_NOTE/2),
+                        new Pose2d(-Constants.DISTANCE_BETWEEN_NOTES, Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(135)))
             ));
     }
     // Caution: This is 2 meter path
