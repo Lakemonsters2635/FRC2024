@@ -37,8 +37,8 @@ public final class Constants {
     // Switch robot's lenght to width
 
     // ROBOT WIDTH AND LENGHT
-    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  21.5/ Constants.INCHES_PER_METER; //21.5
-    public static final double DRIVETRAIN_WHEELBASE_LENGTH = 25.5 / Constants.INCHES_PER_METER; //25.5
+    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  21.5/ Constants.INCHES_PER_METER; //21.5 Calibrated for 2024 BunnyBots
+    public static final double DRIVETRAIN_WHEELBASE_LENGTH = 25.5 / Constants.INCHES_PER_METER; //25.5 Calibrated for 2024 BunnyBots
 
 
     // FRONT LEFT
