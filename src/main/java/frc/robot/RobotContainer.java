@@ -117,7 +117,7 @@ public class RobotContainer {
     // right buttons
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
-    Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
+    //Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
@@ -135,12 +135,12 @@ public class RobotContainer {
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger farSpeakerButton = new JoystickButton(leftJoystick, Constants.FAR_SHOOTER_BUTTON);
-    Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
-    Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
-    Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
-    Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
-    Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
-    Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
+    //Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
+    //Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
+    //Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
+    //Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
+    //Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
+    //Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
     Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
     Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
 
@@ -149,7 +149,7 @@ public class RobotContainer {
     intakeButton.whileTrue(m_intakeCommand);
     armPickupPoseButton.onTrue(m_pickUpPoseCommand);
     // armAmpPoseButton.onTrue(new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand));
-    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
+    //armAmpPoseButton.onTrue(m_armAmpPoseCommand);
     // intakeOutButton.onTrue(m_intakeOutCommand);
     speakerButton.onTrue(new SpeakerDriverCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
@@ -175,12 +175,12 @@ public class RobotContainer {
 
     outakeButton.whileTrue(m_ampOutakeCommand);
     farSpeakerButton.onTrue(new FarSpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
-    climberUpButton.whileTrue(m_climberUpCommand);
-    climber1UpButton.whileTrue(m_climber1UpCommand);
-    climber2UpButton.whileTrue(m_climber2UpCommand);
-    climberDownButton.whileTrue(m_climberDownCommand);
-    climber1DownButton.whileTrue(m_climber1DownCommand);
-    climber2DownButton.whileTrue(m_climber2DownCommand);
+    //climberUpButton.whileTrue(m_climberUpCommand);
+    //climber1UpButton.whileTrue(m_climber1UpCommand);
+    //climber2UpButton.whileTrue(m_climber2UpCommand);
+    //climberDownButton.whileTrue(m_climberDownCommand);
+    //climber1DownButton.whileTrue(m_climber1DownCommand);
+    //climber2DownButton.whileTrue(m_climber2DownCommand);
     setRobotRotationButton.whileTrue(m_setRobotRot90);
     setRobotRotationButton2.whileTrue(m_setRobotArm);
 
