@@ -117,7 +117,7 @@ public class RobotContainer {
     // right buttons
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
-    //Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
+    Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
     Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
@@ -148,8 +148,8 @@ public class RobotContainer {
 
     intakeButton.whileTrue(m_intakeCommand);
     armPickupPoseButton.onTrue(m_pickUpPoseCommand);
-    // armAmpPoseButton.onTrue(new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand));
-    //armAmpPoseButton.onTrue(m_armAmpPoseCommand);
+    //armAmpPoseButton.onTrue(new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand));
+    armAmpPoseButton.onTrue(m_armAmpPoseCommand);
     // intakeOutButton.onTrue(m_intakeOutCommand);
     speakerButton.onTrue(new SpeakerDriverCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
@@ -219,7 +219,8 @@ public class RobotContainer {
     m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
     m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
     m_autoChooser.addOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
-    m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
+    // m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
+    // m_autoChooser.setDefaultOption("postSeasonAutoStraight_midPos_2", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
     m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotation", m_autonomousCommands.postSeasonAutoDiagonalSourceRotation());
     m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotationCurve", m_autonomousCommands.postSeasonAutoDiagonalSourceRotationCurve());
     //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
@@ -227,6 +228,8 @@ public class RobotContainer {
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 
     m_autoChooser.addOption("redSideAutoLeft", m_autonomousCommands.redSideAutoLeft());
+
+    m_autoChooser.setDefaultOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);

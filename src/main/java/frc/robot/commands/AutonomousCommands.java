@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import com.sun.org.apache.xalan.internal.templates.Constants;
+// import com.sun.org.apache.xalan.internal.templates.Constants;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -128,9 +128,9 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
                 m_dts.createPath(
-                    new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
-                    new Translation2d(0, -(Constants.DISTANCE_TO_NOTE/2)),
-                    new Pose2d(0, -(Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(-90))),
+                    new Pose2d(0,0, new Rotation2d(Math.toRadians(90))),
+                    new Translation2d(0, (Constants.DISTANCE_TO_NOTE/2)),
+                    new Pose2d(0, (Constants.DISTANCE_TO_NOTE), new Rotation2d(Math.toRadians(90))),
                     0
                 ),
                 new MoveArmToPoseCommand(m_as, Constants.ARM_PICKUP_ANGLE),
@@ -226,14 +226,25 @@ public class AutonomousCommands {
             ));
     }
 
+    public Command postSeasonJustShootAndStraight(){
+        return new SequentialCommandGroup(justShoot(), postSeasonAutoStraight());
+    }
+
+    public Command postSeasonMidShootPickupShoot(){
+        return new SequentialCommandGroup(
+            justShoot(),
+            midNotePath(),
+            shootFromAwayCommand(Constants.ARM_SHOOTER_ANGLE_MID_AUTO)
+        );
+    }
     public Command postSeasonAutoStraight(){
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(90))),
-                        new Translation2d(0, Constants.DISTANCE_TO_NOTE/2),
-                        new Pose2d(0, Constants.DISTANCE_TO_NOTE, new Rotation2d(Math.toRadians(90)))
+                        new Translation2d(0, Constants.DISTANCE_TO_NOTE*2),
+                        new Pose2d(0, Constants.DISTANCE_TO_NOTE*4, new Rotation2d(Math.toRadians(90)))
             ));
     }
     public Command postSeasonAutoDiagonalBlueLeft(){

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutonomousCommands;
 import frc.robot.models.VisionObject;
 
 /**
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;  
 
   private RobotContainer m_robotContainer;
+  private AutonomousCommands m_AutonomousCommands;
 
   // for motion compensate (vision)
   public static int circularBufferSize = 50;
@@ -47,6 +49,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_autoChooser = m_robotContainer.getAutonomousCommand();
+    m_AutonomousCommands = m_robotContainer.m_autonomousCommands;
+    
 
     // Works
     SmartDashboard.putNumber("intakeMotorVoltage", m_robotContainer.m_intakeSubsystem.intakeMotor.getBusVoltage());
@@ -98,8 +102,16 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     RobotContainer.m_drivetrainSubsystem.setFollowJoystick(false);
+    RobotContainer.m_drivetrainSubsystem.resetAngle();
     // m_autonomousCommand = m_autoChooser.getSelected();
     m_autonomousCommand = m_autoChooser.getSelected();
+
+    // TODO: Autos To Use:
+
+    m_autonomousCommand = m_AutonomousCommands.postSeasonJustShootAndStraight();
+   //m_autonomousCommand = m_AutonomousCommands.postSeasonMidShootPickupShoot();
+     //m_autonomousCommand = m_AutonomousCommands.postSeasonAutoStraight();
+    //m_autonomousCommand = m_AutonomousCommands.justShoot();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

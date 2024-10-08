@@ -192,8 +192,8 @@ public final class Constants {
     public static final int OUTAKE_MOTOR_ID = 14;
 
     public static final double OUTTAKE_STOP_SPEED =0;
-    public static final double OUTTAKE_SPEED = 0.9;
-    public static final double AMP_OUTTAKE_SPEED = -0.4;
+    public static final double OUTTAKE_SPEED = 0.9;  
+    public static final double AMP_OUTTAKE_SPEED = 0.4;
     public static final double OUTTAKE_TRAP_SPEED = -0.15;
     public static final double OUTTAKE_IN_SPEED = 0.35;
 
