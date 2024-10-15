@@ -142,7 +142,8 @@ public class RobotContainer {
     Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
     Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
     Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
-    Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
+    // Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
+    Trigger visionArmRotationButton = new JoystickButton(leftJoystick, 2);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -182,7 +183,9 @@ public class RobotContainer {
     climber1DownButton.whileTrue(m_climber1DownCommand);
     climber2DownButton.whileTrue(m_climber2DownCommand);
     setRobotRotationButton.whileTrue(m_setRobotRot90);
-    setRobotRotationButton2.whileTrue(m_setRobotArm);
+    // setRobotRotationButton2.whileTrue(m_setRobotArm);
+
+    visionArmRotationButton.whileTrue(new InstantCommand(()-> new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ)));
 
     // armStartButton.whileTrue(m_armThrottleCommand);
   }

@@ -128,10 +128,10 @@ class DetectionHelper {
         for (int i = 0; i < gsonOut.size(); i++) { // Maybe change later
             if (gsonOut.get(i).objectLabel.substring(0,3).equals("tag")) {
                 aprilTags.add(gsonOut.get(i));
-                System.out.println("UpdateDetections(: found apriltag");
+                // System.out.println("UpdateDetections(: found apriltag");
             } else {
                 yoloObjects.add(gsonOut.get(i));
-                System.out.println("yolo object");
+                // System.out.println("yolo object");
             }
         }
     }
