@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     RobotContainer.m_objectTrackerSubsystem.data();
+    // RobotContainer.m_objectTrackerSubsystemFPS.data();
     VisionObject x = RobotContainer.m_objectTrackerSubsystem.getClosestAprilTag();
     if (x != null) {
       System.out.println(x);

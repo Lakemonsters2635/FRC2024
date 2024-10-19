@@ -53,6 +53,8 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     private String source;
     private Gson gson = new Gson();
     public double visionZ;
+    public double visionX;
+    public double visionY;
 
 
     /*
@@ -118,8 +120,13 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("VisionY", getNearestAprilTagDetection().y);
             SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
             SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
-            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+            //System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
             visionZ = getNearestAprilTagDetection().z;
+            visionX = getNearestAprilTagDetection().x;
+            visionY = getNearestAprilTagDetection().y;
+            String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+            double fps = Double.valueOf(fpsString);
+            SmartDashboard.putNumber("CameraFPS", fps);
         } catch (Exception e) {
             System.out.println(e);
         }

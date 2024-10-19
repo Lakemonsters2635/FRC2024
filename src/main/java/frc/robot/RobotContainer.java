@@ -39,7 +39,6 @@ import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.commands.TrapShootStrafeCommand;
-import frc.robot.commands.TrapShootCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -65,6 +64,7 @@ public class RobotContainer {
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
+  public static final ObjectTrackerSubsystem m_objectTrackerSubsystemFPS = new ObjectTrackerSubsystem("fps");
  
   //Command 
   public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
@@ -93,7 +93,7 @@ public class RobotContainer {
   public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
   public static final MoveArmToPoseCommand m_moveArmBalance = new MoveArmToPoseCommand(m_armSubsystem, (int)Constants.ARM_ENCODER_OFFSET*360);// TODO
   public static final ParallelCommandGroup m_armAmpPoseCommand = new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand);
-  public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
+  // public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
   public static final SetRobotRotArm m_setRobotArm = new SetRobotRotArm(m_drivetrainSubsystem);
 
 
@@ -141,9 +141,10 @@ public class RobotContainer {
     Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
     Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
     Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
-    Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
+    // Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
     // Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
     Trigger visionArmRotationButton = new JoystickButton(leftJoystick, 2);
+    Trigger visionRotationButton = new JoystickButton(leftJoystick, 3);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -182,9 +183,10 @@ public class RobotContainer {
     climberDownButton.whileTrue(m_climberDownCommand);
     climber1DownButton.whileTrue(m_climber1DownCommand);
     climber2DownButton.whileTrue(m_climber2DownCommand);
-    setRobotRotationButton.whileTrue(m_setRobotRot90);
+    // setRobotRotationButton.whileTrue(m_setRobotRot90);
     // setRobotRotationButton2.whileTrue(m_setRobotArm);
 
+    visionRotationButton.whileTrue(new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)); // deleted new InstantCommand() because SetRobotRot wasn't initializing
     visionArmRotationButton.whileTrue(new InstantCommand(()-> new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ)));
 
     // armStartButton.whileTrue(m_armThrottleCommand);

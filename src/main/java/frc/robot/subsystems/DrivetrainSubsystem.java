@@ -384,6 +384,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void setRotCommanded(double rot) {
+    // Input a value between -1 and 1 for angular velocity of robot, it is later multiplied by `kMaxAngularSpeed` in drive
     rotCommanded = rot;
   }
 
