@@ -180,7 +180,7 @@ public final class Constants {
     public static final double ARM_THETA_FOR_TRAP_B = -0.433;
     public static final double ARM_THETA_FOR_TRAP_C = 57;
 
-    public static final boolean ARM_ENABLED = false;
+    public static final boolean ARM_ENABLED = true;
 
     // INTAKE CONSTANTS
     public static final int INTAKE_MOTOR_ID = 13;

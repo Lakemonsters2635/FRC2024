@@ -135,7 +135,7 @@ public class RobotContainer {
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger farSpeakerButton = new JoystickButton(leftJoystick, Constants.FAR_SHOOTER_BUTTON);
-    Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
+    // Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
     Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
     Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
     Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
@@ -145,6 +145,7 @@ public class RobotContainer {
     // Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
     Trigger visionArmRotationButton = new JoystickButton(leftJoystick, 2);
     Trigger visionRotationButton = new JoystickButton(leftJoystick, 3);
+    Trigger visionCombinedTrap = new JoystickButton(leftJoystick, 7);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -177,7 +178,7 @@ public class RobotContainer {
 
     outakeButton.whileTrue(m_ampOutakeCommand);
     farSpeakerButton.onTrue(new FarSpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
-    climberUpButton.whileTrue(m_climberUpCommand);
+    // climberUpButton.whileTrue(m_climberUpCommand);
     climber1UpButton.whileTrue(m_climber1UpCommand);
     climber2UpButton.whileTrue(m_climber2UpCommand);
     climberDownButton.whileTrue(m_climberDownCommand);
@@ -186,8 +187,16 @@ public class RobotContainer {
     // setRobotRotationButton.whileTrue(m_setRobotRot90);
     // setRobotRotationButton2.whileTrue(m_setRobotArm);
 
-    visionRotationButton.whileTrue(new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)); // deleted new InstantCommand() because SetRobotRot wasn't initializing
-    visionArmRotationButton.whileTrue(new InstantCommand(()-> new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ)));
+    visionRotationButton.onTrue(new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)); // deleted new InstantCommand() because SetRobotRot wasn't initializing
+    visionArmRotationButton.onTrue(new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ));
+    visionCombinedTrap.onTrue(
+      new SequentialCommandGroup(
+        new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem),
+        new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ)
+      )
+    );
+
+
 
     // armStartButton.whileTrue(m_armThrottleCommand);
   }

@@ -10,6 +10,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,8 +46,9 @@ public class SetRobotRot extends Command {
 
     // rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_CHANNEL);
     // leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
-    pid.enableContinuousInput(-180, 180);
-    pid.setTolerance(0.5);
+    pid.enableContinuousInput(-Math.PI, Math.PI);
+    // pid.enableContinuousInput(-180, 180);
+    pid.setTolerance(0.05);
 
   }
 
@@ -58,16 +60,20 @@ public class SetRobotRot extends Command {
     // TODO: this assumes we are using the closest april tag we need some mechanism to chose specific april tag
     deltaVisionAngle = Math.atan((double)m_objectTrackerSubsystem.visionX/m_objectTrackerSubsystem.visionZ);
 
-    this.targetRotation = deltaVisionAngle + m_drivetrainSubsystem.getPose().getRotation().getRadians();
+    // fixVisionAngle = deltaVisionAngle + m_drivetrainSubsystem.getPose().getRotation().getRadians();
+
+    // this.targetRotation = deltaVisionAngle + m_drivetrainSubsystem.getPose().getRotation().getRadians();
+    this.targetRotation = (m_drivetrainSubsystem.getPose().getRotation().getRadians() + deltaVisionAngle);
+
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    deltaVisionAngle = Math.atan((double)m_objectTrackerSubsystem.visionX/m_objectTrackerSubsystem.visionZ);
+    // deltaVisionAngle = Math.atan((double)m_objectTrackerSubsystem.visionX/m_objectTrackerSubsystem.visionZ);
 
-    this.targetRotation = deltaVisionAngle + m_drivetrainSubsystem.getPose().getRotation().getRadians();
+    // this.targetRotation = (m_drivetrainSubsystem.getPose().getRotation().getRadians() + deltaVisionAngle);
 
     // if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
     //   yPowerCommanded = rightJoystick.getY() * -1;
@@ -79,6 +85,8 @@ public class SetRobotRot extends Command {
     // }
     // yPowerCommanded=0;
     // xPowerCommanded=0;
+
+    // fbMotorPower = MathUtil.clamp(pid.calculate(m_drivetrainSubsystem.getPose().getRotation().getRadians(), targetRotation),-1.0,1.0);//*Math.PI;
     fbMotorPower = MathUtil.clamp(pid.calculate(m_drivetrainSubsystem.getPose().getRotation().getRadians(), targetRotation)*180/Math.PI,-1.0,1.0);//*Math.PI;
     // if (pid.atSetpoint()) {
     //   fbMotorPower=0;
@@ -121,6 +129,10 @@ public class SetRobotRot extends Command {
     // if (timer.get()>0.4) {
     //     return true;
     //   }
+
+    if (pid.atSetpoint()) {
+      return true;
+    }
 
     // if (pid.atSetpoint()) {
     //   return true;
