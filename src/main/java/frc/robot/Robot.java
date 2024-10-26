@@ -50,9 +50,7 @@ public class Robot extends TimedRobot {
 
     // Works
     SmartDashboard.putNumber("intakeMotorVoltage", m_robotContainer.m_intakeSubsystem.intakeMotor.getBusVoltage());
-    SmartDashboard.putNumber("climber1MotorVoltage", m_robotContainer.m_climberSubsystem.m_climberMotor1.getBusVoltage());
-    SmartDashboard.putNumber("climber2MotorVoltage", m_robotContainer.m_climberSubsystem.m_climberMotor2.getBusVoltage());
-
+    
     // Not sure
     SmartDashboard.putNumber("outtakeMotorVoltage", m_robotContainer.m_outakeSubsystem.m_outakeMotor.getSupplyVoltage().getValueAsDouble());
     SmartDashboard.putNumber("armMotor1Voltage", m_robotContainer.m_armSubsystem.m_armMotor1.getSupplyVoltage().getValueAsDouble());

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -19,12 +20,6 @@ import frc.robot.commands.AmpOutakeCommand;
 import frc.robot.commands.AmpSequenceCommand;
 import frc.robot.commands.ArmThrottleCommand;
 import frc.robot.commands.AutonomousCommands;
-import frc.robot.commands.Climber1DownCommand;
-import frc.robot.commands.Climber1UpCommand;
-import frc.robot.commands.Climber2DownCommand;
-import frc.robot.commands.Climber2UpCommand;
-import frc.robot.commands.ClimberDownCommand;
-import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.FarSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -39,8 +34,8 @@ import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.commands.TrapShootStrafeCommand;
+import frc.robot.commands.VisionAutoCommand;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
@@ -58,19 +53,17 @@ public class RobotContainer {
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
 
   // Subsystems
-  public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public static final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  public static final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static final OutakeSubsystem m_outakeSubsystem = new OutakeSubsystem();
   public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
   public static final ObjectTrackerSubsystem m_objectTrackerSubsystemFPS = new ObjectTrackerSubsystem("fps");
- 
+  public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+
+
   //Command 
   public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
   public static final ArmThrottleCommand m_armThrottleCommand = new ArmThrottleCommand(m_armSubsystem);
-  public static final ClimberUpCommand m_climberUpCommand = new ClimberUpCommand(m_climberSubsystem);
-  public static final ClimberDownCommand m_climberDownCommand = new ClimberDownCommand(m_climberSubsystem);
   public static final IntakeCommand m_intakeCommand = new IntakeCommand(m_intakeSubsystem);
   public static final IntakeOutCommand m_intakeOutCommand = new IntakeOutCommand(m_intakeSubsystem);
   public static final OutakeCommand m_outakeCommand = new OutakeCommand(m_outakeSubsystem);
@@ -83,10 +76,6 @@ public class RobotContainer {
   public static final TrapShootCommand m_trapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
   public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
-  public static final Climber1UpCommand m_climber1UpCommand = new Climber1UpCommand(m_climberSubsystem);
-  public static final Climber2UpCommand m_climber2UpCommand = new Climber2UpCommand(m_climberSubsystem);
-  public static final Climber1DownCommand m_climber1DownCommand = new Climber1DownCommand(m_climberSubsystem);
-  public static final Climber2DownCommand m_climber2DownCommand = new Climber2DownCommand(m_climberSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final AmpSequenceCommand m_ampSequenceCommand = new AmpSequenceCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
@@ -135,17 +124,12 @@ public class RobotContainer {
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger farSpeakerButton = new JoystickButton(leftJoystick, Constants.FAR_SHOOTER_BUTTON);
-    // Trigger climberUpButton = new JoystickButton(leftJoystick, Constants.CLIMBER_UP_BUTTON);
-    Trigger climber1UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_UP_BUTTON);
-    Trigger climber2UpButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_UP_BUTTON);
-    Trigger climberDownButton = new JoystickButton(leftJoystick, Constants.CLIMBER_DOWN_BUTTON);
-    Trigger climber1DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER1_DOWN_BUTTON);
-    Trigger climber2DownButton = new JoystickButton(leftJoystick, Constants.CLIMBER2_DOWN_BUTTON);
     // Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
     // Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
     Trigger visionArmRotationButton = new JoystickButton(leftJoystick, 2);
     Trigger visionRotationButton = new JoystickButton(leftJoystick, 3);
     Trigger visionCombinedTrap = new JoystickButton(leftJoystick, 7);
+    Trigger visionMovement = new JoystickButton(leftJoystick, 12);
 
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
@@ -179,11 +163,11 @@ public class RobotContainer {
     outakeButton.whileTrue(m_ampOutakeCommand);
     farSpeakerButton.onTrue(new FarSpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem));
     // climberUpButton.whileTrue(m_climberUpCommand);
-    climber1UpButton.whileTrue(m_climber1UpCommand);
-    climber2UpButton.whileTrue(m_climber2UpCommand);
-    climberDownButton.whileTrue(m_climberDownCommand);
-    climber1DownButton.whileTrue(m_climber1DownCommand);
-    climber2DownButton.whileTrue(m_climber2DownCommand);
+    // climber1UpButton.whileTrue(m_climber1UpCommand);
+    // climber2UpButton.whileTrue(m_climber2UpCommand);
+    // climberDownButton.whileTrue(m_climberDownCommand);
+    // climber1DownButton.whileTrue(m_climber1DownCommand);
+    // climber2DownButton.whileTrue(m_climber2DownCommand);
     // setRobotRotationButton.whileTrue(m_setRobotRot90);
     // setRobotRotationButton2.whileTrue(m_setRobotArm);
 
@@ -195,7 +179,16 @@ public class RobotContainer {
         new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ)
       )
     );
-
+    visionMovement.onTrue(new SequentialCommandGroup(
+        new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem),
+        // new InstantCommand(()->SmartDashboard.putString("visionMovementCheckPoint", "working")),
+        new InstantCommand(()->m_drivetrainSubsystem.setFollowJoystick(false)).withTimeout(0.1),
+        // m_visionAuto.visionCreatePath(),
+        new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem),
+        new WaitCommand(5),
+        // new InstantCommand(()->m_drivetrainSubsystem.stopMotors()),
+        new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)
+    ));
 
 
     // armStartButton.whileTrue(m_armThrottleCommand);

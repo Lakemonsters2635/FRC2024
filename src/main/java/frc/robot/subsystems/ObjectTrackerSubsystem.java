@@ -366,7 +366,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     //     // x not
     //     return 0.0;
     // }
-    private double getThetaYZField(Detection detection) {
+    public double getThetaYZField(Detection detection) {
         double camX = detection.x;
         double camZ = detection.z;
         double yCamAngle = detection.ya;
@@ -390,6 +390,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 
         double radius = getRadius(detection);
         double thetaYZField = getThetaYZField(detection);
+
 
         xField = Math.sin(thetaYZField) * radius;
 
