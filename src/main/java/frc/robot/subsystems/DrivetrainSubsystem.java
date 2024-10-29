@@ -226,10 +226,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void  resetAngle(){
-    m_gyro.reset();
+    // m_gyro.reset();
     // Setting the angle adjustment changes where forward is when you push the controls forward
     // However it doesn't rotate the definition of the odometry x and y
-    m_gyro.setAngleAdjustment(0);
+    // m_gyro.setAngleAdjustment(0);
+    resetAngle(0);
   }
   public void resetAngle(int degree){
     m_gyro.reset();

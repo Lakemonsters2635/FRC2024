@@ -180,14 +180,11 @@ public class RobotContainer {
       )
     );
     visionMovement.onTrue(new SequentialCommandGroup(
-        new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem),
-        // new InstantCommand(()->SmartDashboard.putString("visionMovementCheckPoint", "working")),
-        new InstantCommand(()->m_drivetrainSubsystem.setFollowJoystick(false)).withTimeout(0.1),
-        // m_visionAuto.visionCreatePath(),
-        new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem),
-        new WaitCommand(5),
-        // new InstantCommand(()->m_drivetrainSubsystem.stopMotors()),
-        new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)
+        // new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem),
+        // new InstantCommand(()->m_drivetrainSubsystem.setFollowJoystick(false)).withTimeout(0.1),
+        new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem)
+        // new WaitCommand(5),
+        // new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)
     ));
 
 

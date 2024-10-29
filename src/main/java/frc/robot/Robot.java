@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,6 +47,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    m_robotContainer.m_drivetrainSubsystem.resetOdometry(new Pose2d(0,0,new Rotation2d(0)));
+    m_robotContainer.m_drivetrainSubsystem.resetAngle(0);
 
     m_autoChooser = m_robotContainer.getAutonomousCommand();
 

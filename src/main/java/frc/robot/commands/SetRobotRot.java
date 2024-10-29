@@ -78,7 +78,6 @@ public class SetRobotRot extends Command {
     // if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
     //   yPowerCommanded = rightJoystick.getY() * -1;
     // }
-    System.out.println("Set robot rotation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     // if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
     //   xPowerCommanded = rightJoystick.getX();

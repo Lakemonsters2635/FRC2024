@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -36,28 +37,30 @@ public class VisionAutoCommand extends Command {
   public void initialize() {
     // Don't need to get m_ots.data() because it is already called in Robot.java periodic
 
+    try{
     visionX = m_ots.visionX;
     visionY = m_ots.visionY;
     visionZ = m_ots.visionZ;
 
     var detectionObject = m_ots.getNearestAprilTagDetection();
 
-    double deltaFieldX = m_ots.getXFieldAprilFromDetection(detectionObject);
-    double deltaFieldY = m_ots.getYFieldAprilFromDetection(detectionObject);
     double radius = m_ots.getRadius(detectionObject);
     double thetaYZ = m_ots.getThetaYZField(detectionObject);
 
     SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
     SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
     SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("NAVX angle", m_dts.m_gyro.getAngle());
+    System.out.println("AHRS_angle" + m_dts.m_gyro.getAngle());
 
-    SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
-    SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
     SmartDashboard.putNumber("radius", radius);
     SmartDashboard.putNumber("thetaYZ", thetaYZ);
 
-
-    // visionCreatePath().schedule();
+    }
+    catch(Exception e) {
+      System.out.println(e);
+    }
+    visionCreatePath().schedule();
 
   }
 
@@ -74,7 +77,7 @@ public class VisionAutoCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 
   public Command visionCreatePath(){
@@ -88,15 +91,27 @@ public class VisionAutoCommand extends Command {
 
     Pose2d botPose = m_dts.getPose();
 
-    double deltaFieldX = m_ots.getXFieldAprilFromDetection(m_ots.getNearestAprilTagDetection());
-    double deltaFieldY = m_ots.getYFieldAprilFromDetection(m_ots.getNearestAprilTagDetection());
+    
+    // SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
+    // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
 
+    double deltaRobotX = -Units.inchesToMeters(visionX); // We are facing the april tag first so there is no need to change in robot x
+    double deltaRobotY = -Units.inchesToMeters(visionZ); // We want to end our auto 1 meter away from the apriltag
+
+    double botRadians = botPose.getRotation().getRadians();
+    
+    // Figure out the trigonometri which converts deltaRobotX and deltaRobotY to deltaFieldX and deltaFieldY
+    double deltaFieldX = (deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians));
+    double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
+
+    deltaFieldX *=-1;
+    deltaFieldY +=1;
+
+    SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
+    SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
     SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
 
-    double deltaRobotX = 0; // We are facing the april tag first so there is no need to change in robot x
-    double deltaRobotY = -Units.inchesToMeters(visionZ)+1; // We want to end our auto 1 meter away from the apriltag
-    
     return new SequentialCommandGroup(
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
@@ -108,15 +123,15 @@ public class VisionAutoCommand extends Command {
           new Rotation2d(botPose.getRotation().getRadians()-(Math.PI/2))   // TODO need to explain this rotation offset and point to docs
         ), 
         new Translation2d(
-          botPose.getX()+(deltaRobotX/2), 
-          botPose.getY()+(deltaRobotY/2)
+          botPose.getX()+(deltaFieldX/2), 
+          botPose.getY()+(deltaFieldY/2)
         ), 
         new Pose2d(
-          botPose.getX()+deltaRobotX, 
-          botPose.getY()+deltaRobotY, 
+          botPose.getX()+deltaFieldX,
+          botPose.getY()+deltaFieldY, 
           new Rotation2d(botPose.getRotation().getRadians()-(Math.PI/2))
         ),
-        -botPose.getRotation().getDegrees()
+        botPose.getRotation().getDegrees()
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
