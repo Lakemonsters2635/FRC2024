@@ -58,7 +58,7 @@ public class VisionAutoCommand extends Command {
 
     }
     catch(Exception e) {
-      System.out.println(e);
+      // System.out.println(e);
     }
     visionCreatePath().schedule();
 
@@ -96,7 +96,7 @@ public class VisionAutoCommand extends Command {
     // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
 
     double deltaRobotX = -Units.inchesToMeters(visionX); // We are facing the april tag first so there is no need to change in robot x
-    double deltaRobotY = -Units.inchesToMeters(visionZ); // We want to end our auto 1 meter away from the apriltag
+    double deltaRobotY = -Units.inchesToMeters(visionZ)+1; // We want to end our auto 1 meter away from the apriltag
 
     double botRadians = botPose.getRotation().getRadians();
     
@@ -105,13 +105,15 @@ public class VisionAutoCommand extends Command {
     double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
 
     deltaFieldX *=-1;
-    deltaFieldY +=1;
+    // deltaFieldY += 1 + Units.inchesToMeters(13.5);
 
     SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
     SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
     SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
 
+    
+    int i = 0;
     return new SequentialCommandGroup(
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),

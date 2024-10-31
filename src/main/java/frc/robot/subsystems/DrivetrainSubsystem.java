@@ -162,6 +162,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));
       endRot*=-1;
+      System.out.println("isRedAliance = True*************************");
     }
     // angleSupplier expects a final variable so we create desiredRot and give the value of endRot
     final double desiredRot =endRot;

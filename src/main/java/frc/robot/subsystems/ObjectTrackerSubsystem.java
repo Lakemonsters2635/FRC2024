@@ -128,7 +128,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             double fps = Double.valueOf(fpsString);
             SmartDashboard.putNumber("CameraFPS", fps);
         } catch (Exception e) {
-            System.out.println(e);
+            // System.out.println(e);
         }
         return ;
         /* This commented code uses the OLD VisionObject
