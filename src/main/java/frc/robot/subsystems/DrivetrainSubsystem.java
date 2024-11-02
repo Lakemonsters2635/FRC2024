@@ -55,13 +55,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // y is to the left   robot is short in the y-direction, i.e. wheelbase width
     // robot front as currently labled on the motors (requires -x trajectory to go out into the +x field direction)
     public final Translation2d m_frontLeftLocation = 
-            new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
-    public final Translation2d m_frontRightLocation = 
             new Translation2d(m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
+    public final Translation2d m_frontRightLocation = 
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backLeftLocation = 
-            new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
-    public final Translation2d m_backRightLocation = 
             new Translation2d(m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
+    public final Translation2d m_backRightLocation = 
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
 
     public final SwerveModule m_frontLeft = new SwerveModule(Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
                                                               Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, 
@@ -309,14 +309,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("rotCommanded", rotCommanded);
 
       double loggingState[] = {     //Array for predicted values
-        swerveModuleStates[3].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
-        swerveModuleStates[3].speedMetersPerSecond,
-        swerveModuleStates[1].angle.getDegrees(),
-        swerveModuleStates[1].speedMetersPerSecond,
-        swerveModuleStates[2].angle.getDegrees(),
-        swerveModuleStates[2].speedMetersPerSecond,
-        swerveModuleStates[0].angle.getDegrees(),
-        swerveModuleStates[0].speedMetersPerSecond,
+        swerveModuleStates[Constants.FL_SWERVE_MODULE].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
+        swerveModuleStates[Constants.FL_SWERVE_MODULE].speedMetersPerSecond,
+        swerveModuleStates[Constants.FR_SWERVE_MODULE].angle.getDegrees(),
+        swerveModuleStates[Constants.FR_SWERVE_MODULE].speedMetersPerSecond,
+        swerveModuleStates[Constants.BL_SWERVE_MODULE].angle.getDegrees(),
+        swerveModuleStates[Constants.BL_SWERVE_MODULE].speedMetersPerSecond,
+        swerveModuleStates[Constants.BR_SWERVE_MODULE].angle.getDegrees(),
+        swerveModuleStates[Constants.BR_SWERVE_MODULE].speedMetersPerSecond,
       };
 
       double actualLoggingState[] = {
@@ -376,10 +376,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // m_frontRight.setDesiredState(swerveModuleStates[1]);
     // m_backLeft.setDesiredState(swerveModuleStates[2]);
     // m_backRight.setDesiredState(swerveModuleStates[3]);
-    m_frontLeft.setDesiredState(swerveModuleStates[1]);
-    m_frontRight.setDesiredState(swerveModuleStates[0]);
-    m_backLeft.setDesiredState(swerveModuleStates[3]);
-    m_backRight.setDesiredState(swerveModuleStates[2]);
+    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FL_SWERVE_MODULE]);
+    m_frontRight.setDesiredState(swerveModuleStates[Constants.FR_SWERVE_MODULE]);
+    m_backLeft.setDesiredState(swerveModuleStates[Constants.BL_SWERVE_MODULE]);
+    m_backRight.setDesiredState(swerveModuleStates[Constants.BR_SWERVE_MODULE]);
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
     SmartDashboard.putNumber("rot", rot);
@@ -456,10 +456,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 4);
 
-    m_frontLeft.setDesiredState(desiredStates[1]);
-    m_frontRight.setDesiredState(desiredStates[0]);
-    m_backLeft.setDesiredState(desiredStates[3]);
-    m_backRight.setDesiredState(desiredStates[2]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FL_SWERVE_MODULE]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FR_SWERVE_MODULE]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BL_SWERVE_MODULE]);
+    m_backRight.setDesiredState(desiredStates[Constants.BR_SWERVE_MODULE]);
   } 
 
 public ChassisSpeeds getChassisSpeeds() {
@@ -477,10 +477,10 @@ public ChassisSpeeds getChassisSpeeds() {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DrivetrainSubsystem.kMaxSpeed);
-    m_frontLeft.setDesiredState(desiredStates[1]);
-    m_frontRight.setDesiredState(desiredStates[0]);
-    m_backLeft.setDesiredState(desiredStates[3]);
-    m_backRight.setDesiredState(desiredStates[2]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FL_SWERVE_MODULE]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FR_SWERVE_MODULE]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BL_SWERVE_MODULE]);
+    m_backRight.setDesiredState(desiredStates[Constants.BR_SWERVE_MODULE]);
   }
 
   /** Displays all 4 module positions + robot pose (forward/back) in SmartDashboard. 

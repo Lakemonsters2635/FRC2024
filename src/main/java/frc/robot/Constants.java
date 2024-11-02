@@ -40,6 +40,12 @@ public final class Constants {
     public static final double DRIVETRAIN_WHEELBASE_WIDTH =  26.625/ Constants.INCHES_PER_METER; //26.625
     public static final double DRIVETRAIN_WHEELBASE_LENGTH = 19.625 / Constants.INCHES_PER_METER; //19.625
 
+    // MODULE STATES
+    public static final int FL_SWERVE_MODULE = 0;
+    public static final int FR_SWERVE_MODULE = 1;
+    public static final int BL_SWERVE_MODULE = 2;
+    public static final int BR_SWERVE_MODULE = 3;
+
 
     // FRONT LEFT
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; //1
