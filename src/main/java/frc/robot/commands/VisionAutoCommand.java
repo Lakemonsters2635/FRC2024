@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -97,8 +99,9 @@ public class VisionAutoCommand extends Command {
 
     double deltaRobotX = -Units.inchesToMeters(visionX); // We are facing the april tag first so there is no need to change in robot x
     double deltaRobotY = -Units.inchesToMeters(visionZ)+1; // We want to end our auto 1 meter away from the apriltag
-
     double botRadians = botPose.getRotation().getRadians();
+
+    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians-(Math.PI/2);
     
     // Figure out the trigonometri which converts deltaRobotX and deltaRobotY to deltaFieldX and deltaFieldY
     double deltaFieldX = (deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians));
@@ -112,6 +115,8 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
 
+    SmartDashboard.putNumber("VisionAuto.heading", heading);
+
     
     int i = 0;
     return new SequentialCommandGroup(
@@ -122,7 +127,7 @@ public class VisionAutoCommand extends Command {
         new Pose2d(
           botPose.getX(), 
           botPose.getY(), 
-          new Rotation2d(botPose.getRotation().getRadians()-(Math.PI/2))   // TODO need to explain this rotation offset and point to docs
+          new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
         ), 
         new Translation2d(
           botPose.getX()+(deltaFieldX/2), 
@@ -131,9 +136,9 @@ public class VisionAutoCommand extends Command {
         new Pose2d(
           botPose.getX()+deltaFieldX,
           botPose.getY()+deltaFieldY, 
-          new Rotation2d(botPose.getRotation().getRadians()-(Math.PI/2))
+          new Rotation2d(heading)
         ),
-        botPose.getRotation().getDegrees()
+        heading+(Math.PI/2)
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
