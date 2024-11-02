@@ -135,11 +135,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return createPath(startPose, middlePose, endPose, desiredRot);
   }
 
-  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
-    boolean isRedAliance  =false;
-    
-    isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+  public Command createVisionPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
+    return createPath(startPose, middlePose, endPose, endRot, false);
+  }
 
+  // Use for open loop paths which needs to be mirrored due to the alliance reflection
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
+    boolean isRedAlliance = false;
+    isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    return createPath(startPose, middlePose, endPose, endRot, isRedAlliance);
+  }
+
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean mirrorX){
     // if (selectedAliance.equalsIgnoreCase("FMS")) {
     // }
     // else if(selectedAliance.equalsIgnoreCase("blue")){
@@ -153,11 +160,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // }
 
     // SmartDashboard.putString("selectedAlliance",selectedAliance);
-    SmartDashboard.putBoolean("isRedAlliance",isRedAliance);
+    SmartDashboard.putBoolean("mirrorX",mirrorX);
     SmartDashboard.putString("DriverStation.getAlliance().get()",DriverStation.getAlliance().get().name());
     SmartDashboard.putString("DriverStation.Alliance.Red",DriverStation.Alliance.Red.name());
 
-    if (isRedAliance) {
+    if (mirrorX) {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees()))));
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));

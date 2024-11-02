@@ -118,7 +118,7 @@ public class VisionAutoCommand extends Command {
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation before",m_dts.getPose().getRotation().getDegrees())),
-      m_dts.createPath(
+      m_dts.createVisionPath(
         new Pose2d(
           botPose.getX(), 
           botPose.getY(), 
