@@ -446,10 +446,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, 4);
 
-    m_frontLeft.setDesiredState(desiredStates[1]);
-    m_frontRight.setDesiredState(desiredStates[0]);
-    m_backLeft.setDesiredState(desiredStates[3]);
-    m_backRight.setDesiredState(desiredStates[2]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FL_SWERVE_MODULE]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FR_SWERVE_MODULE]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BL_SWERVE_MODULE]);
+    m_backRight.setDesiredState(desiredStates[Constants.BR_SWERVE_MODULE]);
   } 
 
   /** Sets the swerve ModuleStates. Accept a center of rotation for when you DON'T want to rotate
