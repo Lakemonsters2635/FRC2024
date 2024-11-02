@@ -51,7 +51,7 @@ public final class Constants {
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; //1
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 1; //3
     public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 7; //2
-    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49-1); //3.0346
+    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49-1+180); //3.0346
 
     //    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0); //3.01
 
@@ -67,7 +67,7 @@ public final class Constants {
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 3; //9
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 2; //0
     public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 4; //10
-    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-11.3-9.3+30-28); // 3.0775
+    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(-11.3-9.3+30-28+180); // 3.0775
 
     //    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5); //2.9835
 
