@@ -55,6 +55,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     public double visionZ;
     public double visionX;
     public double visionY;
+    public double visionYa;
 
 
     /*
@@ -124,6 +125,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             visionZ = getNearestAprilTagDetection().z;
             visionX = getNearestAprilTagDetection().x;
             visionY = getNearestAprilTagDetection().y;
+            visionYa = getNearestAprilTagDetection().ya;
             String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
             double fps = Double.valueOf(fpsString);
             SmartDashboard.putNumber("CameraFPS", fps);

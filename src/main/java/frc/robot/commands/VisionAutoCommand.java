@@ -25,6 +25,7 @@ public class VisionAutoCommand extends Command {
   double visionX;
   double visionY;
   double visionZ;
+  double visionYa;
 
   double fieldX;
   double fieldY;
@@ -43,6 +44,7 @@ public class VisionAutoCommand extends Command {
     visionX = m_ots.visionX;
     visionY = m_ots.visionY;
     visionZ = m_ots.visionZ;
+    visionYa = m_ots.visionYa;
 
     var detectionObject = m_ots.getNearestAprilTagDetection();
 
@@ -90,18 +92,46 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("visionXAuto", visionX);
     SmartDashboard.putNumber("visionYAuto", visionY);
     SmartDashboard.putNumber("visionZAuto", visionZ);
+    SmartDashboard.putNumber("visionYaAuto", visionYa);
 
     Pose2d botPose = m_dts.getPose();
 
     
     // SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
+    // ---
+    // Input for the following is x prime and z prime offsets from the april tag
+    // need Alpha =
+    double xPrime = -27/2;  //-13.5
+    double zPrime = 17/2; //8.5
+    
+    double alpha = Math.atan(zPrime/(-xPrime));
 
-    double deltaRobotX = -Units.inchesToMeters(visionX); // We are facing the april tag first so there is no need to change in robot x
-    double deltaRobotY = -Units.inchesToMeters(visionZ)+1; // We want to end our auto 1 meter away from the apriltag
+    // need Phi = 
+    double phi = -alpha + visionYa;
+    // need c =
+    double c = Math.sqrt(Math.pow(zPrime, 2) + Math.pow(xPrime, 2));
+    // need z_t = 
+    double z_t = c*Math.sin(phi);
+    // need x_t = 
+    double x_t = c*Math.cos(phi);
+    // subtract z_t and X_t from vision x and vision z before calculating delta robot x and y
+    
+
+    SmartDashboard.putNumber("x_t", x_t);
+    SmartDashboard.putNumber("z_t", z_t);
+    SmartDashboard.putNumber("alpha", alpha);
+
+    // ---
+    double deltaRobotX = -Units.inchesToMeters(x_t-visionX); // We are facing the april tag first so there is no need to change in robot x
+    double deltaRobotY = -Units.inchesToMeters(visionZ-z_t); // We want to end our auto 1 meter away from the apriltag
+
+    SmartDashboard.putNumber("deltaRobotX in inches", Units.metersToInches(deltaRobotX));
+    SmartDashboard.putNumber("deltaRobotY in inches", Units.metersToInches(deltaRobotY));
     double botRadians = botPose.getRotation().getRadians();
 
-    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians-(Math.PI/2);
+    double angleOffset = -Units.degreesToRadians(90);
+    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians-(Math.PI/2) + angleOffset;
     
     // Figure out the trigonometri which converts deltaRobotX and deltaRobotY to deltaFieldX and deltaFieldY
     double deltaFieldX = (deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians));
