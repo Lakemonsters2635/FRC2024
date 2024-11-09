@@ -54,11 +54,15 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
     SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
     SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
-    SmartDashboard.putNumber("NAVX angle", m_dts.m_gyro.getAngle());
-    System.out.println("AHRS_angle" + m_dts.m_gyro.getAngle());
 
-    SmartDashboard.putNumber("radius", radius);
-    SmartDashboard.putNumber("thetaYZ", thetaYZ);
+    SmartDashboard.putNumber("visionXInitial", visionX);
+    SmartDashboard.putNumber("visionYInitial", visionY);
+    SmartDashboard.putNumber("visionYaInitial", visionYa);
+    // SmartDashboard.putNumber("NAVX angle", m_dts.m_gyro.getAngle());
+    // System.out.println("AHRS_angle" + m_dts.m_gyro.getAngle());
+
+    // SmartDashboard.putNumber("radius", radius);
+    // SmartDashboard.putNumber("thetaYZ", thetaYZ);
 
     }
     catch(Exception e) {
@@ -102,13 +106,14 @@ public class VisionAutoCommand extends Command {
     // ---
     // Input for the following is x prime and z prime offsets from the april tag
     // need Alpha =
-    double xPrime = -27/2;  //-13.5
-    double zPrime = 17/2; //8.5
+    double xPrime = -18;  //-13.5
+    double zPrime = -36; //8.5
     
     double alpha = Math.atan(zPrime/(-xPrime));
 
+    // visionYa is in degrees
     // need Phi = 
-    double phi = -alpha + visionYa;
+    double phi = alpha - Math.toRadians(-visionYa);
     // need c =
     double c = Math.sqrt(Math.pow(zPrime, 2) + Math.pow(xPrime, 2));
     // need z_t = 
@@ -121,10 +126,11 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("x_t", x_t);
     SmartDashboard.putNumber("z_t", z_t);
     SmartDashboard.putNumber("alpha", alpha);
+    SmartDashboard.putNumber("phi", phi);
 
     // ---
-    double deltaRobotX = -Units.inchesToMeters(x_t-visionX); // We are facing the april tag first so there is no need to change in robot x
-    double deltaRobotY = -Units.inchesToMeters(visionZ-z_t); // We want to end our auto 1 meter away from the apriltag
+    double deltaRobotX = -1* Units.inchesToMeters(visionX-x_t); // We are facing the april tag first so there is no need to change in robot x
+    double deltaRobotY = -1* Units.inchesToMeters(visionZ+z_t); // We want to end our auto 1 meter away from the apriltag
 
     SmartDashboard.putNumber("deltaRobotX in inches", Units.metersToInches(deltaRobotX));
     SmartDashboard.putNumber("deltaRobotY in inches", Units.metersToInches(deltaRobotY));
@@ -149,6 +155,9 @@ public class VisionAutoCommand extends Command {
 
     
     int i = 0;
+    // return new Command() {
+      
+    // };
     return new SequentialCommandGroup(
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
@@ -157,7 +166,7 @@ public class VisionAutoCommand extends Command {
         new Pose2d(
           botPose.getX(), 
           botPose.getY(), 
-          new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
+          new Rotation2d(Units.degreesToRadians(90))//new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
         ), 
         new Translation2d(
           botPose.getX()+(deltaFieldX/2), 
@@ -166,9 +175,9 @@ public class VisionAutoCommand extends Command {
         new Pose2d(
           botPose.getX()+deltaFieldX,
           botPose.getY()+deltaFieldY, 
-          new Rotation2d(heading)
+          new Rotation2d(Units.degreesToRadians(90)) //new Rotation2d(heading)
         ),
-        heading+(Math.PI/2)
+        0 //heading+(Math.PI/2)
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
