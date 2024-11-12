@@ -106,8 +106,8 @@ public class VisionAutoCommand extends Command {
     // ---
     // Input for the following is x prime and z prime offsets from the april tag
     // need Alpha =
-    double xPrime = 18;  //-13.5
-    double zPrime = -36; //8.5
+    double xPrime = -20;  //-13.5
+    double zPrime = -6; //8.5
 
     double xPrimeSign = xPrime / Math.abs(xPrime);
     // // This is the original equation works for negative xPrime however doesn't work for positive xPrime
@@ -141,7 +141,14 @@ public class VisionAutoCommand extends Command {
     double botRadians = botPose.getRotation().getRadians();
 
     double angleOffset = -Units.degreesToRadians(90);
-    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians-(Math.PI/2) + angleOffset;
+    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+
+    // finalYa is in degrees
+    double finalYa = 90;
+    // finalAngle is in degrees
+    double finalAngle = visionYa + finalYa + Units.radiansToDegrees(botRadians);
+
+    SmartDashboard.putNumber("finalAngle", finalAngle);
     
     // Figure out the trigonometri which converts deltaRobotX and deltaRobotY to deltaFieldX and deltaFieldY
     double deltaFieldX = (deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians));
@@ -170,7 +177,7 @@ public class VisionAutoCommand extends Command {
         new Pose2d(
           botPose.getX(), 
           botPose.getY(), 
-          new Rotation2d(Units.degreesToRadians(90))//new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
+          new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
         ), 
         new Translation2d(
           botPose.getX()+(deltaFieldX/2), 
@@ -179,9 +186,9 @@ public class VisionAutoCommand extends Command {
         new Pose2d(
           botPose.getX()+deltaFieldX,
           botPose.getY()+deltaFieldY, 
-          new Rotation2d(Units.degreesToRadians(90)) //new Rotation2d(heading)
+          new Rotation2d(heading)
         ),
-        0 //heading+(Math.PI/2)
+        finalAngle //heading+(Math.PI/2)
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
