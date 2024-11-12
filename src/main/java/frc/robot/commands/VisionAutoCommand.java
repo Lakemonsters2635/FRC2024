@@ -106,14 +106,18 @@ public class VisionAutoCommand extends Command {
     // ---
     // Input for the following is x prime and z prime offsets from the april tag
     // need Alpha =
-    double xPrime = -18;  //-13.5
+    double xPrime = 18;  //-13.5
     double zPrime = -36; //8.5
-    
-    double alpha = Math.atan(zPrime/(-xPrime));
+
+    double xPrimeSign = xPrime / Math.abs(xPrime);
+    // // This is the original equation works for negative xPrime however doesn't work for positive xPrime
+    // double alpha = Math.atan(zPrime/(-xPrime));
+    // Taking the negative of the absolute value "fixes" it but we should really figure out equations and draw the pictures nicely.
+    double alpha = Math.atan(zPrime/Math.abs(xPrime));
 
     // visionYa is in degrees
     // need Phi = 
-    double phi = alpha - Math.toRadians(-visionYa);
+    double phi = alpha - Math.toRadians(-visionYa)*(-1*xPrimeSign);
     // need c =
     double c = Math.sqrt(Math.pow(zPrime, 2) + Math.pow(xPrime, 2));
     // need z_t = 
@@ -129,7 +133,7 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("phi", phi);
 
     // ---
-    double deltaRobotX = -1* Units.inchesToMeters(visionX-x_t); // We are facing the april tag first so there is no need to change in robot x
+    double deltaRobotX = -1* Units.inchesToMeters(visionX-x_t*(-1*xPrimeSign)); // We are facing the april tag first so there is no need to change in robot x
     double deltaRobotY = -1* Units.inchesToMeters(visionZ+z_t); // We want to end our auto 1 meter away from the apriltag
 
     SmartDashboard.putNumber("deltaRobotX in inches", Units.metersToInches(deltaRobotX));
