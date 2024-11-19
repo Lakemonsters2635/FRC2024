@@ -309,6 +309,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
           rotCommanded = rightJoystick.getTwist() * -1;
         }
 
+        // TODO: document how to use this button to reset various robot centers of rotation
+        // Note: you can have multiple buttons for defining multiple centers of rotation.
         if (customCenterButton.getAsBoolean()) {
           this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
