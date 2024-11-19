@@ -369,15 +369,32 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param ySpeed Speed of the robot in the y direction (sideways).  -1.0 ... +1.0
    * @param rot Angular rate of the robot.                            -1.0 ... +1.0
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * This function is based off of the center of the robot.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    drive(xSpeed, ySpeed, rot, fieldRelative, new Translation2d(0, 0));
+  }
+
+  /**
+   * Method to drive the robot using joystick info.
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).   -1.0 ... +1.0
+   * @param ySpeed Speed of the robot in the y direction (sideways).  -1.0 ... +1.0
+   * @param rot Angular rate of the robot.                            -1.0 ... +1.0
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param centerOffset is offset from center of robot to custom center of rotation in meters.
+   * * left is positive x, front is positive y.
+   */
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, Translation2d centerOffset) {
     // TODO: Move kMaxSpeed and kMaxRotation into this method for ySpeed and xSpeed, and rot
     // TODO: Add another parameter for kMaxSpeed so you have an option to set it
     swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d().unaryMinus())
-                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+                : new ChassisSpeeds(xSpeed, ySpeed, rot),
+            centerOffset
+                );
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
     // m_frontLeft.setDesiredState(swerveModuleStates[0]);
     // m_frontRight.setDesiredState(swerveModuleStates[1]);
