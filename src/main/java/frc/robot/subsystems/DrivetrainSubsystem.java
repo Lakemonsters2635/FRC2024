@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -43,6 +44,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public static Joystick rightJoystick = RobotContainer.rightJoystick;
     public static Joystick leftJoystick = RobotContainer.leftJoystick;
+
+    public static JoystickButton customCenterButton = new JoystickButton(leftJoystick, 5);
 
     public final double m_drivetrainWheelbaseWidth =  Constants.DRIVETRAIN_WHEELBASE_WIDTH;
     public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH;
@@ -306,11 +309,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
           rotCommanded = rightJoystick.getTwist() * -1;
         }
 
-      
-        this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+        if (customCenterButton.getAsBoolean()) {
+          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                  true,
+                  new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
+        } else {
+          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                   MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
                   true);
+        }
+
+        
       }
       
       SmartDashboard.putNumber("rotCommanded", rotCommanded);

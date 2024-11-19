@@ -96,6 +96,7 @@ public final class Constants {
     public static final int HAT_POV_ARM_DOWN = 180;
     public static final int HAT_POV_ROTATE_LEFT = 270;
     public static final int HAT_POV_ROTATE_RIGHT = 90;
+
     /*Changed max speed from 2pi rad/s since max no load speed is 15 ft/s and with our robot
     the radius from the center of our robot to the center of the module is 16.5 inches therefore
     with a max commanded angular speed of 2pi radians our max commanded speed is 8.6 ft/s which
