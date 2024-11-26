@@ -24,10 +24,12 @@ public class ArduinoSubsystem extends SubsystemBase {
   public boolean rightBlue = false;
   DigitalOutput leftEnableOut = new DigitalOutput(Constants.LEFT_ENABLE_PIN);
   DigitalOutput rightEnableOut = new DigitalOutput(Constants.RIGHT_ENABLE_PIN);
+  // sets the LED strip to be on by setting the Left and Right output PIN to be high
   public ArduinoSubsystem() {
       leftEnableOut.set(true);
       rightEnableOut.set(true);
   }
+// This funciton toggels the value of leftEnableOut so that only one button is nessasary to turn the led strip of and off
   public void toggleLeftEnableOut(){
     if (leftEnableOut.get()){
       leftEnableOut.set(false);
@@ -36,6 +38,7 @@ public class ArduinoSubsystem extends SubsystemBase {
       leftEnableOut.set(true);
     }
   }
+// The same for toggleRightEnableOut
   public void toggleRightEnableOut(){
       if (rightEnableOut.get()){
         rightEnableOut.set(false);
@@ -59,6 +62,7 @@ public class ArduinoSubsystem extends SubsystemBase {
     //     output.set(false);
     //   }
     // This method will be called once per scheduler run
+    // We set these variables equal to the input pin values for simplycity
     leftRed = leftRedIn.get();
     leftBlue = leftBlueIn.get();
     rightRed = rightRedIn.get();
