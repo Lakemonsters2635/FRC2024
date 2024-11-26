@@ -258,4 +258,13 @@ public final class Constants {
 
 
     //public static final int ARM_START_BUTTON = 5;
+
+    // Arduino pin definition
+    public static final int LEFT_RED_PIN = 5;
+    public static final int RIGHT_RED_PIN = 4;
+    public static final int LEFT_BLUE_PIN = 7;
+    public static final int RIGHT_BLUE_PIN = 6;
+
+    public static final int LEFT_ENABLE_PIN = 9;
+    public static final int RIGHT_ENABLE_PIN = 8;
 }
