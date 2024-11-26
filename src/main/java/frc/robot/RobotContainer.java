@@ -35,11 +35,13 @@ import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
 import frc.robot.commands.TrapShootStrafeCommand;
 import frc.robot.commands.VisionAutoCommand;
+import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
+import pabeles.concurrency.ConcurrencyOps.NewInstance;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -59,7 +61,7 @@ public class RobotContainer {
   public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
   public static final ObjectTrackerSubsystem m_objectTrackerSubsystemFPS = new ObjectTrackerSubsystem("fps");
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-
+  public static final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
 
   //Command 
   public static final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_drivetrainSubsystem);
@@ -118,7 +120,7 @@ public class RobotContainer {
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
     Trigger viewAprilTagButton = new JoystickButton(rightJoystick, 9);
-
+    
     // Trigger testButton = new JoystickButton(rightJoystick, 10);
 
     // left buttons
@@ -130,7 +132,8 @@ public class RobotContainer {
     Trigger visionRotationButton = new JoystickButton(leftJoystick, 3);
     Trigger visionCombinedTrap = new JoystickButton(leftJoystick, 7);
     Trigger visionMovement = new JoystickButton(leftJoystick, 12);
-
+    Trigger toggleLeftOutput = new JoystickButton(leftJoystick, 5);
+    Trigger toggleRightOutput = new JoystickButton(leftJoystick, 6);
     // Trigger armStartButton = new JoystickButton(leftJoystick, Constants.ARM_START_BUTTON);
 
     intakeButton.whileTrue(m_intakeCommand);
@@ -143,7 +146,8 @@ public class RobotContainer {
     outtakeInButton.whileTrue(m_outtakeInCommand);
     trapShootButton.onTrue(m_trapShootCommand);
     armBalanceButton.onTrue(m_armAmpPoseCommand);
-
+    toggleLeftOutput.onTrue(new InstantCommand(()->m_arduinoSubsystem.toggleLeftEnableOut()));
+    toggleRightOutput.onTrue(new InstantCommand(()->m_arduinoSubsystem.toggleRightEnableOut()));
     resetOdometryButton.onTrue(
       
       new SequentialCommandGroup(

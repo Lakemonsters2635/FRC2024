@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArduinoSubsystem extends SubsystemBase {
   /** Creates a new ArduinoSubsystem. */
@@ -17,12 +18,33 @@ public class ArduinoSubsystem extends SubsystemBase {
   DigitalInput leftBlueIn = new DigitalInput(Constants.LEFT_BLUE_PIN);
   DigitalInput rightBlueIn = new DigitalInput(Constants.RIGHT_BLUE_PIN);
 
-
+  public boolean leftRed = false;
+  public boolean leftBlue = false;
+  public boolean rightRed = false;
+  public boolean rightBlue = false;
   DigitalOutput leftEnableOut = new DigitalOutput(Constants.LEFT_ENABLE_PIN);
   DigitalOutput rightEnableOut = new DigitalOutput(Constants.RIGHT_ENABLE_PIN);
-
-  public ArduinoSubsystem() {}
-
+  public ArduinoSubsystem() {
+      leftEnableOut.set(true);
+      rightEnableOut.set(true);
+  }
+  public void toggleLeftEnableOut(){
+    if (leftEnableOut.get()){
+      leftEnableOut.set(false);
+    }
+    else{
+      leftEnableOut.set(true);
+    }
+  }
+  public void toggleRightEnableOut(){
+      if (rightEnableOut.get()){
+        rightEnableOut.set(false);
+      }
+      else{
+        rightEnableOut.set(true);
+      }
+  }
+  
   @Override
   public void periodic() {
     // output.set(false);
@@ -37,5 +59,20 @@ public class ArduinoSubsystem extends SubsystemBase {
     //     output.set(false);
     //   }
     // This method will be called once per scheduler run
+    leftRed = leftRedIn.get();
+    leftBlue = leftBlueIn.get();
+    rightRed = rightRedIn.get();
+    rightBlue = rightBlueIn.get();
+    
+    SmartDashboard.putBoolean("LR: ", leftRed);
+    SmartDashboard.putBoolean("LB: ", leftBlue);
+    SmartDashboard.putBoolean("RR: ", rightRed);
+    SmartDashboard.putBoolean("RB: ", rightBlue);
+
+
+    System.out.println("LR: " + leftRed);
+    System.out.println("LB: " + leftBlue);
+    System.out.println("RR: " + rightRed);
+    System.out.println("RB: " + rightBlue);
   }
 }
