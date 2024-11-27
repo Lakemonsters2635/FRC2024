@@ -106,8 +106,8 @@ public class VisionAutoCommand extends Command {
     // ---
     // Input for the following is x prime and z prime offsets from the april tag
     // need Alpha =
-    double xPrime = -20;  //-13.5
-    double zPrime = -6; //8.5
+    double xPrime = -0.00001;  //-13.5
+    double zPrime = -25; //8.5
 
     double xPrimeSign = xPrime / Math.abs(xPrime);
     // // This is the original equation works for negative xPrime however doesn't work for positive xPrime
@@ -144,7 +144,7 @@ public class VisionAutoCommand extends Command {
     double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
 
     // finalYa is in degrees
-    double finalYa = 90;
+    double finalYa = 0;
     // finalAngle is in degrees
     double finalAngle = visionYa + finalYa + Units.radiansToDegrees(botRadians);
 

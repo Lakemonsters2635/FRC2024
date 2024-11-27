@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.proto.Kinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -66,6 +67,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final Translation2d m_backRightLocation = 
             new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
 
+    public final Translation2d m_frontLeftLocationCamera = 
+            new Translation2d(m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength);
+    public final Translation2d m_frontRightLocationCamera = 
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength);
+    public final Translation2d m_backLeftLocationCamera = 
+            new Translation2d(m_drivetrainWheelbaseWidth/2, 0);
+    public final Translation2d m_backRightLocationCamera = 
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, 0);
+
     public final SwerveModule m_frontLeft = new SwerveModule(Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
                                                               Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, 
                                                               Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, 
@@ -94,12 +104,29 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_frontRightLocation, 
       m_backLeftLocation, 
       m_backRightLocation);
+
+    private final SwerveDriveKinematics m_kinematicsCamera = new SwerveDriveKinematics(
+      m_frontLeftLocationCamera,
+      m_frontRightLocationCamera, 
+      m_backLeftLocationCamera, 
+      m_backRightLocationCamera);
     
     private boolean followJoystics = true;
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
+            m_gyro.getRotation2d().unaryMinus(),
+            new SwerveModulePosition[] {
+              m_frontLeft.getPosition(),
+              m_frontRight.getPosition(),
+              m_backLeft.getPosition(),
+              m_backRight.getPosition()
+            });
+
+    public final SwerveDriveOdometry m_odometryCamera =
+        new SwerveDriveOdometry(
+            m_kinematicsCamera,
             m_gyro.getRotation2d().unaryMinus(),
             new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
@@ -141,6 +168,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public Command createVisionPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
     return createPath(startPose, middlePose, endPose, endRot, false);
   }
+  public Command createVisionPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean centerOfRotationCamera){
+    return createPath(startPose, middlePose, endPose, endRot, false, centerOfRotationCamera);
+  }
 
   // Use for open loop paths which needs to be mirrored due to the alliance reflection
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
@@ -150,6 +180,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean mirrorX){
+    return createPath(startPose, middlePose, endPose, endRot, mirrorX, false);
+  }
+
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean mirrorX, boolean centerOfRotationCamera){
     // if (selectedAliance.equalsIgnoreCase("FMS")) {
     // }
     // else if(selectedAliance.equalsIgnoreCase("blue")){
@@ -172,7 +206,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));
       endRot*=-1;
-      System.out.println("isRedAliance = True*************************");
+      System.out.println("isRedAliance = True");
     }
     // angleSupplier expects a final variable so we create desiredRot and give the value of endRot
     final double desiredRot =endRot;
@@ -181,7 +215,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       Constants.maxModuleLinearSpeed,  // 3.5
       Constants.maxModuleLinearAccelaration)// 4
-      .setKinematics(m_kinematics);
+      .setKinematics(centerOfRotationCamera ? m_kinematicsCamera : m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
@@ -209,7 +243,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
 
-    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
+    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond-8, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared-30); // TODO: Delete the extra minuses
 
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
@@ -223,8 +257,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
       trajectory,
-      this::getPose,
-      m_kinematics,
+      centerOfRotationCamera ? this::getPoseCamera:this::getPose,
+      centerOfRotationCamera ? m_kinematicsCamera : m_kinematics,
       xController,
       yController,
       thetaController,
@@ -440,6 +474,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public Pose2d getPoseCamera() {
+    return m_odometryCamera.getPoseMeters();
+  }
+
   public SwerveDriveKinematics getSwerveDriveKinematics() {
     return m_kinematics; 
   }
@@ -458,6 +496,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
+        m_gyro.getRotation2d().unaryMinus(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_backLeft.getPosition(),
+          m_backRight.getPosition()
+        },
+        pose);
+  }
+  public void resetOdometryCamera(Pose2d pose) {
+    m_odometryCamera.resetPosition(
         m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
@@ -513,6 +562,7 @@ public ChassisSpeeds getChassisSpeeds() {
    * @param desiredStates The desired SwerveModule states. Array of `SwerveModuleState[]`
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
+    
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DrivetrainSubsystem.kMaxSpeed);
     m_frontLeft.setDesiredState(desiredStates[Constants.FL_SWERVE_MODULE]);

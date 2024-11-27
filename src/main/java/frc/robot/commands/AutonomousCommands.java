@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -32,6 +33,21 @@ public class AutonomousCommands {
         m_as = as;
         m_is = is;
         m_os = os;
+    }
+
+    public Command rotationFromCamera(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.resetAngle()).withTimeout(0.1),
+            new InstantCommand(()->m_dts.resetOdometryCamera(new Pose2d(0,0, new Rotation2d(0)))).withTimeout(0.1),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-90))), 
+                new Translation2d(0, -0.3), 
+                new Pose2d(0, -0.6, new Rotation2d(Units.degreesToRadians(-90))),
+                45,
+                false,
+                true
+            )
+        );
     }
 
     private Command rightNotePath(){
