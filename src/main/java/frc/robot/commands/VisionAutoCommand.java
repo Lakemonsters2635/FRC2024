@@ -106,6 +106,8 @@ public class VisionAutoCommand extends Command {
     // ---
     // Input for the following is x prime and z prime offsets from the april tag
     // need Alpha =
+    // if the tote is on the left side of the robot nad the robot has to turn to the left to line up we ned +15, if robot needs to turn to the right we need -15
+    // TODO: Camera center of rotation isn't working, needs to be fixed
     double xPrime = 15;  //-13.5
     double zPrime = -15; //8.5
 
