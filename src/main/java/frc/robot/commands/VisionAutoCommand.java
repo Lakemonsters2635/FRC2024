@@ -189,6 +189,7 @@ public class VisionAutoCommand extends Command {
           new Rotation2d(heading)
         ),
         finalAngle //heading+(Math.PI/2)
+        // true
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),

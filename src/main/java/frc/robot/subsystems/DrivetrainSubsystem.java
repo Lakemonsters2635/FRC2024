@@ -29,6 +29,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -195,7 +196,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // else{
     //   isRedAliance = false;
     // }
-
     // SmartDashboard.putString("selectedAlliance",selectedAliance);
     SmartDashboard.putBoolean("mirrorX",mirrorX);
     SmartDashboard.putString("DriverStation.getAlliance().get()",DriverStation.getAlliance().get().name());
@@ -243,7 +243,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
 
-    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond-8, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared-30); // TODO: Delete the extra minuses
+    TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
@@ -254,11 +254,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
+    updateOdometryCamera();
+    updateOdometry();
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
       trajectory,
-      centerOfRotationCamera ? this::getPoseCamera:this::getPose,
-      centerOfRotationCamera ? m_kinematicsCamera : m_kinematics,
+      centerOfRotationCamera ? this::getPoseCamera : this::getPose,
+      centerOfRotationCamera ? m_kinematicsCamera  : m_kinematics,
       xController,
       yController,
       thetaController,
@@ -266,7 +268,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
       this
     );
-
     return swerveControllerCommand;
   }
 
@@ -285,7 +286,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void setFollowJoystick(boolean followJoystics){
     this.followJoystics =followJoystics;
   }
-
 
   private static double xPowerCommanded = 0;
   private static double yPowerCommanded = 0;
@@ -460,6 +460,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
+        m_gyro.getRotation2d().unaryMinus(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_backLeft.getPosition(),
+          m_backRight.getPosition()
+        });
+  }
+  public void updateOdometryCamera() {
+    m_odometryCamera.update(
         m_gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
