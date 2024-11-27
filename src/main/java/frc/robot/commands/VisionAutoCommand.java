@@ -106,8 +106,8 @@ public class VisionAutoCommand extends Command {
     // ---
     // Input for the following is x prime and z prime offsets from the april tag
     // need Alpha =
-    double xPrime = -0.00001;  //-13.5
-    double zPrime = -25; //8.5
+    double xPrime = 15;  //-13.5
+    double zPrime = -15; //8.5
 
     double xPrimeSign = xPrime / Math.abs(xPrime);
     // // This is the original equation works for negative xPrime however doesn't work for positive xPrime
@@ -189,7 +189,7 @@ public class VisionAutoCommand extends Command {
           new Rotation2d(heading)
         ),
         finalAngle //heading+(Math.PI/2)
-        // true
+        // ,true
       ),
       new InstantCommand(()->m_dts.stopMotors()),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),

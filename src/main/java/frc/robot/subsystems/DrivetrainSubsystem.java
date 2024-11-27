@@ -197,9 +197,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //   isRedAliance = false;
     // }
     // SmartDashboard.putString("selectedAlliance",selectedAliance);
-    SmartDashboard.putBoolean("mirrorX",mirrorX);
-    SmartDashboard.putString("DriverStation.getAlliance().get()",DriverStation.getAlliance().get().name());
-    SmartDashboard.putString("DriverStation.Alliance.Red",DriverStation.Alliance.Red.name());
+    SmartDashboard.putBoolean("mirrorX", mirrorX);
+    SmartDashboard.putString("DriverStation.getAlliance().get()", DriverStation.getAlliance().get().name());
+    SmartDashboard.putString("DriverStation.Alliance.Red", DriverStation.Alliance.Red.name());
 
     if (mirrorX) {
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees()))));
@@ -254,9 +254,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
-    updateOdometryCamera();
-    updateOdometry();
-
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
       trajectory,
       centerOfRotationCamera ? this::getPoseCamera : this::getPose,
@@ -268,6 +265,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this::setModuleStates,  // This is a consumer to set the states as defined in docs for SwerveControllerCommand
       this
     );
+
     return swerveControllerCommand;
   }
 
