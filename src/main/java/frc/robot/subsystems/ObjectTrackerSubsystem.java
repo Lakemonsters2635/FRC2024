@@ -408,8 +408,20 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     }
     public void updateDetections(String detectionsString, Gson gson) {
         DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
-        // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
-        String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+
+        // initialize
+        String fpsString = "";
+        try {
+            // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
+            fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+        }
+        catch (Exception e) {
+            // TODO: log exception or output to console or something?
+            // if we do not have this fpsString, then likely the camera is not connected and the raspberry pi
+            // is not reporting anything to shuffleboard... in this case, we can not update detections and 
+            // return without doing anything.
+            return;
+        }
         double fps = Double.valueOf(fpsString);
         SmartDashboard.putNumber("CameraFPS", fps);
         
