@@ -201,7 +201,7 @@ public final class Constants {
     public static final int OUTAKE_MOTOR_ID = 14;
 
     public static final double OUTTAKE_STOP_SPEED =0;
-    public static final double OUTTAKE_SPEED = 0.9;
+    public static final double OUTTAKE_SPEED = 0.5;
     public static final double AMP_OUTTAKE_SPEED = -0.4;
     public static final double OUTTAKE_TRAP_SPEED = -0.15;
     public static final double OUTTAKE_IN_SPEED = 0.35;
@@ -239,12 +239,12 @@ public final class Constants {
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int OUTTAKE_IN_BUTTON = 8;
     public static final int TRAP_SHOOT_BUTTON = 12;
-    // public static final int SPEAKER_POSE_BUTTON = 6;
+    //public static final int SPEAKER_POSE_BUTTON = 6;
     public static final int BALANCE_BUTTON = 10;
 
     // left buttons
     public static final int SET_ROBOT_ROTATION_BUTTON =3;
-    public static final int AMP_SEQUENCE_BUTTON = 4 ;
+    // public static final int AMP_SEQUENCE_BUTTON = 4 ;
     public static final int OUTTAKE_BUTTON = 1;
     public static final int FAR_SHOOTER_BUTTON = 4;
     //public static final int TELESCOPE_RETRACT_BUTTON = 4;
