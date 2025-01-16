@@ -14,7 +14,7 @@ public class IntakeOutCommand extends Command {
   private Timer m_timer;
   public IntakeOutCommand(IntakeSubsystem intakeSubsystem) {
     m_intakeSubsystem = intakeSubsystem;
-    m_timer = new Timer();
+    m_timer = new Timer();  
     // addRequirements(m_intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
