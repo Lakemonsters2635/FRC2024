@@ -16,7 +16,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
    //intakeMotor.setSmartCurrentLimit(20,1);
-  intakeMotor.setInverted(true);    
+  //intakeMotor.setInverted(true);    
   }
 
   public void inIntake() {
