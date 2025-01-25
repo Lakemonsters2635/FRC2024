@@ -178,7 +178,7 @@ public final class Constants {
     public static final double ARM_ENCODER_OFFSET = 0.406; 
     public static final int ARM_PICKUP_ANGLE = 94; // 104
     public static final int ARM_AMP_ANGLE = -18; // -19
-    public static final int ARM_SHOOTER_ANGLE = 52; // 54
+    public static final int ARM_SHOOTER_ANGLE = 70; // 54
     public static final int ARM_SHOOTER_ANGLE_MID_AUTO = 34; // 34
     public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 33; // 34
     public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72
@@ -201,7 +201,7 @@ public final class Constants {
     public static final int OUTAKE_MOTOR_ID = 14;
 
     public static final double OUTTAKE_STOP_SPEED =0;
-    public static final double OUTTAKE_SPEED = 0.5;
+    public static final double OUTTAKE_SPEED = 0.7;
     public static final double AMP_OUTTAKE_SPEED = -0.4;
     public static final double OUTTAKE_TRAP_SPEED = -0.15;
     public static final double OUTTAKE_IN_SPEED = 0.35;
