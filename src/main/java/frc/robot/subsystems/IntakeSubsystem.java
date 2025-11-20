@@ -4,19 +4,24 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  public CANSparkMax intakeMotor;
+  public SparkMax intakeMotor;
+  public SparkMaxConfig intakeMotorConfig;
   public IntakeSubsystem() {
-    intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
-    intakeMotor.setSmartCurrentLimit(20,1);
-    intakeMotor.setInverted(true);    
+    intakeMotor = new SparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+    intakeMotorConfig = new SparkMaxConfig();
+    intakeMotorConfig.idleMode(IdleMode.kBrake);
+    intakeMotorConfig.smartCurrentLimit(20,1);
+
   }
 
   public void inIntake() {

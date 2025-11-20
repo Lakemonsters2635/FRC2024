@@ -67,11 +67,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getArmDegrees(){
-    return m_encoder.getAbsolutePosition()*(360);
+    return m_encoder.get()*(360);
   }
 
   public double getTheta(){
-    theta = 360.0 * (m_encoder.getAbsolutePosition() - Constants.ARM_ENCODER_OFFSET);
+    theta = 360.0 * (m_encoder.get() - Constants.ARM_ENCODER_OFFSET);
     theta %= 360.0;
     if (theta < 0){
       theta += 360.0;
@@ -93,7 +93,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void putToBoard(){
     // SmartDashboard.putNumber("Calculated Degrees",getArmDegrees());
-    SmartDashboard.putNumber("Raw encoder value",m_encoder.getAbsolutePosition());
+    SmartDashboard.putNumber("Raw encoder value",m_encoder.get());
     SmartDashboard.putNumber("Theta",theta);
     // SmartDashboard.putNumber("Pose Target", m_poseTarget);
     // SmartDashboard.putNumber("FB Power", fbMotorPower);
@@ -158,11 +158,14 @@ public class ArmSubsystem extends SubsystemBase {
     }
     double clampVal = 3.;
     motorPower = MathUtil.clamp(motorPower, -clampVal, clampVal);
-    // setArmPower(ffMotorPower);
-    setArmPower(Constants.ARM_ENABLED ? motorPower : 0);
+    setArmPower(motorPower);
+    //setArmPower(Constants.ARM_ENABLED ? motorPower : 0);
     SmartDashboard.putNumber("motorPower", motorPower);
     SmartDashboard.putNumber("m_poseTarget", m_poseTarget);
     SmartDashboard.putNumber("ffMotorPower", ffMotorPower);
+    SmartDashboard.putNumber("motorPowerGet", m_armMotor1.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("motorPowerGet2", m_armMotor2.getMotorVoltage().getValueAsDouble());
+
 
   }    
 }

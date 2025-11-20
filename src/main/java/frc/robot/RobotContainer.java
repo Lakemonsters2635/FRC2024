@@ -11,37 +11,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AmpAuto;
 import frc.robot.commands.AmpOutakeCommand;
 import frc.robot.commands.AmpSequenceCommand;
 import frc.robot.commands.ArmThrottleCommand;
-import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.FarSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOutCommand;
-import frc.robot.commands.LeaveHomeAuto;
 import frc.robot.commands.MoveArmToPoseCommand;
 import frc.robot.commands.OutakeCommand;
 import frc.robot.commands.OuttakeInCommand;
-import frc.robot.commands.SetRobotRot;
-import frc.robot.commands.SetRobotRotArm;
 import frc.robot.commands.SpeakerCommand;
 import frc.robot.commands.SpeakerDriverCommand;
 import frc.robot.commands.TrapShootCommand;
-import frc.robot.commands.TrapShootStrafeCommand;
-import frc.robot.commands.VisionAutoCommand;
 import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.OutakeSubsystem;
-import pabeles.concurrency.ConcurrencyOps.NewInstance;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -76,16 +67,12 @@ public class RobotContainer {
   public static final SpeakerCommand m_speakerCommand = new SpeakerCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final TrapShootCommand m_TrapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final TrapShootCommand m_trapShootCommand = new TrapShootCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
-  public static final LeaveHomeAuto m_leaveHomeAuto = new LeaveHomeAuto(m_drivetrainSubsystem);
-  public static final AmpAuto m_ampAuto = new AmpAuto(m_drivetrainSubsystem);
-  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final AmpSequenceCommand m_ampSequenceCommand = new AmpSequenceCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem);
   public static final OuttakeInCommand m_outtakeInCommand = new OuttakeInCommand(m_outakeSubsystem);
   public static final MoveArmToPoseCommand m_moveArmToPoseSpeaker = new MoveArmToPoseCommand(m_armSubsystem, 54);
   public static final MoveArmToPoseCommand m_moveArmBalance = new MoveArmToPoseCommand(m_armSubsystem, (int)Constants.ARM_ENCODER_OFFSET*360);// TODO
   public static final ParallelCommandGroup m_armAmpPoseCommand = new ParallelCommandGroup(m_ampPoseCommand, m_intakeOutCommand);
   // public static final SetRobotRot m_setRobotRot90 = new SetRobotRot(m_drivetrainSubsystem, 90);
-  public static final SetRobotRotArm m_setRobotArm = new SetRobotRotArm(m_drivetrainSubsystem);
 
 
   public RobotContainer() {
@@ -109,14 +96,11 @@ public class RobotContainer {
     Trigger intakeButton = new JoystickButton(rightJoystick, Constants.INTAKE_BUTTON);
     Trigger armPickupPoseButton = new JoystickButton(rightJoystick, Constants.GROUND_PICKUP_BUTTON);
     Trigger armAmpPoseButton = new JoystickButton(rightJoystick, Constants.AMP_POSE_BUTTON);
-    Trigger intakeOutButton = new JoystickButton(rightJoystick, Constants.INTAKE_OUT_BUTTON);
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger speakerButton = new JoystickButton(rightJoystick, Constants.SPEAKER_BUTTON);
     Trigger trapShootButton = new JoystickButton(rightJoystick, Constants.TRAP_SHOOT_BUTTON);
     Trigger outtakeInButton = new JoystickButton(rightJoystick, Constants.OUTTAKE_IN_BUTTON);
     Trigger armBalanceButton = new JoystickButton(rightJoystick, Constants.BALANCE_BUTTON);
-    Trigger shootAprilTagButton = new JoystickButton(rightJoystick, Constants.SHOOT_APRIL_TAG);
-
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
     Trigger viewAprilTagButton = new JoystickButton(rightJoystick, 9);
@@ -126,10 +110,6 @@ public class RobotContainer {
     // left buttons
     Trigger outakeButton = new JoystickButton(leftJoystick, Constants.OUTTAKE_BUTTON);
     Trigger farSpeakerButton = new JoystickButton(leftJoystick, Constants.FAR_SHOOTER_BUTTON);
-    // Trigger setRobotRotationButton = new JoystickButton(leftJoystick, Constants.SET_ROBOT_ROTATION_BUTTON);
-    // Trigger setRobotRotationButton2 = new JoystickButton(leftJoystick, 2);
-    Trigger visionArmRotationButton = new JoystickButton(leftJoystick, 2);
-    Trigger visionRotationButton = new JoystickButton(leftJoystick, 3);
     Trigger visionCombinedTrap = new JoystickButton(leftJoystick, 7);
     Trigger visionMovement = new JoystickButton(leftJoystick, 12);
     Trigger toggleLeftOutput = new JoystickButton(leftJoystick, 5);
@@ -156,7 +136,6 @@ public class RobotContainer {
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
-    shootAprilTagButton.onTrue(new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_setRobotArm.getArmDistanceFromTheTarget()));
     viewAprilTagButton.onTrue(new SequentialCommandGroup(
       new InstantCommand(()->m_objectTrackerSubsystem.data()),
       new InstantCommand(()->SmartDashboard.putString("ClosestObjectVision", m_objectTrackerSubsystem.getClosestAprilTag().toString())),
@@ -175,23 +154,7 @@ public class RobotContainer {
     // setRobotRotationButton.whileTrue(m_setRobotRot90);
     // setRobotRotationButton2.whileTrue(m_setRobotArm);
 
-    visionRotationButton.onTrue(new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)); // deleted new InstantCommand() because SetRobotRot wasn't initializing
-    visionArmRotationButton.onTrue(new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ));
-    visionCombinedTrap.onTrue(
-      new SequentialCommandGroup(
-        new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem),
-        new TrapShootStrafeCommand(m_armSubsystem, m_intakeSubsystem, m_outakeSubsystem, m_objectTrackerSubsystem.visionZ)
-      )
-    );
-    visionMovement.onTrue(new SequentialCommandGroup(
-        // new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem),
-        // new InstantCommand(()->m_drivetrainSubsystem.setFollowJoystick(false)).withTimeout(0.1),
-        new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem)
-        // new WaitCommand(5),
-        // new SetRobotRot(m_drivetrainSubsystem, m_objectTrackerSubsystem)
-    ));
-
-
+  
     // armStartButton.whileTrue(m_armThrottleCommand);
   }
 
@@ -209,32 +172,11 @@ public class RobotContainer {
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
 
     // An example command will be run in autonomous
-    m_autoChooser.addOption("shootMidCommand", m_autonomousCommands.shootMidCommand());
-    m_autoChooser.addOption("shootRightCommand", m_autonomousCommands.shootRightCommand());
-    m_autoChooser.addOption("shootLeftCommand", m_autonomousCommands.shootLeftCommand());
-    m_autoChooser.addOption("shootMidLeftCommand", m_autonomousCommands.shootMidLeftCommand());
-    m_autoChooser.addOption("shootMidRightCommand", m_autonomousCommands.shootMidRightCommand());
-    m_autoChooser.addOption("shootMidToRightCommand", m_autonomousCommands.midToRightCommand());
-    m_autoChooser.addOption("shootMidToRightToLeftCommand", m_autonomousCommands.midToRightToLeftCommand());
-    m_autoChooser.addOption("shootAllThreeCommand", m_autonomousCommands.shootAllThreeCommand());
-    m_autoChooser.addOption("leaveHomeCommand", m_autonomousCommands.leaveHomeCommand());
-    m_autoChooser.addOption("justShoot", m_autonomousCommands.justShoot());
-    m_autoChooser.addOption("sideAutoRight", m_autonomousCommands.sideAutoRight());
-    m_autoChooser.addOption("escapeRight", m_autonomousCommands.escapeRight());
-    m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
-    m_autoChooser.addOption("postSeasonAutoDiagonalBlueLeft", m_autonomousCommands.postSeasonAutoDiagonalBlueLeft());
-    m_autoChooser.addOption("postSeasonAutoDiagonalRedLeft", m_autonomousCommands.postSeasonAutoDiagonalRedLeft());
-    m_autoChooser.addOption("postSeasonAutoDiagonalAmp", m_autonomousCommands.postSeasonAutoDiagonalAmp());
-    m_autoChooser.addOption("postSeasonAutoDiagonalSource", m_autonomousCommands.postSeasonAutoDiagonalSource());
-    m_autoChooser.addOption("postSeasonAutoTriangle", m_autonomousCommands.postSeasonAutoTriangle());
-    m_autoChooser.setDefaultOption("postSeasonAutoTriangleSpeakerTrapezoid", m_autonomousCommands.postSeasonAutoTriangleSpeakerTrapezoid());
-    m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotation", m_autonomousCommands.postSeasonAutoDiagonalSourceRotation());
-    m_autoChooser.addOption("postSeasonAutoDiagonalSourceRotationCurve", m_autonomousCommands.postSeasonAutoDiagonalSourceRotationCurve());
+   
     //m_autoChooser.addOption("escapeLeft", m_autonomousCommands.escapeLeft());  DOESNT WORKz
     // m_autoChooser.addOption("LeaveHomeAuto", m_leaveHomeAuto);
     // m_autoChooser.addOption("AmpAuto", m_ampAuto);
 
-    m_autoChooser.addOption("redSideAutoLeft", m_autonomousCommands.redSideAutoLeft());
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);

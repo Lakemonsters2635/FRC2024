@@ -4,11 +4,11 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,12 +17,15 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class SwerveModule {
-  private final CANSparkMax m_driveMotor;
-  public final CANSparkMax m_turningMotor;
+  public final SparkMax m_driveMotor;
+  public final SparkMax m_turningMotor;
+
+  public final SparkMaxConfig m_driveMotorConfig;
+  public final SparkMaxConfig m_turningMotorConfig;
+
 
   public final RelativeEncoder m_driveEncoder;
   public final AnalogInput m_turningEncoder;
@@ -49,14 +52,18 @@ public class SwerveModule {
       double driveMotorGain // tuning motor module
       ) {
 
-    m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
-    m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
+    m_driveMotor = new SparkMax(driveMotorChannel, MotorType.kBrushless);
+    m_turningMotor = new SparkMax(turningMotorChannel, MotorType.kBrushless);
     this.turningMotorOffset = turningMotorOffset;
 
     m_driveMotorGain = driveMotorGain;
 
-    m_driveMotor.setIdleMode(IdleMode.kBrake);
-    m_turningMotor.setIdleMode(IdleMode.kBrake);
+    m_driveMotorConfig = new SparkMaxConfig();
+    m_driveMotorConfig.idleMode(IdleMode.kBrake);
+    // m_leftAlgaeIntakeMotorConfig.smartCurrentLimit(10);
+
+    m_turningMotorConfig = new SparkMaxConfig();
+    m_turningMotorConfig.idleMode(IdleMode.kBrake);
 
     // TODO: Comment the following two lines
     // m_driveMotor.setIdleMode(IdleMode.kCoast);
@@ -73,9 +80,6 @@ public class SwerveModule {
      *  REVLibError.kTimeout
      * https://github.com/REVrobotics/SPARK-MAX-Examples/blob/master/Java/Get%20and%20Set%20Parameters/src/main/java/frc/robot/Robot.java
      */
-    if(m_driveMotor.setIdleMode(IdleMode.kBrake) != REVLibError.kOk){
-      SmartDashboard.putString("Idle Mode", "Error");
-    }
 
     
     m_turningEncoder = new AnalogInput(analogEncoderPort);
@@ -85,9 +89,6 @@ public class SwerveModule {
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
     // resolution.
-    m_driveEncoder.setPositionConversionFactor(Constants.kDriveEncoderDistancePerPulse);
-    m_driveEncoder.setVelocityConversionFactor(Constants.kDriveEncoderDistancePerPulse/60.0);
-
 
     // Set whether drive encoder should be reversed or not
     // m_driveEncoder.setReverseDirection(driveEncoderReversed);
@@ -109,7 +110,7 @@ public class SwerveModule {
   }
 
   public SwerveModulePosition getPosition() {
-    return new SwerveModulePosition(m_driveEncoder.getPosition(), new Rotation2d(getTurningEncoderRadians()));
+    return new SwerveModulePosition(m_driveEncoder.getPosition() * Constants.kDriveEncoderDistancePerPulse, new Rotation2d(getTurningEncoderRadians()));
   }
 
   public double getTurningEncoderRadians(){
@@ -135,7 +136,7 @@ public class SwerveModule {
   }
 
   public double getVelocity() {
-    return m_driveEncoder.getVelocity();
+    return m_driveEncoder.getVelocity() * Constants.kDriveEncoderDistancePerPulse/60;
   }
 
   public void stop(){

@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -87,8 +87,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                               Constants.BACK_RIGHT_ANGLE_OFFSET_COMPETITION,
                                                               1.0);
   
-    public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
-
+    public final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI, 200);
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
       m_frontLeftLocation,
       m_frontRightLocation, 
@@ -354,7 +353,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
       SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
       SmartDashboard.putNumberArray("ActualSwerveModuleState", actualLoggingState);
 
-      
+      SmartDashboard.putNumber("xPowerCommanded", xPowerCommanded);
+      SmartDashboard.putNumber("yPowerCommanded", yPowerCommanded);
+
 
     Pose2d lastPose2d = m_odometry.getPoseMeters();
     updateOdometry();
