@@ -30,14 +30,15 @@ public class SpeakerCommand extends SequentialCommandGroup {
     addCommands(new ParallelCommandGroup( new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE),
                                           new SequentialCommandGroup( new IntakeOutCommand(m_intakeSubsystem),
                                                                       new WaitCommand(0.2),
-                                                                      new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1)
+                                                                      new InstantCommand(()->outakeSubsystem.zeroOutakePower()).withTimeout(0.1)
                                                                     )
-                                        ), 
-                new WaitCommand(0.6),
-                new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.1),
-                new WaitCommand(0.3),
-                new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.1),
-                new InstantCommand(()->m_outakeSubsystem.zeroOutakePower()),
-                new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE).withTimeout(0.3));
+    )
+                                        );
+                // new WaitCommand(0.6),
+                // new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1),
+                // new WaitCommand(0.3),
+                // new InstantCommand(()->m_outakeSubsystem.zeroOutakePower()).withTimeout(0.1),
+                // new InstantCommand(()->m_intakeSubsystem.stopIntake()),
+                // new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_PICKUP_ANGLE).withTimeout(0.3));
   }
 }

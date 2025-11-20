@@ -310,20 +310,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // TODO: document how to use this button to reset various robot centers of rotation
         // Note: you can have multiple buttons for defining multiple centers of rotation.
-        if (customCenterButton.getAsBoolean()) {
-          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                  true,
-                  new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
-        } else {
-          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                  true);
-        }
+        // if (customCenterButton.getAsBoolean()) {
+        //   this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+        //           yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+        //           MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+        //           true,
+        //           new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
+        // } else {
+        //   this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+        //           yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+        //           MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+        //           true);
+        // }
 
-        
+        this.drive(0, 0, 0, false);
       }
       
       SmartDashboard.putNumber("rotCommanded", rotCommanded);
