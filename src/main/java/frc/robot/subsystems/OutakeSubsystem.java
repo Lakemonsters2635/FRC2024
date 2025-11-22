@@ -20,27 +20,27 @@ public class OutakeSubsystem extends SubsystemBase {
 
   
   public void setOutakePower(){
-    m_outakeMotor.set(Constants.OUTTAKE_SPEED);
+    m_outakeMotor.set(-Constants.OUTTAKE_SPEED);
   }
 
   public void setTrapPower(){
-    m_outakeMotor.set(Constants.OUTTAKE_TRAP_SPEED);
+    m_outakeMotor.set(-Constants.OUTTAKE_TRAP_SPEED);
   }
 
   public void setAmpOutakePower(){
-    m_outakeMotor.set(Constants.AMP_OUTTAKE_SPEED);
+    m_outakeMotor.set(-Constants.AMP_OUTTAKE_SPEED);
   }
 
   public void setInOutakePower(){
-    m_outakeMotor.set(Constants.OUTTAKE_IN_SPEED);
+    m_outakeMotor.set(-Constants.OUTTAKE_IN_SPEED);
   }
 
   public void zeroOutakePower(){
-    m_outakeMotor.set(Constants.OUTTAKE_STOP_SPEED);
+    m_outakeMotor.set(-Constants.OUTTAKE_STOP_SPEED);
   }
 
   public void manualOutake(){
-    m_outakeMotor.set(0.6);
+    m_outakeMotor.set(-0.6);
   }
 
   @Override
