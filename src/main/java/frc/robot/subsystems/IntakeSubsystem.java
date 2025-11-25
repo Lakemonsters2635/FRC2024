@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -22,6 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotorConfig.idleMode(IdleMode.kBrake);
     intakeMotorConfig.smartCurrentLimit(20,1);
     intakeMotorConfig.inverted(true);
+    intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void inIntake() {

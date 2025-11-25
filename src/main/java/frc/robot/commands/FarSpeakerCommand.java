@@ -27,7 +27,7 @@ public class FarSpeakerCommand extends SequentialCommandGroup {
     m_outakeSubsystem = outakeSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ParallelCommandGroup( new MoveArmToPoseCommand(m_armSubsystem, Constants.ARM_SHOOTER_ANGLE_MID_AUTO),
+    addCommands(new ParallelCommandGroup( new MoveArmToPoseCommand(m_armSubsystem, 45),//Constants.ARM_SHOOTER_ANGLE_MID_AUTO),
                                           new SequentialCommandGroup( new IntakeOutCommand(m_intakeSubsystem),
                                                                       new WaitCommand(0.2),
                                                                       new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1)

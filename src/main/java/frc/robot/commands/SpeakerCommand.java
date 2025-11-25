@@ -33,7 +33,7 @@ public class SpeakerCommand extends SequentialCommandGroup {
                                                                       new InstantCommand(()->m_outakeSubsystem.setOutakePower()).withTimeout(0.1)
                                                                     )
                                         ), 
-                new WaitCommand(0.6),
+                new WaitCommand(1.5),
                 new InstantCommand(()->m_intakeSubsystem.inIntake()).withTimeout(0.1),
                 new WaitCommand(0.3),
                 new InstantCommand(()->m_intakeSubsystem.stopIntake()).withTimeout(0.1),

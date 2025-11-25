@@ -48,7 +48,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("isArmMotor2Inverted", m_armMotor2.getInverted());
     // m_poseTarget = 0;
     // m_poseTarget = Constants.ARM_AMP_ANGLE; //TODO: Uncomment this
-    m_poseTarget=Constants.ARM_PICKUP_ANGLE;
+    m_poseTarget= Constants.ARM_PICKUP_ANGLE;
   }
 
   public void controlArmThrottle(){
@@ -84,7 +84,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public boolean areWeThere(){
     double currentTheta = getTheta();
-    if (currentTheta > (m_poseTarget - 3) || currentTheta > (m_poseTarget + 3)){
+    if ((currentTheta > (m_poseTarget - 3)) && (currentTheta < (m_poseTarget + 3))){
       return true;
     } else{
       return false;
@@ -113,6 +113,7 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("m_poseTarget", m_poseTarget);
     double upperLimit, lowerLimit;
     //m_poseTarget = m_poseTarget2;
     

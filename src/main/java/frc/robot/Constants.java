@@ -178,7 +178,7 @@ public final class Constants {
     public static final double ARM_ENCODER_OFFSET = 0.406; 
     public static final int ARM_PICKUP_ANGLE = 94; // 104
     public static final int ARM_AMP_ANGLE = -18; // -19
-    public static final int ARM_SHOOTER_ANGLE = 25; // 54
+    public static final int ARM_SHOOTER_ANGLE = 75; // 54
     public static final int ARM_SHOOTER_ANGLE_MID_AUTO = 34; // 34
     public static final int ARM_SHOOTER_ANGLE_SIDE_AUTO = 33; // 34
     public static final int ARM_TRAP_SHOOT_ANGLE = 71; // 72

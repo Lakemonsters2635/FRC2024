@@ -20,7 +20,7 @@ public class OutakeSubsystem extends SubsystemBase {
 
   
   public void setOutakePower(){
-    m_outakeMotor.set(-Constants.OUTTAKE_SPEED);
+    m_outakeMotor.set(-0.7);//Constants.OUTTAKE_SPEED);
   }
 
   public void setTrapPower(){
